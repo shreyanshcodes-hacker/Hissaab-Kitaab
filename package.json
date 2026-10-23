@@ -1,0 +1,35 @@
+{
+  "name": "shopledger",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Production-grade receipt management and spending analytics for Indian retail, Kirana stores, and Mandi businesses.",
+  "scripts": {
+    "test": "node --test --test-concurrency=1 --experimental-strip-types tests/money.test.ts tests/receipt.schema.test.ts tests/security-rules-analysis.test.ts",
+    "test:money": "node --test --experimental-strip-types tests/money.test.ts",
+    "test:schema": "node --test --experimental-strip-types tests/receipt.schema.test.ts",
+    "test:rules": "node --test --experimental-strip-types tests/security-rules-analysis.test.ts",
+    "test:backend": "pnpm --filter backend run test",
+    "test:all": "pnpm test && pnpm test:backend",
+    "lint:frontend": "pnpm --filter frontend run lint",
+    "build:frontend": "pnpm --filter frontend run build",
+    "build:backend": "pnpm --filter backend run build",
+    "build": "pnpm build:frontend && pnpm build:backend",
+    "deploy:rules": "firebase deploy --only firestore:rules,storage:rules",
+    "deploy:indexes": "firebase deploy --only firestore:indexes",
+    "deploy:seed-db": "pnpm --filter backend run seed:db",
+    "deploy:database": "firebase deploy --only firestore:rules,firestore:indexes,storage:rules && pnpm deploy:seed-db",
+    "deploy:hosting": "pnpm build:frontend && firebase deploy --only hosting",
+    "deploy:all": "pnpm build:frontend && firebase deploy --only firestore:rules,firestore:indexes,storage:rules,hosting && pnpm deploy:seed-db",
+    "emulators": "firebase emulators:start"
+  },
+  "keywords": [
+    "kirana",
+    "receipt-ocr",
+    "bahi-khata",
+    "firebase",
+    "firestore"
+  ],
+  "author": "ShopLedger Team",
+  "license": "UNLICENSED"
+}

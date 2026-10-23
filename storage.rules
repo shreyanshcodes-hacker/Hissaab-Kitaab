@@ -1,0 +1,41 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // =========================================================================
+    // DEFAULT POLICY: DENY ALL
+    // =========================================================================
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+
+    // =========================================================================
+    // BUSINESS RECEIPT IMAGES & DOCUMENTS
+    // Scoped path: /businesses/{businessId}/receipts/{receiptId}/{fileName}
+    // =========================================================================
+    match /businesses/{businessId}/receipts/{receiptId}/{fileName} {
+
+      // Helper to verify business membership via Firestore document lookup
+      function isBusinessMember() {
+        return request.auth != null && (
+          request.auth.uid in firestore.get(/databases/(default)/documents/businesses/$(businessId)).data.memberUids ||
+          (firestore.get(/databases/(default)/documents/businesses/$(businessId)).data.members != null &&
+           firestore.get(/databases/(default)/documents/businesses/$(businessId)).data.members[request.auth.uid] != null)
+        );
+      }
+
+      // Read permission: Authorized business members can view/download receipt scans
+      allow read: if isBusinessMember();
+
+      // Write permission: Authorized members can upload receipt scans with constraints:
+      // - Max file size: 15 megabytes (15 * 1024 * 1024 bytes)
+      // - Allowed MIME types: JPEG, PNG, WebP, HEIC (mobile camera formats), and PDF invoices
+      allow write: if isBusinessMember() && (
+        request.resource == null || ( // Allow deletion
+          request.resource.size <= 15 * 1024 * 1024 &&
+          request.resource.contentType.matches('image/(jpeg|png|webp|heic)|application/pdf')
+        )
+      );
+    }
+  }
+}

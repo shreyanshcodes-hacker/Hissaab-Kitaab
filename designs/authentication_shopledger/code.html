@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to ShopLedger — Sign In or Explore</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            forest: {
+              DEFAULT: '#245C45',
+              hover: '#1B4735',
+              dark: '#163B2C',
+              light: '#EAF3ED',
+            },
+            ivory: {
+              50: '#FAF9F4',
+              100: '#F5F4EF',
+              200: '#EBE9E1',
+              300: '#DDD9CD',
+            },
+            charcoal: {
+              DEFAULT: '#252923',
+              muted: '#5F635C',
+              subtle: '#8C9188',
+            },
+            amber: {
+              brand: '#D97706',
+              soft: '#FEF3C7',
+              border: '#FDE68A',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #D8D4C8;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="bg-[#FAF9F4] dark:bg-[#151814] text-[#252923] dark:text-[#EAECE8] min-h-screen flex flex-col transition-colors duration-200">
+
+  <!-- Top Navigation Bar -->
+  <header class="w-full border-b border-[#EBE9E1] dark:border-[#2A3028] bg-[#FAF9F4]/90 dark:bg-[#151814]/90 backdrop-blur-md sticky top-0 z-30 px-6 py-3.5 transition-colors">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-forest rounded-lg">
+        <div class="w-9 h-9 rounded-xl bg-forest flex items-center justify-center text-white shadow-sm shadow-forest/20 group-hover:bg-forest-hover transition-colors">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+            <path d="M6 6h10"></path>
+            <path d="M6 10h10"></path>
+            <path d="M6 14h6"></path>
+          </svg>
+        </div>
+        <div>
+          <span class="text-xl font-bold tracking-tight text-[#252923] dark:text-white flex items-center gap-1.5">
+            ShopLedger
+            <span class="text-[11px] font-semibold uppercase tracking-wider bg-forest/10 dark:bg-forest/30 text-forest dark:text-[#84CCA8] px-1.5 py-0.5 rounded">Kirana</span>
+          </span>
+          <span class="text-[11px] text-[#5F635C] dark:text-[#9EA39B] block -mt-0.5">Smart Bookkeeper for Indian Shops</span>
+        </div>
+      </a>
+
+      <!-- Header Right items: Language, Demo status, Theme Toggle -->
+      <div class="flex items-center gap-3">
+        <!-- Language selector badge -->
+        <div class="hidden sm:flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-lg bg-white dark:bg-[#20251F] border border-[#EBE9E1] dark:border-[#2E362C] text-[#5F635C] dark:text-[#A3A89F]">
+          <svg class="w-3.5 h-3.5 text-forest dark:text-[#84CCA8]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span>English & हिन्दी</span>
+        </div>
+
+        <!-- Help Link -->
+        <a href="#helpModal" onclick="openHelp()" class="text-xs font-medium text-[#5F635C] dark:text-[#A3A89F] hover:text-forest dark:hover:text-[#84CCA8] px-2.5 py-1.5 rounded-lg hover:bg-forest-light dark:hover:bg-[#222920] transition-colors">
+          Need Help?
+        </a>
+
+        <!-- Theme Toggle -->
+        <button id="themeToggleBtn" onclick="toggleTheme()" class="p-2 rounded-xl border border-[#EBE9E1] dark:border-[#2E362C] bg-white dark:bg-[#20251F] text-[#5F635C] dark:text-[#D4D8CF] hover:border-forest/40 focus:outline-none focus:ring-2 focus:ring-forest transition-all" title="Toggle Light / Dark mode" aria-label="Toggle Theme">
+          <!-- Sun Icon (Light) -->
+          <svg id="sunIcon" class="w-4 h-4 hidden dark:block text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <!-- Moon Icon (Dark) -->
+          <svg id="moonIcon" class="w-4 h-4 block dark:hidden text-[#5F635C]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Grid -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex items-center justify-center">
+    <div class="w-full grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      
+      <!-- LEFT COLUMN: Product Value, Trust, & Live Interactive Preview (5 cols) -->
+      <div class="lg:col-span-5 space-y-6 order-2 lg:order-1">
+        <div class="space-y-3">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-forest/10 dark:bg-forest/25 text-forest dark:text-[#84CCA8] text-xs font-semibold">
+            <span class="w-2 h-2 rounded-full bg-forest dark:bg-[#52D396] animate-pulse"></span>
+            Zero Accounting Jargon • Designed for Kirana Stores
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-[#252923] dark:text-white leading-tight">
+            Turn your crumpled mandi slips into clean, verified ledger entries.
+          </h2>
+          <p class="text-sm sm:text-base text-[#5F635C] dark:text-[#A1A79E] leading-relaxed">
+            Snap bills from Gupta Wholesale, HUL, or local mandi agents. ShopLedger extracts quantities, calculates GST, and checks if supplier rates went up.
+          </p>
+        </div>
+
+        <!-- Realistic Mini Kirana Preview Card -->
+        <div class="bg-white dark:bg-[#1E231D] rounded-2xl p-4 sm:p-5 border border-[#E8E5DC] dark:border-[#2C342A] shadow-sm space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-[#F0ECE2] dark:border-[#283025]">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-[#FAF9F4] dark:bg-[#282F26] border border-[#E6E2D6] dark:border-[#384236] flex items-center justify-center text-xs font-bold text-forest dark:text-[#84CCA8]">
+                ₹
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-[#252923] dark:text-white">Sharma Kirana Store (Demo)</p>
+                <p class="text-[11px] text-[#5F635C] dark:text-[#9AA096]">Khari Baoli, Delhi • Today's Activity</p>
+              </div>
+            </div>
+            <span class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-amber-brand/10 text-amber-brand dark:text-[#FBBF24] border border-amber-brand/20">
+              1 Bill Needs Check
+            </span>
+          </div>
+
+          <!-- Sample Verified OCR Item -->
+          <div class="space-y-2 text-xs">
+            <div class="flex items-center justify-between p-2.5 rounded-xl bg-[#FAF9F4] dark:bg-[#181D17] border border-[#EBE8DE] dark:border-[#293228]">
+              <div class="flex items-center gap-2">
+                <span class="w-5 h-5 rounded-md bg-forest/15 dark:bg-forest/30 text-forest dark:text-[#84CCA8] flex items-center justify-center text-[10px] font-bold">✓</span>
+                <div>
+                  <span class="font-medium text-[#252923] dark:text-[#E2E6DF] block">Fortune Mustard Oil 15L Tin</span>
+                  <span class="text-[11px] text-[#5F635C] dark:text-[#8E958A]">1 tin • Gupta Wholesale Mart</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="font-semibold text-[#252923] dark:text-white">₹1,850.00</span>
+                <span class="text-[10px] text-emerald-600 dark:text-emerald-400 block font-medium">99% OCR Match</span>
+              </div>
+            </div>
+
+            <!-- Flagged item needing check -->
+            <div class="flex items-center justify-between p-2.5 rounded-xl bg-amber-soft/40 dark:bg-[#2A2314] border border-amber-border dark:border-[#4B3917]">
+              <div class="flex items-center gap-2">
+                <span class="w-5 h-5 rounded-md bg-amber-brand text-white flex items-center justify-center text-[11px] font-bold">!</span>
+                <div>
+                  <span class="font-medium text-[#252923] dark:text-[#E2E6DF] block">Aashirvaad Atta 10kg</span>
+                  <span class="text-[11px] text-amber-800 dark:text-[#FCD34D]">Check wholesale rate ₹420/ea</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="font-semibold text-[#252923] dark:text-white">₹840.00</span>
+                <span class="text-[10px] text-amber-700 dark:text-[#FBBF24] font-medium block">Confirm 5-sec check</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Social Proof / Security statement -->
+          <div class="pt-1 flex items-center gap-3 text-[11px] text-[#5F635C] dark:text-[#8E948A]">
+            <span class="flex items-center gap-1">
+              <svg class="w-3.5 h-3.5 text-forest dark:text-[#84CCA8]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              100% Private to your store
+            </span>
+            <span>•</span>
+            <span class="flex items-center gap-1">
+              <svg class="w-3.5 h-3.5 text-forest dark:text-[#84CCA8]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 8l-5-5-5 5M12 3v12"></path></svg>
+              WhatsApp bill forward ready
+            </span>
+          </div>
+        </div>
+
+        <!-- Direct Guest Explore Banner -->
+        <div class="p-4 rounded-xl bg-[#FAF9F4] dark:bg-[#1A2019] border border-[#E5E1D4] dark:border-[#2C3529] flex items-start gap-3">
+          <div class="p-2 rounded-lg bg-forest-light dark:bg-[#253023] text-forest dark:text-[#84CCA8] shrink-0 mt-0.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polygon points="10 8 16 12 10 16 10 8"></polygon>
+            </svg>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-[#252923] dark:text-white">Curious how it works first?</h4>
+            <p class="text-xs text-[#5F635C] dark:text-[#A0A69C] mt-0.5 leading-relaxed">
+              You can test the OCR bill scanner and price tracker with sample kirana vouchers before entering any phone number.
+            </p>
+            <button onclick="enterGuestMode()" class="mt-2 text-xs font-semibold text-forest dark:text-[#84CCA8] hover:underline flex items-center gap-1">
+              Open interactive guest demo
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Centered Clean Auth Card (7 cols) -->
+      <div class="lg:col-span-7 flex justify-center order-1 lg:order-2">
+        <div class="w-full max-w-[480px] bg-white dark:bg-[#1E231D] rounded-3xl p-6 sm:p-8 border border-[#E8E4D8] dark:border-[#2E362C] shadow-lg shadow-black/[0.03] transition-all">
+          
+          <!-- Card Header & Segment Switcher -->
+          <div class="text-center space-y-2 mb-6">
+            <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-[#252923] dark:text-white">
+              Welcome to ShopLedger
+            </h1>
+            <p class="text-sm text-[#5F635C] dark:text-[#A1A79D]">
+              Keep your shop's purchases organized, without the paperwork.
+            </p>
+
+            <!-- Mode Switcher Tabs (Sign In vs Create Account) -->
+            <div class="pt-3">
+              <div class="inline-flex p-1 rounded-xl bg-[#FAF9F4] dark:bg-[#151914] border border-[#E6E2D5] dark:border-[#2C3429] w-full" role="tablist">
+                <button id="tabSignIn" onclick="switchAuthMode('signin')" class="w-1/2 py-2 px-3 text-xs sm:text-sm font-semibold rounded-lg transition-all duration-150 bg-white dark:bg-[#222820] text-forest dark:text-[#84CCA8] shadow-sm border border-[#E6E2D5] dark:border-[#384235]" role="tab" aria-selected="true">
+                  Sign In
+                </button>
+                <button id="tabSignUp" onclick="switchAuthMode('signup')" class="w-1/2 py-2 px-3 text-xs sm:text-sm font-semibold rounded-lg transition-all duration-150 text-[#5F635C] dark:text-[#9DA398] hover:text-[#252923] dark:hover:text-white" role="tab" aria-selected="false">
+                  Create Account
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- OAuth: Continue with Google -->
+          <div class="space-y-4">
+            <button onclick="handleGoogleSignIn()" type="button" class="w-full py-2.5 px-4 rounded-xl border border-[#DCD7C9] dark:border-[#333D30] bg-white dark:bg-[#191E18] text-[#252923] dark:text-[#E2E6DE] text-sm font-medium hover:bg-[#FAF9F4] dark:hover:bg-[#20271E] hover:border-forest/40 focus:outline-none focus:ring-2 focus:ring-forest focus:ring-offset-1 flex items-center justify-center gap-3 transition-colors shadow-xs">
+              <svg class="w-4 h-4" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+              </svg>
+              <span>Continue with Google</span>
+            </button>
+
+            <!-- Divider with OR -->
+            <div class="relative flex items-center justify-center">
+              <div class="border-t border-[#E8E4D8] dark:border-[#2C3529] w-full"></div>
+              <span class="bg-white dark:bg-[#1E231D] px-3 text-[11px] font-semibold text-[#8C9188] uppercase tracking-wider">
+                or use phone / email
+              </span>
+            </div>
+
+            <!-- Form -->
+            <form id="authForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+              
+              <!-- Additional fields when creating account -->
+              <div id="signUpFields" class="hidden space-y-4">
+                <!-- Shop Name -->
+                <div>
+                  <label for="shopNameInput" class="block text-xs font-semibold text-[#252923] dark:text-[#D5DAD1] mb-1.5">
+                    Your Shop / Business Name
+                  </label>
+                  <div class="relative">
+                    <input type="text" id="shopNameInput" placeholder="e.g., Sharma Provision Store, Delhi" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D5D0C0] dark:border-[#343E30] bg-[#FAF9F4] dark:bg-[#171B16] text-[#252923] dark:text-white text-sm placeholder-[#92988E] focus:outline-none focus:ring-2 focus:ring-forest focus:border-transparent transition-all">
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-[#8C9188]">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Business Category Selector -->
+                <div>
+                  <label for="bizCategorySelect" class="block text-xs font-semibold text-[#252923] dark:text-[#D5DAD1] mb-1.5">
+                    Business Type
+                  </label>
+                  <select id="bizCategorySelect" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D5D0C0] dark:border-[#343E30] bg-[#FAF9F4] dark:bg-[#171B16] text-[#252923] dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-forest focus:border-transparent transition-all">
+                    <option value="kirana">Kirana / Retail Grocery Store</option>
+                    <option value="wholesale">Wholesale Mandi & Grain Trader</option>
+                    <option value="hardware">Hardware & Electricals</option>
+                    <option value="pharmacy">Pharmacy & General Chemist</option>
+                    <option value="multi">Multi-store / Warehouse</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Identifier Input (Phone or Email) -->
+              <div>
+                <label for="identifierInput" class="block text-xs font-semibold text-[#252923] dark:text-[#D5DAD1] mb-1.5">
+                  Mobile Number or Email
+                </label>
+                <div class="relative">
+                  <input type="text" id="identifierInput" required placeholder="+91 98765 43210 or ramesh@kirana.in" value="98101 23456" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D5D0C0] dark:border-[#343E30] bg-[#FAF9F4] dark:bg-[#171B16] text-[#252923] dark:text-white text-sm placeholder-[#92988E] focus:outline-none focus:ring-2 focus:ring-forest focus:border-transparent transition-all">
+                  <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-[#8C9188]">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                  </div>
+                </div>
+                <p id="identifierHint" class="text-[11px] text-[#5F635C] dark:text-[#8E948A] mt-1">
+                  We'll send a 4-digit WhatsApp/SMS OTP or use your account password.
+                </p>
+              </div>
+
+              <!-- Password / OTP Toggle Field -->
+              <div id="passwordFieldGroup">
+                <div class="flex items-center justify-between mb-1.5">
+                  <label for="passwordInput" class="text-xs font-semibold text-[#252923] dark:text-[#D5DAD1]">
+                    Password or 4-digit PIN
+                  </label>
+                  <a href="#forgotPin" onclick="openForgotPassword()" class="text-xs font-medium text-forest dark:text-[#84CCA8] hover:underline">
+                    Forgot password?
+                  </a>
+                </div>
+                <div class="relative">
+                  <input type="password" id="passwordInput" required placeholder="••••••••" value="kirana2024" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D5D0C0] dark:border-[#343E30] bg-[#FAF9F4] dark:bg-[#171B16] text-[#252923] dark:text-white text-sm placeholder-[#92988E] focus:outline-none focus:ring-2 focus:ring-forest focus:border-transparent transition-all">
+                  <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 flex items-center pr-3 text-[#8C9188] hover:text-[#252923] dark:hover:text-white" aria-label="Toggle password visibility">
+                    <svg id="eyeIcon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Remember Me / Terms check -->
+              <div class="flex items-start gap-2.5 pt-0.5">
+                <input type="checkbox" id="rememberMe" checked class="mt-0.5 w-4 h-4 rounded text-forest focus:ring-forest border-[#D5D0C0] dark:border-[#3A4537] bg-[#FAF9F4] dark:bg-[#1B201A]">
+                <label for="rememberMe" class="text-xs text-[#5F635C] dark:text-[#9AA096] select-none">
+                  Keep me signed in on this counter tablet / computer
+                </label>
+              </div>
+
+              <!-- Primary Submit CTA -->
+              <button type="submit" id="submitBtn" class="w-full py-3 px-4 rounded-xl bg-forest hover:bg-forest-hover active:bg-forest-dark text-white font-semibold text-sm shadow-md shadow-forest/20 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-forest focus:ring-offset-2 transition-all">
+                <span id="submitBtnText">Sign In to Sharma Kirana</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+              </button>
+            </form>
+
+            <!-- EXPLORE WITHOUT SIGNING IN (Secondary Prominent Action) -->
+            <div class="pt-3 border-t border-[#EFECE3] dark:border-[#2C3428] space-y-2">
+              <button onclick="enterGuestMode()" type="button" class="w-full py-2.5 px-4 rounded-xl border-2 border-forest/30 dark:border-forest/40 bg-forest-light/60 dark:bg-[#1E281C] text-forest dark:text-[#84CCA8] hover:bg-forest-light dark:hover:bg-[#253223] font-semibold text-sm flex items-center justify-center gap-2 transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
+                  <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                </svg>
+                <span>Explore without signing in</span>
+              </button>
+
+              <!-- Guest explanation note -->
+              <p class="text-center text-xs text-[#5F635C] dark:text-[#8E948A] px-2 leading-normal">
+                You can explore ShopLedger first. Create an account when you're ready to save your records.
+              </p>
+            </div>
+
+            <!-- Footer Legal & Privacy Links -->
+            <div class="pt-2 text-center text-[11px] text-[#7A7E76] dark:text-[#7A8077] space-y-1">
+              <p>
+                By signing in, you agree to ShopLedger's 
+                <a href="#terms" onclick="alert('ShopLedger Terms of Service: Designed strictly to protect your shop and supplier pricing confidentiality.')" class="underline hover:text-forest dark:hover:text-[#84CCA8]">Terms of Service</a> 
+                and 
+                <a href="#privacy" onclick="alert('ShopLedger Privacy Policy: We never sell or share your khata details with rival distributors or competitor platforms.')" class="underline hover:text-forest dark:hover:text-[#84CCA8]">Privacy Policy</a>.
+              </p>
+              <p class="text-[10px] text-[#8C9188] flex items-center justify-center gap-1">
+                <svg class="w-3 h-3 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                Bank-grade 256-bit encryption • Encrypted on local counter device
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- GUEST MODE NOTIFICATION BAR (Visible when exploring in demo mode) -->
+  <div id="guestModeBanner" class="hidden fixed bottom-0 inset-x-0 bg-[#252923] text-white px-4 py-3 shadow-2xl z-40 border-t border-[#3A4037] transition-all transform duration-300">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm">
+      <div class="flex items-center gap-2.5 text-center sm:text-left">
+        <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>
+        <span>
+          <strong class="font-semibold text-amber-300">Guest Demo Mode:</strong> 
+          You are viewing sample Kirana shop data. Demo data is not your real store data.
+        </span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="triggerGuestGate('Upload Real Bill')" class="px-3 py-1.5 rounded-lg bg-forest text-white font-medium hover:bg-forest-hover text-xs transition-colors shadow-sm">
+          + Upload Real Bill (Test Gate)
+        </button>
+        <button onclick="exitGuestMode()" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-medium transition-colors">
+          Exit to Sign In
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FRIENDLY SIGN-IN PROMPT MODAL (When Guest Tries to Upload/Save) -->
+  <div id="guestGateModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
+    <div class="bg-white dark:bg-[#1E231D] max-w-md w-full rounded-3xl p-6 sm:p-7 border border-[#E8E4D8] dark:border-[#2E362C] shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-150">
+      
+      <!-- Icon + Badge -->
+      <div class="flex items-center justify-between">
+        <div class="w-11 h-11 rounded-2xl bg-forest-light dark:bg-[#232F20] text-forest dark:text-[#84CCA8] flex items-center justify-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M4 16l4.586-4.586a2 2 0 0 1 2.828 0L16 16m-2-2l1.586-1.586a2 2 0 0 1 2.828 0L20 14m-6-6h.01M6 20h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z"></path>
+          </svg>
+        </div>
+        <span class="text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md bg-amber-soft text-amber-brand dark:bg-amber-900/30 dark:text-amber-300">
+          Save Your Records
+        </span>
+      </div>
+
+      <!-- Explanatory message -->
+      <div class="space-y-1.5">
+        <h3 class="text-xl font-bold text-[#252923] dark:text-white">
+          Sign in to save this receipt
+        </h3>
+        <p class="text-xs sm:text-sm text-[#5F635C] dark:text-[#9CA298] leading-relaxed">
+          You're currently exploring in guest mode. To process your store's actual bill and add it to your private bahi khata, please create or sign in to your account.
+        </p>
+      </div>
+
+      <!-- Return Intent Reminder -->
+      <div class="p-3 rounded-xl bg-[#FAF9F4] dark:bg-[#161A15] border border-[#EBE7DC] dark:border-[#2C3329] flex items-center gap-2.5 text-xs text-[#5F635C] dark:text-[#9DA399]">
+        <svg class="w-4 h-4 text-forest dark:text-[#84CCA8] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
+        <span>We'll immediately take you back to <strong class="text-[#252923] dark:text-white font-medium" id="guestGateActionName">Upload Receipt</strong> right after signing in.</span>
+      </div>
+
+      <!-- Action Options in Gate -->
+      <div class="space-y-2.5 pt-1">
+        <!-- Google Quick Sign In -->
+        <button onclick="completeGateWithGoogle()" class="w-full py-2.5 px-4 rounded-xl border border-[#DCD7C9] dark:border-[#333D30] bg-white dark:bg-[#191E18] text-[#252923] dark:text-[#E2E6DE] text-xs sm:text-sm font-medium hover:bg-[#FAF9F4] dark:hover:bg-[#20271E] flex items-center justify-center gap-2.5 transition-colors">
+          <svg class="w-4 h-4" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+          </svg>
+          <span>Continue with Google</span>
+        </button>
+
+        <!-- Use Phone / Email -->
+        <button onclick="closeGateAndFocusInput()" class="w-full py-2.5 px-4 rounded-xl bg-forest hover:bg-forest-hover text-white text-xs sm:text-sm font-semibold transition-colors">
+          Use Phone Number or Email
+        </button>
+
+        <!-- Return to exploring -->
+        <button onclick="closeGuestGateModal()" class="w-full py-2 px-4 rounded-xl text-xs font-medium text-[#5F635C] dark:text-[#A1A79E] hover:text-[#252923] dark:hover:text-white transition-colors">
+          Return to exploring demo
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- HELP & FAQ MODAL -->
+  <div id="helpModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
+    <div class="bg-white dark:bg-[#1E231D] max-w-lg w-full rounded-3xl p-6 border border-[#E8E4D8] dark:border-[#2E362C] shadow-2xl space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-[#EBE7DC] dark:border-[#2C3329]">
+        <h3 class="text-base font-bold text-[#252923] dark:text-white">Shopkeeper Help & Guidance</h3>
+        <button onclick="closeHelp()" class="text-[#8C9188] hover:text-[#252923] dark:hover:text-white text-sm font-bold p-1">✕</button>
+      </div>
+      <div class="space-y-3 text-xs text-[#5F635C] dark:text-[#A1A79D]">
+        <div>
+          <p class="font-semibold text-[#252923] dark:text-white mb-0.5">Can I test ShopLedger without entering store details?</p>
+          <p>Yes! Click "Explore without signing in" to see Sharma Kirana Store's sample bills and test the price tracker risk-free.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#252923] dark:text-white mb-0.5">Will rival wholesale shops see my purchase costs?</p>
+          <p>Never. Your rates and supplier invoices are strictly private and encrypted on your account.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-[#252923] dark:text-white mb-0.5">Need help setting up?</p>
+          <p>Call or WhatsApp our Kirana support team at +91 98711 00222 (9:00 AM – 9:00 PM IST).</p>
+        </div>
+      </div>
+      <button onclick="closeHelp()" class="w-full py-2 rounded-xl bg-forest text-white text-xs font-semibold">
+        Got it
+      </button>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE LOGIC JAVASCRIPT -->
+  <script>
+    let currentMode = 'signin';
+    let intendedAction = null;
+
+    // Theme toggler
+    function toggleTheme() {
+      const html = document.documentElement;
+      if (html.classList.contains('dark')) {
+        html.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+
+    // Check system preference
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+
+    // Switch between Sign In and Sign Up tabs
+    function switchAuthMode(mode) {
+      currentMode = mode;
+      const tabSignIn = document.getElementById('tabSignIn');
+      const tabSignUp = document.getElementById('tabSignUp');
+      const signUpFields = document.getElementById('signUpFields');
+      const submitBtnText = document.getElementById('submitBtnText');
+      const identifierHint = document.getElementById('identifierHint');
+
+      if (mode === 'signup') {
+        tabSignUp.className = "w-1/2 py-2 px-3 text-xs sm:text-sm font-semibold rounded-lg transition-all duration-150 bg-white dark:bg-[#222820] text-forest dark:text-[#84CCA8] shadow-sm border border-[#E6E2D5] dark:border-[#384235]";
+        tabSignIn.className = "w-1/2 py-2 px-3 text-xs sm:text-sm font-semibold rounded-lg transition-all duration-150 text-[#5F635C] dark:text-[#9DA398] hover:text-[#252923] dark:hover:text-white";
+        signUpFields.classList.remove('hidden');
+        submitBtnText.textContent = "Create ShopLedger Account";
+        identifierHint.textContent = "We will register your mobile number for WhatsApp bill forward.";
+      } else {
+        tabSignIn.className = "w-1/2 py-2 px-3 text-xs sm:text-sm font-semibold rounded-lg transition-all duration-150 bg-white dark:bg-[#222820] text-forest dark:text-[#84CCA8] shadow-sm border border-[#E6E2D5] dark:border-[#384235]";
+        tabSignUp.className = "w-1/2 py-2 px-3 text-xs sm:text-sm font-semibold rounded-lg transition-all duration-150 text-[#5F635C] dark:text-[#9DA398] hover:text-[#252923] dark:hover:text-white";
+        signUpFields.classList.add('hidden');
+        submitBtnText.textContent = "Sign In to Sharma Kirana";
+        identifierHint.textContent = "We'll send a 4-digit WhatsApp/SMS OTP or use your account password.";
+      }
+    }
+
+    // Form submission
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const identifier = document.getElementById('identifierInput').value;
+      const actionMessage = intendedAction ? `Returning you to: ${intendedAction}...` : 'Redirecting to your counter dashboard...';
+      
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+        </svg>
+        <span>Verifying credentials...</span>
+      `;
+
+      setTimeout(() => {
+        alert(`Success! Authenticated as ${identifier}.\n${actionMessage}`);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span>${currentMode === 'signup' ? 'Create ShopLedger Account' : 'Sign In to Sharma Kirana'}</span>`;
+        if (intendedAction) {
+          exitGuestMode();
+        }
+      }, 900);
+    }
+
+    // Google Sign in handler
+    function handleGoogleSignIn() {
+      const actionMessage = intendedAction ? `Returning directly to: ${intendedAction}` : 'Redirecting to your store dashboard';
+      alert(`Google Authentication initiated with prompt for your merchant account.\n\nAfter authentication: ${actionMessage}.`);
+      if (intendedAction) {
+        closeGuestGateModal();
+        exitGuestMode();
+      }
+    }
+
+    // Password visibility toggle
+    function togglePasswordVisibility() {
+      const pwdInput = document.getElementById('passwordInput');
+      const eyeIcon = document.getElementById('eyeIcon');
+      if (pwdInput.type === 'password') {
+        pwdInput.type = 'text';
+        eyeIcon.innerHTML = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>`;
+      } else {
+        pwdInput.type = 'password';
+        eyeIcon.innerHTML = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`;
+      }
+    }
+
+    // Guest Mode handlers
+    function enterGuestMode() {
+      document.getElementById('guestModeBanner').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function exitGuestMode() {
+      document.getElementById('guestModeBanner').classList.add('hidden');
+      intendedAction = null;
+    }
+
+    function triggerGuestGate(actionName) {
+      intendedAction = actionName;
+      document.getElementById('guestGateActionName').textContent = actionName;
+      const modal = document.getElementById('guestGateModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeGuestGateModal() {
+      const modal = document.getElementById('guestGateModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function closeGateAndFocusInput() {
+      closeGuestGateModal();
+      document.getElementById('identifierInput').focus();
+    }
+
+    function completeGateWithGoogle() {
+      handleGoogleSignIn();
+    }
+
+    function openForgotPassword() {
+      const idVal = document.getElementById('identifierInput').value || 'your registered mobile number';
+      alert(`OTP Reset Request:\nWe have sent a 4-digit verification code to ${idVal} via SMS and WhatsApp.`);
+    }
+
+    function openHelp() {
+      const modal = document.getElementById('helpModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeHelp() {
+      const modal = document.getElementById('helpModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch --experimental-strip-types src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "seed:db": "pnpm run build && node dist/scripts/seedFirestore.js",
+    "test": "pnpm run build && node --test --test-concurrency=1 --experimental-strip-types tests/**/*.test.ts"
+  },
+  "dependencies": {
+    "@google/genai": "^2.31.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "firebase-admin": "^13.1.0",
+    "helmet": "^8.0.0",
+    "multer": "^2.5.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/multer": "^2.3.0",
+    "@types/node": "^24.19.2",
+    "@types/supertest": "^6.0.2",
+    "supertest": "^7.0.0",
+    "typescript": "~5.7.3"
+  }
+}

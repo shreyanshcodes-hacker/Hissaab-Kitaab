@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-primary-fixed-variant":"#16503a","secondary-container":"#dbe5dd","primary-fixed":"#b5efd1","on-primary":"#ffffff","secondary":"#57615b","tertiary-fixed":"#ffdcc3","secondary-fixed-dim":"#bfc9c1","on-secondary-fixed":"#151d19","tertiary-container":"#7f4300","surface-container-lowest":"#ffffff","error-container":"#ffdad6","on-background":"#1b1c19","surface":"#faf9f4","background":"#faf9f4","surface-container":"#efeee9","on-error-container":"#93000a","on-tertiary":"#ffffff","on-secondary-fixed-variant":"#404943","surface-container-highest":"#e3e3de","surface-container-high":"#e9e8e3","inverse-on-surface":"#f2f1ec","on-surface":"#1b1c19","secondary-fixed":"#dbe5dd","inverse-surface":"#30312e","surface-variant":"#e3e3de","primary-fixed-dim":"#99d3b6","on-tertiary-fixed-variant":"#6e3900","inverse-primary":"#99d3b6","surface-tint":"#316951","outline":"#707973","on-tertiary-container":"#ffb77d","on-secondary":"#ffffff","outline-variant":"#c0c9c2","on-primary-container":"#99d2b5","tertiary":"#5d3000","surface-dim":"#dbdad5","error":"#ba1a1a","on-tertiary-fixed":"#2f1500","surface-bright":"#faf9f4","on-primary-fixed":"#002114","primary-container":"#245c45","surface-container-low":"#f5f4ef","on-error":"#ffffff","tertiary-fixed-dim":"#ffb77d","on-secondary-container":"#5d6760","on-surface-variant":"#404943","primary":"#04442f"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"space-xl":"2.25rem","gutter":"1rem","margin":"1rem","space-md":"1rem","space-lg":"1.5rem","margin-desktop":"2rem","gutter-desktop":"1.5rem","space-xs":"0.25rem","space-sm":"0.5rem"},fontFamily:{"display":["Inter"],"label-xs":["Inter"],"headline-lg":["Inter"],"body-sm":["Inter"],"body-lg":["Inter"],"display-mobile":["Inter"],"label-md":["Inter"],"currency-stat":["Inter"],"headline-sm":["Inter"]},fontSize:{"display":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.02em","fontWeight":"700"}],"label-xs":["0.75rem",{"lineHeight":"1rem","letterSpacing":"0.02em","fontWeight":"600"}],"headline-lg":["1.5rem",{"lineHeight":"2rem","letterSpacing":"-0.015em","fontWeight":"700"}],"body-sm":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"400"}],"body-lg":["1rem",{"lineHeight":"1.5rem","fontWeight":"400"}],"display-mobile":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.01em","fontWeight":"700"}],"label-md":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"600"}],"currency-stat":["1.75rem",{"lineHeight":"2rem","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-sm":["1.25rem",{"lineHeight":"1.75rem","letterSpacing":"-0.01em","fontWeight":"600"}]}}}}</script></head><body class="bg-surface font-body-lg text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between overflow-y-auto"><div class="p-space-lg"><div class="flex items-center gap-space-sm mb-space-xl"><img alt="ShopLedger Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VRnzfpuAZPE2MEeTjoUDXehqdHDyxBez3LbbRvHo0GcGvnsMiUTupaVBxg_fzYMnbTQHqlaLUO3UaV6P9HW2UvIkxdnyvEt4paM8kVo-Suj6rS3mJoAp0ByZ-BZ9oBEbCCVgMbvz33KBpei8u47rhTPL6RgF-COnxv4yTWmVK-WWVWopqpv0ffGfD6OZrUFq7CLvRaqr4BK2rBnQ-VE6b5nJ0FYcl-CrmPrObF0LqRNVvpzfl_V0SEAjOq"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">ShopLedger</span><span class="font-label-xs text-label-xs text-on-surface-variant mt-1 leading-none">Smart Shop Bookkeeper</span></div></div><div class="mb-space-lg"><button class="w-full flex items-center justify-center gap-space-sm bg-primary-container text-on-primary font-label-md text-label-md py-space-sm px-space-md rounded-lg shadow-[0_1px_3px_rgba(37,41,35,0.06)] hover:bg-primary transition-colors"><span class="material-symbols-outlined text-[1.25rem]">add_circle</span><span>+ Upload Receipt</span></button></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-secondary-container text-on-secondary-fixed font-label-md rounded-lg"><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="dashboard" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">dashboard</span><span>Dashboard</span></div></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="receipts" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">receipt_long</span><span>Receipts</span></div><span class="bg-tertiary-fixed text-on-tertiary-fixed font-label-xs text-label-xs px-2 py-0.5 rounded-full">2 needs check</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="analysis" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">trending_up</span><span>Analysis</span></div></a><a aria-current="page" class="flex items-center justify-between px-space-md py-space-sm transition-colors bg-secondary-container text-on-secondary-fixed font-label-md rounded-lg" data-path="ask-shopledger" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">auto_awesome</span><span>Ask ShopLedger</span></div><span class="bg-primary-fixed text-on-primary-fixed font-label-xs text-label-xs px-2 py-0.5 rounded-full">AI</span></a></nav></div><div class="p-space-lg flex flex-col gap-space-sm"><div class="flex flex-col gap-space-xs mb-space-sm"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="help-and-faqs" href="#"><span class="material-symbols-outlined text-[1.25rem]">help</span><span>Help & FAQs</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[1.25rem]">settings</span><span>Settings</span></a><div class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">contrast</span><span>Appearance</span></div><button aria-label="Toggle theme" class="flex items-center p-1 rounded-full hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[1.25rem]">light_mode</span></button></div></div><div class="bg-surface-container-lowest p-space-sm rounded-lg shadow-[0_1px_3px_rgba(37,41,35,0.06)] flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-sm min-w-0"><img alt="Profile" class="w-8 h-8 rounded-full object-cover flex-shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFviORAjsiSsDQWbSaKHwp8QQMsMidyEJn4nfJEOndAyJAzkZy-9HMHhji6x-pR9runnlyVZ89VfB0gOuTaLD6ahza9bCaAcMcd7HofUxdBVRa2IYKYIybpHxfooCRyFnla0YhYvERsixTlkjei6JcK2jk5m6IZpECPHO7_Qr-Ak4mT7z64QWEMv1tszsdMmaCoPRY7a3XKLtma4ywzJNLxI4QtBx7lPG-PMEfLd0Ezg1jn1SgjFVf3g"/><div class="flex flex-col min-w-0"><span class="font-label-md text-label-md text-on-surface truncate">Sharma Kirana Store</span><span class="font-label-xs text-label-xs text-on-surface-variant truncate">Ramesh Sharma</span></div></div><button aria-label="Switch store or log out" class="p-1 text-on-surface-variant hover:text-on-surface transition-colors flex-shrink-0"><span class="material-symbols-outlined text-[1.25rem]">unfold_more</span></button></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-16 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-gutter-desktop"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-sm text-on-surface-variant font-body-sm text-body-sm"><span class="material-symbols-outlined text-[1.125rem]">storefront</span><span>Sharma Kirana Store (Main Bazar)</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-sm bg-surface-container px-space-md py-1.5 rounded-full"><span class="material-symbols-outlined text-[1.125rem] text-on-surface-variant">search</span><input class="bg-transparent border-0 outline-none font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant w-56" placeholder="Search receipts, items, bahi khata..." type="text"/></div><button aria-label="Notifications" class="relative p-2 rounded-full hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[1.25rem]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error"></span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFviORAjsiSsDQWbSaKHwp8QQMsMidyEJn4nfJEOndAyJAzkZy-9HMHhji6x-pR9runnlyVZ89VfB0gOuTaLD6ahza9bCaAcMcd7HofUxdBVRa2IYKYIybpHxfooCRyFnla0YhYvERsixTlkjei6JcK2jk5m6IZpECPHO7_Qr-Ak4mT7z64QWEMv1tszsdMmaCoPRY7a3XKLtma4ywzJNLxI4QtBx7lPG-PMEfLd0Ezg1jn1SgjFVf3g"/></div></header><main class="relative pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<div class="flex h-[calc(100vh-4rem)] w-full overflow-hidden bg-surface">
+<!-- LEFT PANEL: Conversation History & Contextual Prompts -->
+<aside class="w-80 flex-shrink-0 bg-surface-container-low flex flex-col justify-between overflow-y-auto">
+<div class="p-space-md flex flex-col gap-space-md">
+<!-- Header & New Query -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[1.25rem]">forum</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Store Assistant</span>
+</div>
+<button class="flex items-center gap-1 px-space-sm py-1 rounded-lg bg-surface-container text-on-surface font-label-xs text-label-xs hover:bg-surface-container-high transition-colors shadow-sm" id="newChatBtn" title="Start new question thread">
+<span class="material-symbols-outlined text-[1rem]">add</span>
+<span>New Chat</span>
+</button>
+</div>
+<!-- Search Bar within thread history -->
+<div class="flex items-center gap-space-xs bg-surface-container-lowest px-space-sm py-1.5 rounded-lg shadow-sm">
+<span class="material-symbols-outlined text-secondary text-[1rem]">search</span>
+<input class="bg-transparent border-0 outline-none font-body-sm text-body-sm text-on-surface placeholder:text-secondary w-full" placeholder="Search chats & insights..." type="text"/>
+</div>
+<!-- Suggested Questions for Ramesh ji -->
+<div class="flex flex-col gap-space-xs mt-1">
+<div class="flex items-center justify-between px-1">
+<span class="font-label-xs text-label-xs uppercase text-secondary tracking-wider">Suggested for Ramesh ji</span>
+<span class="font-label-xs text-label-xs bg-primary-fixed text-on-primary-fixed px-1.5 py-0.5 rounded-full">Personalized</span>
+</div>
+<div class="flex flex-col gap-1.5">
+<button class="text-left p-space-sm rounded-lg bg-surface-container-lowest hover:bg-surface-container text-on-surface font-body-sm text-body-sm transition-all shadow-sm group">
+<span class="line-clamp-2">💰 How much did I spend on Cooking Oil this month?</span>
+<span class="font-label-xs text-label-xs text-secondary mt-1 block group-hover:text-primary transition-colors">Category: Kirana • Oct 2024</span>
+</button>
+<button class="text-left p-space-sm rounded-lg bg-surface-container-lowest hover:bg-surface-container text-on-surface font-body-sm text-body-sm transition-all shadow-sm group">
+<span class="line-clamp-2">📦 Which vendor gave me the best rate for Aashirvaad Atta?</span>
+<span class="font-label-xs text-label-xs text-secondary mt-1 block group-hover:text-primary transition-colors">Vendor Comparison • 6 bills</span>
+</button>
+<button class="text-left p-space-sm rounded-lg bg-surface-container-lowest hover:bg-surface-container text-on-surface font-body-sm text-body-sm transition-all shadow-sm group">
+<span class="line-clamp-2">🧾 List all bills from Gupta Wholesale in October</span>
+<span class="font-label-xs text-label-xs text-secondary mt-1 block group-hover:text-primary transition-colors">Supplier Audit • 8 bills</span>
+</button>
+<button class="text-left p-space-sm rounded-lg bg-surface-container-lowest hover:bg-surface-container text-on-surface font-body-sm text-body-sm transition-all shadow-sm group">
+<span class="line-clamp-2">📊 How much GST input tax credit can my CA claim?</span>
+<span class="font-label-xs text-label-xs text-secondary mt-1 block group-hover:text-primary transition-colors">Tax & Tax Invoices</span>
+</button>
+</div>
+</div>
+<!-- Past Conversation History -->
+<div class="flex flex-col gap-space-xs mt-2">
+<span class="font-label-xs text-label-xs uppercase text-secondary px-1 tracking-wider">Past Inquiries</span>
+<div class="flex flex-col gap-1">
+<a class="flex items-center justify-between px-space-sm py-2 rounded-lg bg-secondary-container/60 text-on-secondary-fixed hover:bg-secondary-container transition-colors" href="#">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="material-symbols-outlined text-[1.125rem] text-primary">chat</span>
+<span class="font-body-sm text-body-sm truncate font-medium">Mustard oil price comparison</span>
+</div>
+<span class="font-label-xs text-label-xs text-secondary flex-shrink-0">Active</span>
+</a>
+<a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="material-symbols-outlined text-[1.125rem] text-secondary">history</span>
+<span class="font-body-sm text-body-sm truncate">Yesterday: Sugar price comparison</span>
+</div>
+<span class="font-label-xs text-label-xs text-secondary flex-shrink-0">1d</span>
+</a>
+<a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="material-symbols-outlined text-[1.125rem] text-secondary">history</span>
+<span class="font-body-sm text-body-sm truncate">18 Oct: HUL agency reconciliation</span>
+</div>
+<span class="font-label-xs text-label-xs text-secondary flex-shrink-0">18 Oct</span>
+</a>
+<a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="material-symbols-outlined text-[1.125rem] text-secondary">history</span>
+<span class="font-body-sm text-body-sm truncate">12 Oct: Monthly milk expense breakdown</span>
+</div>
+<span class="font-label-xs text-label-xs text-secondary flex-shrink-0">12 Oct</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Live Sync Footnote -->
+<div class="p-space-md bg-surface-container/60 m-space-sm rounded-lg flex items-center gap-space-sm">
+<div class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></div>
+<div class="flex flex-col">
+<span class="font-label-xs text-label-xs text-on-surface font-semibold">Ledger Sync Active</span>
+<span class="font-label-xs text-label-xs text-secondary">Live rates updated 14m ago</span>
+</div>
+</div>
+</aside>
+<!-- RIGHT / MAIN: Interactive Chat Workspace -->
+<main class="flex-1 flex flex-col justify-between overflow-hidden bg-surface relative">
+<!-- Workspace Top Banner -->
+<header class="px-gutter-desktop py-3 bg-surface-container-lowest shadow-sm flex items-center justify-between z-10">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-space-xs">
+<div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-on-primary shadow-sm">
+<span class="material-symbols-outlined text-[1.25rem]">auto_awesome</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs">
+<h1 class="font-headline-sm text-headline-sm text-on-surface leading-tight">Ask ShopLedger</h1>
+<span class="font-label-xs text-label-xs bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded-full font-medium">Gemini 1.5 Pro</span>
+</div>
+<p class="font-label-xs text-label-xs text-secondary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>
+                Connected to your 34 verified receipts • Oct 2024 data
+              </p>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="flex items-center gap-1 px-space-md py-1.5 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors" id="clearChatBtn">
+<span class="material-symbols-outlined text-[1.125rem] text-secondary">restart_alt</span>
+<span>Reset Context</span>
+</button>
+<button class="p-1.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors" title="Export conversation log">
+<span class="material-symbols-outlined text-[1.25rem]">download</span>
+</button>
+</div>
+</header>
+<!-- Chat Stream Messages (Scrollable) -->
+<div class="flex-1 overflow-y-auto px-gutter-desktop py-space-lg space-y-space-lg" id="chatStream">
+<!-- Turn 1: User Question -->
+<div class="flex justify-end items-start gap-space-sm max-w-3xl ml-auto">
+<div class="bg-primary text-on-primary px-space-lg py-space-md rounded-2xl rounded-tr-none shadow-md">
+<p class="font-body-lg text-body-lg">
+              Which vendor gave me the lowest price for Fortune Mustard Oil 1L pouch in the last 60 days?
+            </p>
+<span class="font-label-xs text-label-xs text-on-primary/75 mt-1 block text-right">10:42 AM</span>
+</div>
+<img alt="Ramesh Sharma" class="w-8 h-8 rounded-full object-cover flex-shrink-0 mt-1 shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFviORAjsiSsDQWbSaKHwp8QQMsMidyEJn4nfJEOndAyJAzkZy-9HMHhji6x-pR9runnlyVZ89VfB0gOuTaLD6ahza9bCaAcMcd7HofUxdBVRa2IYKYIybpHxfooCRyFnla0YhYvERsixTlkjei6JcK2jk5m6IZpECPHO7_Qr-Ak4mT7z64QWEMv1tszsdMmaCoPRY7a3XKLtma4ywzJNLxI4QtBx7lPG-PMEfLd0Ezg1jn1SgjFVf3g"/>
+</div>
+<!-- Turn 1: AI Analysis Response -->
+<div class="flex items-start gap-space-sm max-w-4xl">
+<div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center flex-shrink-0 mt-1 shadow-sm">
+<span class="material-symbols-outlined text-[1.125rem]">smart_toy</span>
+</div>
+<div class="flex flex-col gap-space-md w-full">
+<div class="bg-surface-container-lowest p-space-lg rounded-2xl rounded-tl-none shadow-[0_1px_3px_rgba(37,41,35,0.06)]">
+<p class="font-body-lg text-body-lg text-on-surface mb-space-md">
+                Ramesh ji, you purchased <strong class="font-semibold text-primary">Fortune Mustard Oil 1L pouch</strong> <strong>4 times</strong> across 2 different vendors in the last 60 days. Here is the exact rate comparison:
+              </p>
+<!-- Comparison Table Data Visual -->
+<div class="bg-surface-container-low rounded-xl p-space-md shadow-sm mb-space-md overflow-x-auto">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead>
+<tr class="text-secondary font-label-xs text-label-xs uppercase">
+<th class="pb-2">Date</th>
+<th class="pb-2">Vendor Name</th>
+<th class="pb-2 text-right">Quantity</th>
+<th class="pb-2 text-right">Rate / Pouch</th>
+<th class="pb-2 text-right">Total Paid</th>
+<th class="pb-2 text-center">Status</th>
+</tr>
+</thead>
+<tbody class="space-y-1">
+<!-- Row 1: Best Rate -->
+<tr class="bg-surface-container-lowest rounded-lg shadow-sm">
+<td class="py-2.5 px-3 font-medium text-on-surface rounded-l-lg">14 Sep 2024</td>
+<td class="py-2.5 px-3 text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[1.125rem]">store</span>
+<span>Shree Balaji Traders</span>
+</td>
+<td class="py-2.5 px-3 text-right tabular-nums">20 pouches</td>
+<td class="py-2.5 px-3 text-right font-semibold text-on-primary-fixed-variant tabular-nums">₹136.00</td>
+<td class="py-2.5 px-3 text-right font-medium text-on-surface tabular-nums">₹2,720</td>
+<td class="py-2.5 px-3 text-center rounded-r-lg">
+<span class="inline-flex items-center gap-1 bg-primary-fixed text-on-primary-fixed font-label-xs text-label-xs px-2 py-0.5 rounded-full font-medium">
+                          Lowest Rate 🏆
+                        </span>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-2.5 px-3 text-on-surface-variant">28 Sep 2024</td>
+<td class="py-2.5 px-3 text-on-surface">Gupta Wholesale Mart</td>
+<td class="py-2.5 px-3 text-right tabular-nums">30 pouches</td>
+<td class="py-2.5 px-3 text-right tabular-nums text-on-surface">₹140.00</td>
+<td class="py-2.5 px-3 text-right font-medium text-on-surface tabular-nums">₹4,200</td>
+<td class="py-2.5 px-3 text-center text-secondary font-label-xs text-label-xs">+₹4.00</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-2.5 px-3 text-on-surface-variant">10 Oct 2024</td>
+<td class="py-2.5 px-3 text-on-surface">Shree Balaji Traders</td>
+<td class="py-2.5 px-3 text-right tabular-nums">25 pouches</td>
+<td class="py-2.5 px-3 text-right tabular-nums text-on-surface">₹144.00</td>
+<td class="py-2.5 px-3 text-right font-medium text-on-surface tabular-nums">₹3,600</td>
+<td class="py-2.5 px-3 text-center text-secondary font-label-xs text-label-xs">+₹8.00</td>
+</tr>
+<!-- Row 4: Recent Gupta Wholesale -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-2.5 px-3 text-on-surface-variant">24 Oct 2024</td>
+<td class="py-2.5 px-3 text-on-surface">Gupta Wholesale Mart</td>
+<td class="py-2.5 px-3 text-right tabular-nums">30 pouches</td>
+<td class="py-2.5 px-3 text-right tabular-nums text-on-surface font-medium">₹148.00</td>
+<td class="py-2.5 px-3 text-right font-medium text-on-surface tabular-nums">₹4,440</td>
+<td class="py-2.5 px-3 text-center">
+<span class="inline-flex items-center gap-1 bg-tertiary-fixed text-on-tertiary-fixed font-label-xs text-label-xs px-2 py-0.5 rounded-full font-medium">
+                          Highest (+8.8%)
+                        </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Market Trend Sparkline SVG & Kirana Insight Note -->
+<div class="bg-surface-container p-space-md rounded-xl flex items-start gap-space-md mb-space-md">
+<div class="flex flex-col gap-1 flex-1">
+<div class="flex items-center gap-1.5 text-on-surface font-label-md text-label-md">
+<span class="material-symbols-outlined text-primary text-[1.125rem]">trending_up</span>
+<span>Kirana Market Intelligence</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Overall, <strong>Shree Balaji Traders</strong> has been <strong>₹3 to ₹4 cheaper</strong> per pouch on average. However, the wholesale mustard oil price across Delhi/NCR markets has risen steadily from ₹136 to ₹148 (+8.8%) over the past 6 weeks.
+                  </p>
+</div>
+<!-- Inline Minimal Sparkline chart -->
+<div class="w-32 flex-shrink-0 flex flex-col items-end">
+<span class="font-label-xs text-label-xs text-secondary mb-1">60-Day Trend</span>
+<svg class="w-28 h-8 text-primary overflow-visible" fill="none" viewbox="0 0 100 30">
+<path d="M0 26 L30 20 L65 14 L100 4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+<circle cx="0" cy="26" fill="currentColor" r="3"></circle>
+<circle cx="30" cy="20" fill="currentColor" r="3"></circle>
+<circle cx="65" cy="14" fill="currentColor" r="3"></circle>
+<circle class="fill-tertiary" cx="100" cy="4" r="4"></circle>
+</svg>
+<span class="font-label-xs text-label-xs text-tertiary font-semibold mt-1">₹136 → ₹148</span>
+</div>
+</div>
+<!-- Interactive Action Chips -->
+<div class="flex flex-wrap items-center gap-space-xs pt-1">
+<button class="flex items-center gap-1.5 px-space-md py-1.5 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high hover:text-primary transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[1.125rem]">receipt</span>
+<span>View 24 Oct Gupta Wholesale Bill</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-md py-1.5 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high hover:text-primary transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[1.125rem]">inventory_2</span>
+<span>Show all items from Shree Balaji</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-md py-1.5 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high hover:text-tertiary transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[1.125rem]">notifications_active</span>
+<span>Set price alert if oil crosses ₹150</span>
+</button>
+</div>
+</div>
+<span class="font-label-xs text-label-xs text-secondary px-2">Gemini verified against 4 scanned vouchers • 10:42 AM</span>
+</div>
+</div>
+<!-- Turn 2: User Follow-up Question -->
+<div class="flex justify-end items-start gap-space-sm max-w-3xl ml-auto">
+<div class="bg-primary text-on-primary px-space-lg py-space-md rounded-2xl rounded-tr-none shadow-md">
+<p class="font-body-lg text-body-lg">
+              Can you prepare a summary of all bills that still need checking so I can finish them today?
+            </p>
+<span class="font-label-xs text-label-xs text-on-primary/75 mt-1 block text-right">10:44 AM</span>
+</div>
+<img alt="Ramesh Sharma" class="w-8 h-8 rounded-full object-cover flex-shrink-0 mt-1 shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFviORAjsiSsDQWbSaKHwp8QQMsMidyEJn4nfJEOndAyJAzkZy-9HMHhji6x-pR9runnlyVZ89VfB0gOuTaLD6ahza9bCaAcMcd7HofUxdBVRa2IYKYIybpHxfooCRyFnla0YhYvERsixTlkjei6JcK2jk5m6IZpECPHO7_Qr-Ak4mT7z64QWEMv1tszsdMmaCoPRY7a3XKLtma4ywzJNLxI4QtBx7lPG-PMEfLd0Ezg1jn1SgjFVf3g"/>
+</div>
+<!-- Turn 2: AI Response with Actionable Bill Cards -->
+<div class="flex items-start gap-space-sm max-w-4xl">
+<div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center flex-shrink-0 mt-1 shadow-sm">
+<span class="material-symbols-outlined text-[1.125rem]">smart_toy</span>
+</div>
+<div class="flex flex-col gap-space-md w-full">
+<div class="bg-surface-container-lowest p-space-lg rounded-2xl rounded-tl-none shadow-[0_1px_3px_rgba(37,41,35,0.06)]">
+<p class="font-body-lg text-body-lg text-on-surface mb-space-md">
+                You have <strong class="text-tertiary font-semibold">2 purchase receipts</strong> waiting for verification totaling <strong class="text-on-surface font-semibold tabular-nums">₹14,200</strong>:
+              </p>
+<!-- Two Mini Actionable Bill Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md mb-space-md">
+<!-- Bill 1 Card -->
+<div class="bg-surface-container-low p-space-md rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="font-label-xs text-label-xs bg-tertiary-fixed text-on-tertiary-fixed px-2 py-0.5 rounded-full font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.875rem]">warning</span> Needs Rate Check
+                      </span>
+<span class="font-label-xs text-label-xs text-secondary">Bill #GW-882</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Gupta Wholesale Mart</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Dated 24 Oct 2024 • 8 Items scanned</p>
+<div class="mt-2 bg-surface-container-lowest p-space-sm rounded-lg">
+<span class="font-label-xs text-label-xs text-secondary block">Pending Flag:</span>
+<span class="font-body-sm text-body-sm text-tertiary font-medium">1 item needs unit price check (Fortune Oil line unclear)</span>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm flex items-center justify-between">
+<span class="font-currency-stat text-currency-stat text-on-surface tabular-nums">₹12,450</span>
+<button class="px-space-md py-2 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary transition-colors flex items-center gap-1">
+<span>Open Review</span>
+<span class="material-symbols-outlined text-[1rem]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Bill 2 Card -->
+<div class="bg-surface-container-low p-space-md rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="font-label-xs text-label-xs bg-secondary-fixed text-on-secondary-fixed px-2 py-0.5 rounded-full font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.875rem]">person_search</span> Vendor Confirmation
+                      </span>
+<span class="font-label-xs text-label-xs text-secondary">Slip #SBT-104</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Shree Balaji Traders</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Dated 23 Oct 2024 • 2 Items handwritten</p>
+<div class="mt-2 bg-surface-container-lowest p-space-sm rounded-lg">
+<span class="font-label-xs text-label-xs text-secondary block">Pending Flag:</span>
+<span class="font-body-sm text-body-sm text-on-secondary-fixed font-medium">Vendor header stamp blurry, match auto-guessed 91%</span>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm flex items-center justify-between">
+<span class="font-currency-stat text-currency-stat text-on-surface tabular-nums">₹1,750</span>
+<button class="px-space-md py-2 rounded-lg bg-surface-container-highest text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors flex items-center gap-1">
+<span>Open Review</span>
+<span class="material-symbols-outlined text-[1rem]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Conversational prompt follow-up -->
+<p class="font-body-sm text-body-sm text-on-surface mb-space-sm">
+                Would you like to review the <strong>Gupta Wholesale bill (₹12,450)</strong> right now to keep your stock ledger completely accurate?
+              </p>
+<div class="flex items-center gap-space-xs">
+<button class="px-space-md py-1.5 rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:bg-on-primary-fixed-variant transition-colors">
+                  Yes, start Gupta Wholesale review
+                </button>
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors">
+                  Remind me tonight at 9:00 PM
+                </button>
+</div>
+</div>
+<span class="font-label-xs text-label-xs text-secondary px-2">10:44 AM</span>
+</div>
+</div>
+</div>
+<!-- BOTTOM INTERACTIVE INPUT DOCK -->
+<footer class="p-gutter-desktop bg-surface-container-lowest shadow-[0_-2px_10px_rgba(0,0,0,0.03)] z-10 flex flex-col gap-space-sm">
+<!-- Fast Click Prompt Suggestion Pills -->
+<div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+<span class="font-label-xs text-label-xs text-secondary uppercase whitespace-nowrap flex items-center gap-1">
+<span class="material-symbols-outlined text-[1rem]">bolt</span> Quick asks:
+          </span>
+<button class="flex-shrink-0 px-3 py-1 rounded-full bg-surface-container text-on-surface font-body-sm text-body-sm hover:bg-surface-container-high transition-colors" onclick="fillPrompt('Total spend this week on groceries?')">
+            Total spend this week
+          </button>
+<button class="flex-shrink-0 px-3 py-1 rounded-full bg-surface-container text-on-surface font-body-sm text-body-sm hover:bg-surface-container-high transition-colors" onclick="fillPrompt('Which item had the highest price increase this month?')">
+            Highest priced item
+          </button>
+<button class="flex-shrink-0 px-3 py-1 rounded-full bg-surface-container text-on-surface font-body-sm text-body-sm hover:bg-surface-container-high transition-colors" onclick="fillPrompt('Compare Aashirvaad and Shakti Bhog Atta purchase rates')">
+            Compare Atta prices
+          </button>
+<button class="flex-shrink-0 px-3 py-1 rounded-full bg-surface-container text-on-surface font-body-sm text-body-sm hover:bg-surface-container-high transition-colors" onclick="fillPrompt('Show all wholesale bills exceeding ₹10,000 in October')">
+            Bills over ₹10,000
+          </button>
+<button class="flex-shrink-0 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-fixed font-body-sm text-body-sm hover:opacity-90 transition-opacity" onclick="fillPrompt('Aaj kitna cash payment hua vendors ko?')">
+            🇮🇳 Hindi: Aaj ka cash payment
+          </button>
+</div>
+<!-- Main Query Input Bar -->
+<div class="relative flex items-center bg-surface-container-low rounded-xl px-space-md py-2 shadow-sm focus-within:ring-2 focus-within:ring-primary-container">
+<!-- Attachment Action -->
+<button class="p-2 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" title="Attach bill photo or PDF">
+<span class="material-symbols-outlined text-[1.35rem]">attach_file</span>
+</button>
+<!-- Voice Mic Action with Dual Language Cue -->
+<button class="p-2 rounded-lg text-secondary hover:text-primary hover:bg-primary-fixed/30 transition-colors flex items-center" id="micBtn" title="Voice Input (Hindi/English)">
+<span class="material-symbols-outlined text-[1.35rem]">mic</span>
+</button>
+<!-- Input Textarea / Field -->
+<input class="flex-1 bg-transparent border-0 outline-none px-space-sm font-body-lg text-body-lg text-on-surface placeholder:text-secondary/70 py-1" id="chatInput" placeholder="Ask anything about your bills, prices, vendors, or type in Hindi/English (e.g., 'Is mahine oil pe kitna kharch hua?')..." type="text"/>
+<!-- Voice Status Pill indicator (Hidden by default) -->
+<div class="hidden items-center gap-1.5 bg-primary-fixed px-2.5 py-1 rounded-full mr-2 animate-pulse" id="voicePill">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-xs text-label-xs text-on-primary-fixed font-medium">Listening (Hindi/Eng)...</span>
+</div>
+<!-- Forest Green Submit Button -->
+<button class="flex items-center justify-center gap-1 px-space-lg py-2.5 rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:bg-on-primary-fixed-variant transition-colors shadow-sm ml-2" id="sendBtn">
+<span>Ask</span>
+<span class="material-symbols-outlined text-[1.125rem]">send</span>
+</button>
+</div>
+<!-- Security and Disclaimer Microcopy -->
+<div class="flex items-center justify-between px-1 text-secondary font-label-xs text-label-xs">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.875rem]">lock</span>
+            Private Kirana Ledger Data • Encrypted strictly for Sharma Kirana Store
+          </span>
+<span>Press Enter to send • Gemini 1.5 Bookkeeper AI</span>
+</div>
+</footer>
+</main>
+</div>
+</div>
+<script>
+  function fillPrompt(text) {
+    const input = document.getElementById('chatInput');
+    if (input) {
+      input.value = text;
+      input.focus();
+    }
+  }
+
+  // Voice simulation interaction
+  const micBtn = document.getElementById('micBtn');
+  const voicePill = document.getElementById('voicePill');
+  if (micBtn && voicePill) {
+    micBtn.addEventListener('click', () => {
+      const isHidden = voicePill.classList.contains('hidden');
+      if (isHidden) {
+        voicePill.classList.remove('hidden');
+        voicePill.classList.add('flex');
+        setTimeout(() => {
+          document.getElementById('chatInput').value = 'Is mahine total mustard oil kitna mangwaya aur kitna bacha hai?';
+          voicePill.classList.add('hidden');
+          voicePill.classList.remove('flex');
+        }, 2200);
+      } else {
+        voicePill.classList.add('hidden');
+        voicePill.classList.remove('flex');
+      }
+    });
+  }
+
+  // Clear chat action
+  const clearBtn = document.getElementById('clearChatBtn');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      const input = document.getElementById('chatInput');
+      if (input) input.value = '';
+    });
+  }
+
+  // Send message dummy handler
+  const sendBtn = document.getElementById('sendBtn');
+  const chatInput = document.getElementById('chatInput');
+  const chatStream = document.getElementById('chatStream');
+
+  function handleSend() {
+    const val = chatInput.value.trim();
+    if (!val) return;
+
+    // Append user question
+    const userWrap = document.createElement('div');
+    userWrap.className = 'flex justify-end items-start gap-space-sm max-w-3xl ml-auto';
+    userWrap.innerHTML = `
+      <div class="bg-primary text-on-primary px-space-lg py-space-md rounded-2xl rounded-tr-none shadow-md">
+        <p class="font-body-lg text-body-lg">${val}</p>
+        <span class="font-label-xs text-label-xs text-on-primary/75 mt-1 block text-right">Just now</span>
+      </div>
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFviORAjsiSsDQWbSaKHwp8QQMsMidyEJn4nfJEOndAyJAzkZy-9HMHhji6x-pR9runnlyVZ89VfB0gOuTaLD6ahza9bCaAcMcd7HofUxdBVRa2IYKYIybpHxfooCRyFnla0YhYvERsixTlkjei6JcK2jk5m6IZpECPHO7_Qr-Ak4mT7z64QWEMv1tszsdMmaCoPRY7a3XKLtma4ywzJNLxI4QtBx7lPG-PMEfLd0Ezg1jn1SgjFVf3g" alt="Ramesh Sharma" class="w-8 h-8 rounded-full object-cover flex-shrink-0 mt-1 shadow-sm" />
+    `;
+    chatStream.appendChild(userWrap);
+    chatInput.value = '';
+
+    // Scroll to bottom
+    chatStream.scrollTop = chatStream.scrollHeight;
+
+    // Simulate AI brief acknowledgement
+    setTimeout(() => {
+      const aiWrap = document.createElement('div');
+      aiWrap.className = 'flex items-start gap-space-sm max-w-4xl';
+      aiWrap.innerHTML = `
+        <div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center flex-shrink-0 mt-1 shadow-sm">
+          <span class="material-symbols-outlined text-[1.125rem]">smart_toy</span>
+        </div>
+        <div class="bg-surface-container-lowest p-space-lg rounded-2xl rounded-tl-none shadow-[0_1px_3px_rgba(37,41,35,0.06)]">
+          <p class="font-body-lg text-body-lg text-on-surface">
+            Checking your 34 receipts and inventory logs for: <em>"${val}"</em>...
+          </p>
+          <span class="font-label-xs text-label-xs text-primary font-semibold mt-2 inline-flex items-center gap-1">
+            <span class="material-symbols-outlined text-[1rem] animate-spin">sync</span> Calculating ledger entries...
+          </span>
+        </div>
+      `;
+      chatStream.appendChild(aiWrap);
+      chatStream.scrollTop = chatStream.scrollHeight;
+    }, 600);
+  }
+
+  if (sendBtn && chatInput) {
+    sendBtn.addEventListener('click', handleSend);
+    chatInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleSend();
+    });
+  }
+</script></main></div></body></html>

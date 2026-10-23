@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "tertiary": "#5d3000",
+          "primary": "#04442f",
+          "surface": "#faf9f4",
+          "on-background": "#1b1c19",
+          "surface-variant": "#e3e3de",
+          "surface-container-high": "#e9e8e3",
+          "background": "#faf9f4",
+          "tertiary-container": "#7f4300",
+          "on-error": "#ffffff",
+          "on-tertiary-container": "#ffb77d",
+          "on-surface-variant": "#404943",
+          "on-error-container": "#93000a",
+          "on-secondary-container": "#5d6760",
+          "surface-dim": "#dbdad5",
+          "error": "#ba1a1a",
+          "on-surface": "#1b1c19",
+          "inverse-primary": "#99d3b6",
+          "error-container": "#ffdad6",
+          "inverse-on-surface": "#f2f1ec",
+          "on-tertiary-fixed-variant": "#6e3900",
+          "on-secondary-fixed-variant": "#404943",
+          "surface-container-low": "#f5f4ef",
+          "surface-bright": "#faf9f4",
+          "surface-container": "#efeee9",
+          "tertiary-fixed-dim": "#ffb77d",
+          "outline-variant": "#c0c9c2",
+          "primary-container": "#245c45",
+          "secondary-container": "#dbe5dd",
+          "on-primary-container": "#99d2b5",
+          "surface-container-lowest": "#ffffff",
+          "primary-fixed": "#b5efd1",
+          "secondary": "#57615b",
+          "inverse-surface": "#30312e",
+          "on-secondary": "#ffffff",
+          "on-tertiary-fixed": "#2f1500",
+          "on-primary-fixed": "#002114",
+          "tertiary-fixed": "#ffdcc3",
+          "secondary-fixed-dim": "#bfc9c1",
+          "surface-container-highest": "#e3e3de",
+          "secondary-fixed": "#dbe5dd",
+          "on-secondary-fixed": "#151d19",
+          "on-primary": "#ffffff",
+          "surface-tint": "#316951",
+          "on-primary-fixed-variant": "#16503a",
+          "outline": "#707973",
+          "on-tertiary": "#ffffff",
+          "primary-fixed-dim": "#99d3b6"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.25rem",
+          "lg": "0.5rem",
+          "xl": "0.75rem",
+          "full": "9999px"
+        },
+        "spacing": {
+          "space-xl": "2.25rem",
+          "margin-desktop": "2rem",
+          "gutter-desktop": "1.5rem",
+          "space-xs": "0.25rem",
+          "margin": "1rem",
+          "space-lg": "1.5rem",
+          "space-sm": "0.5rem",
+          "space-md": "1rem",
+          "gutter": "1rem"
+        },
+        "fontFamily": {
+          "display": [
+            "Inter"
+          ],
+          "headline-sm": [
+            "Inter"
+          ],
+          "body-sm": [
+            "Inter"
+          ],
+          "label-xs": [
+            "Inter"
+          ],
+          "body-lg": [
+            "Inter"
+          ],
+          "display-mobile": [
+            "Inter"
+          ],
+          "headline-lg": [
+            "Inter"
+          ],
+          "label-md": [
+            "Inter"
+          ],
+          "currency-stat": [
+            "Inter"
+          ]
+        },
+        "fontSize": {
+          "display": [
+            "2.25rem",
+            {
+              "lineHeight": "2.75rem",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "700"
+            }
+          ],
+          "headline-sm": [
+            "1.25rem",
+            {
+              "lineHeight": "1.75rem",
+              "letterSpacing": "-0.01em",
+              "fontWeight": "600"
+            }
+          ],
+          "body-sm": [
+            "0.875rem",
+            {
+              "lineHeight": "1.25rem",
+              "fontWeight": "400"
+            }
+          ],
+          "label-xs": [
+            "0.75rem",
+            {
+              "lineHeight": "1rem",
+              "letterSpacing": "0.02em",
+              "fontWeight": "600"
+            }
+          ],
+          "body-lg": [
+            "1rem",
+            {
+              "lineHeight": "1.5rem",
+              "fontWeight": "400"
+            }
+          ],
+          "display-mobile": [
+            "1.75rem",
+            {
+              "lineHeight": "2.25rem",
+              "letterSpacing": "-0.01em",
+              "fontWeight": "700"
+            }
+          ],
+          "headline-lg": [
+            "1.5rem",
+            {
+              "lineHeight": "2rem",
+              "letterSpacing": "-0.015em",
+              "fontWeight": "700"
+            }
+          ],
+          "label-md": [
+            "0.875rem",
+            {
+              "lineHeight": "1.25rem",
+              "fontWeight": "600"
+            }
+          ],
+          "currency-stat": [
+            "1.75rem",
+            {
+              "lineHeight": "2rem",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "700"
+            }
+          ]
+        }
+      },
+    },
+  }</script></head><body class="bg-surface font-body-lg text-body-lg text-on-surface antialiased min-h-screen"><header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 max-w-[1280px] mx-auto px-margin-desktop flex items-center justify-between"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-sm"><div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center text-on-primary shadow-sm"><span class="material-symbols-outlined text-[20px]">menu_book</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none">ShopLedger</span><span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Bahi Khata</span></div></div><div class="h-5 w-px bg-surface-variant hidden sm:block"></div><nav class="hidden sm:flex items-center gap-space-md" data-active-classes="text-primary font-bold bg-surface-container"><a aria-current="page" class="px-space-sm py-space-xs rounded transition-colors text-primary font-bold bg-surface-container" data-path="business-profile-setup" href="#">1. Store Details</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded transition-colors" data-path="categories-and-taxes" href="#">2. GST &amp; Categories</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded transition-colors" data-path="sample-bill-scan" href="#">3. First Bill</a></nav></div><div class="flex items-center gap-space-md"><a class="hidden md:inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-secondary-container text-on-secondary-fixed font-label-md text-label-md hover:bg-surface-container-high transition-colors" href="https://wa.me/910000000000" target="_blank"><span class="material-symbols-outlined text-[16px] text-primary">support_agent</span><span>Help? WhatsApp +91</span></a><a class="inline-flex items-center gap-space-xs font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors py-space-xs px-space-sm rounded-lg hover:bg-surface-container" data-path="merchant-dashboard-exit" href="#"><span class="material-symbols-outlined text-[18px]">exit_to_app</span><span class="hidden sm:inline">Save &amp; Exit</span></a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-surface min-h-[calc(100vh-5rem)]"><div class="flex flex-col w-full">
+<!-- Dynamic Top Ambient Accent -->
+<div class="relative w-full max-w-[1280px] mx-auto px-margin md:px-margin-desktop pt-space-lg pb-space-xl">
+<!-- Top Stepper Header Card -->
+<div class="w-full bg-surface-container-lowest rounded-xl shadow-sm p-space-md md:p-space-lg mb-space-lg flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-primary text-on-primary font-label-md text-label-md">1</span>
+<span class="font-headline-sm text-headline-sm text-primary">Onboarding Step 1 of 3</span>
+<span class="hidden md:inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="hidden md:inline font-body-sm text-body-sm text-on-surface-variant">Instant Shop Personalization</span>
+</div>
+<button class="self-start sm:self-auto font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-space-xs py-space-xs px-space-sm rounded hover:bg-surface-container" type="button">
+<span>Skip to setup later</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+<!-- Linear Stepper Bar -->
+<div class="grid grid-cols-3 gap-space-sm md:gap-space-md">
+<!-- Step 1 (Active) -->
+<div class="flex flex-col gap-1.5">
+<div class="h-2 w-full rounded-full bg-primary relative overflow-hidden">
+<div class="absolute inset-0 bg-primary-fixed-dim/30 animate-pulse"></div>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-xs text-label-xs text-primary font-bold">1. Shop Basics</span>
+<span class="font-label-xs text-label-xs text-primary bg-secondary-container px-1.5 py-0.5 rounded text-[10px]">IN PROGRESS</span>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col gap-1.5">
+<div class="h-2 w-full rounded-full bg-surface-container-high"></div>
+<div class="flex items-center justify-between">
+<span class="font-label-xs text-label-xs text-on-surface-variant">2. Business Category</span>
+<span class="font-label-xs text-label-xs text-on-surface-variant opacity-60">Next</span>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col gap-1.5">
+<div class="h-2 w-full rounded-full bg-surface-container-high"></div>
+<div class="flex items-center justify-between">
+<span class="font-label-xs text-label-xs text-on-surface-variant">3. Language &amp; Regional</span>
+<span class="font-label-xs text-label-xs text-on-surface-variant opacity-60">Final</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Form Grid Layout (Asymmetric balance for Desktop Kirana Onboarding) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-start">
+<!-- Left Column: Form Intake (8 Cols) -->
+<form class="lg:col-span-8 flex flex-col gap-space-lg" id="onboarding-form" onsubmit="event.preventDefault();">
+<!-- Welcome Hero Text Container -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg md:p-space-xl shadow-sm">
+<div class="inline-flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-secondary-container text-primary font-label-xs text-label-xs uppercase tracking-wide mb-space-sm">
+<span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">storefront</span>
+            Bahi Khata Auto-Configuration
+          </div>
+<h1 class="font-display text-display text-primary tracking-tight">Let's set up your shop.</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-space-xs">
+            Tell us a few quick details so ShopLedger can tailor your purchase categories and bill scanner. Takes under 1 minute.
+          </p>
+<!-- Section 1: Shop Name -->
+<div class="mt-space-lg pt-space-md flex flex-col gap-space-xs">
+<label class="font-headline-sm text-headline-sm text-on-surface flex items-center justify-between" for="shop-name-input">
+<span>What is your shop name?</span>
+<span class="font-label-xs text-label-xs text-error font-normal">* Required</span>
+</label>
+<div class="relative mt-1">
+<span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary">
+<span class="material-symbols-outlined text-[20px]">store</span>
+</span>
+<input class="w-full pl-11 pr-4 py-3 bg-surface-container-low focus:bg-surface-container-lowest text-on-surface font-body-lg text-body-lg rounded-lg outline-none transition-all focus:shadow-sm" id="shop-name-input" placeholder="e.g., Sharma General Store, Gupta Provisions, Laxmi Traders" type="text" value="Sharma General Store"/>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant mt-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">info</span>
+<span class="font-body-sm text-body-sm">You can change this anytime in Settings.</span>
+</div>
+</div>
+</div>
+<!-- Section 2: Business Type Cards -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg md:p-space-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+<div>
+<span class="font-label-xs text-label-xs text-primary font-bold uppercase tracking-wider">Step 2 Choice</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Select your business type</h2>
+</div>
+<span class="font-label-xs text-label-xs text-on-surface-variant">Optimizes OCR line items</span>
+</div>
+<!-- Cards Stack (Selectable) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md mt-space-xs" id="business-type-selector">
+<!-- Kirana / Grocery Store (Selected Default) -->
+<div class="biz-card cursor-pointer rounded-xl p-space-md bg-secondary-container/70 shadow-sm transition-all hover:shadow-md flex flex-col justify-between relative overflow-hidden" data-biz="kirana" onclick="selectBusinessType(this)">
+<div class="flex items-start justify-between gap-2 mb-2">
+<div class="w-10 h-10 rounded-lg bg-primary text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">shopping_cart</span>
+</div>
+<div class="selection-pill flex items-center gap-1 bg-primary text-on-primary px-2 py-0.5 rounded-full font-label-xs text-label-xs">
+<span class="material-symbols-outlined text-[14px]">check</span>
+                  Selected
+                </div>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary font-bold">Kirana / Grocery Store</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  FMCG, staples, grains, dairy, packaged snacks. Tailored bahi khata categories.
+                </p>
+</div>
+<div class="mt-3 pt-2 flex items-center gap-1.5 text-primary font-label-xs text-label-xs">
+<span class="material-symbols-outlined text-[14px]">auto_awesome</span>
+<span>Includes Dal, Atta, Ghee &amp; Oil pre-sets</span>
+</div>
+</div>
+<!-- Retail Shop -->
+<div class="biz-card cursor-pointer rounded-xl p-space-md bg-surface-container-low transition-all hover:bg-surface-container flex flex-col justify-between relative" data-biz="retail" onclick="selectBusinessType(this)">
+<div class="flex items-start justify-between gap-2 mb-2">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">apparel</span>
+</div>
+<div class="selection-pill hidden items-center gap-1 bg-primary text-on-primary px-2 py-0.5 rounded-full font-label-xs text-label-xs">
+<span class="material-symbols-outlined text-[14px]">check</span>
+                  Selected
+                </div>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Retail Shop</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Apparel, electronics, stationery, hardware, footwear with supplier bills.
+                </p>
+</div>
+<div class="mt-3 pt-2 flex items-center gap-1.5 text-on-surface-variant font-label-xs text-label-xs">
+<span class="material-symbols-outlined text-[14px]">receipt</span>
+<span>SKU &amp; Brand tracking enabled</span>
+</div>
+</div>
+<!-- Wholesale / Mandi Trader -->
+<div class="biz-card cursor-pointer rounded-xl p-space-md bg-surface-container-low transition-all hover:bg-surface-container flex flex-col justify-between relative" data-biz="mandi" onclick="selectBusinessType(this)">
+<div class="flex items-start justify-between gap-2 mb-2">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">local_shipping</span>
+</div>
+<div class="selection-pill hidden items-center gap-1 bg-primary text-on-primary px-2 py-0.5 rounded-full font-label-xs text-label-xs">
+<span class="material-symbols-outlined text-[14px]">check</span>
+                  Selected
+                </div>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Wholesale / Mandi Trader</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Bulk sacks, quintals, freight slips, bilty receipts, commission memo.
+                </p>
+</div>
+<div class="mt-3 pt-2 flex items-center gap-1.5 text-on-surface-variant font-label-xs text-label-xs">
+<span class="material-symbols-outlined text-[14px]">weight</span>
+<span>Quintal / Bori weight formats</span>
+</div>
+</div>
+<!-- Warehouse / Godown -->
+<div class="biz-card cursor-pointer rounded-xl p-space-md bg-surface-container-low transition-all hover:bg-surface-container flex flex-col justify-between relative" data-biz="warehouse" onclick="selectBusinessType(this)">
+<div class="flex items-start justify-between gap-2 mb-2">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">warehouse</span>
+</div>
+<div class="selection-pill hidden items-center gap-1 bg-primary text-on-primary px-2 py-0.5 rounded-full font-label-xs text-label-xs">
+<span class="material-symbols-outlined text-[14px]">check</span>
+                  Selected
+                </div>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Warehouse / Godown</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Pallets, multi-tier inventory, supplier batch reconciliation.
+                </p>
+</div>
+<div class="mt-3 pt-2 flex items-center gap-1.5 text-on-surface-variant font-label-xs text-label-xs">
+<span class="material-symbols-outlined text-[14px]">inventory_2</span>
+<span>Batch &amp; Expire date detection</span>
+</div>
+</div>
+<!-- Other Business (Span across) -->
+<div class="biz-card cursor-pointer rounded-xl p-space-md bg-surface-container-low transition-all hover:bg-surface-container flex flex-col sm:col-span-2 justify-between relative" data-biz="other" onclick="selectBusinessType(this)">
+<div class="flex items-center justify-between gap-2">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">more_horiz</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Other Business</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">General commerce, pharmacy, restaurant, or trade business.</p>
+</div>
+</div>
+<div class="selection-pill hidden items-center gap-1 bg-primary text-on-primary px-2 py-0.5 rounded-full font-label-xs text-label-xs">
+<span class="material-symbols-outlined text-[14px]">check</span>
+                  Selected
+                </div>
+</div>
+</div>
+</div>
+<!-- Helpful Reassurance Callout -->
+<div class="bg-surface-container-high/60 rounded-lg p-space-md flex items-start gap-space-sm mt-space-xs">
+<span class="material-symbols-outlined text-primary text-[22px] flex-shrink-0 mt-0.5">lightbulb</span>
+<p class="font-body-sm text-body-sm text-on-surface">
+<strong class="font-semibold text-primary">Zero lock-in:</strong> Selecting this personalizes item labels and default tax categories without changing how easily receipts are scanned. Fully editable later in Settings.
+            </p>
+</div>
+</div>
+<!-- Section 3: Preferred Language & Regional Details -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg md:p-space-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-label-xs text-label-xs text-primary font-bold uppercase tracking-wider">Step 3 Preferences</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Language &amp; Currency Display</h2>
+</div>
+<span class="material-symbols-outlined text-secondary text-[24px]">translate</span>
+</div>
+<!-- Language Selection Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-md">
+<!-- English (Active) -->
+<label class="cursor-pointer rounded-xl p-space-md bg-secondary-container/70 flex flex-col justify-between gap-space-sm relative">
+<input checked="" class="hidden" name="ui-lang" type="radio" value="en"/>
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-primary font-bold">English</span>
+<span class="w-5 h-5 rounded-full bg-primary text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Primary interface &amp; reports</span>
+</label>
+<!-- Hindi (Preview) -->
+<label class="cursor-pointer rounded-xl p-space-md bg-surface-container-low hover:bg-surface-container flex flex-col justify-between gap-space-sm relative opacity-90 transition-all">
+<input class="hidden" name="ui-lang" type="radio" value="hi"/>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">हिंदी</span>
+<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed uppercase">Preview</span>
+</div>
+<span class="w-5 h-5 rounded-full bg-surface-container-high text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]">radio_button_unchecked</span>
+</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">खाता विवरण और रसीद स्कैनर</span>
+</label>
+<!-- Regional Indian Languages -->
+<div class="rounded-xl p-space-md bg-surface-container-low flex flex-col justify-between gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Regional</span>
+<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant uppercase">Soon</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">मराठी, ગુજરાતી, தமிழ், తెలుగు</span>
+</div>
+</div>
+<!-- Currency Indicator -->
+<div class="bg-surface-container-low rounded-xl p-space-md flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-headline-sm text-headline-sm">
+                ₹
+              </div>
+<div>
+<div class="font-label-md text-label-md text-on-surface font-bold">Default Currency: Indian Rupee (₹ INR)</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">All bahi khata totals &amp; GST breakdowns calculate in Lakhs (L) and Crores (Cr).</div>
+</div>
+</div>
+<div class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-surface-container-lowest text-primary font-label-md text-label-md shadow-sm">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span>Locked to India (GST)</span>
+</div>
+</div>
+</div>
+<!-- Action Bar Container -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col sm:flex-row items-center justify-between gap-space-md">
+<button class="w-full sm:w-auto font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors py-space-sm px-space-md rounded-lg text-center" type="button">
+            Skip non-essential questions
+          </button>
+<button class="w-full sm:w-auto min-h-[48px] px-space-xl py-space-sm rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md shadow-md transition-all flex items-center justify-center gap-space-sm group" id="continue-button" type="submit">
+<span>Continue to Setup Completion</span>
+<span class="material-symbols-outlined text-[20px] transition-transform group-hover:translate-x-1">arrow_forward</span>
+</button>
+</div>
+</form>
+<!-- Right Column: Interactive Real-Time Preview & Value Prop (4 Cols) -->
+<aside class="lg:col-span-4 flex flex-col gap-space-lg lg:sticky lg:top-24">
+<!-- Live Setup Preview Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Live Ledger Preview</span>
+<span class="px-2 py-0.5 rounded bg-secondary-container text-primary font-label-xs text-label-xs font-semibold">Active Profile</span>
+</div>
+<!-- Simulated Kirana Khata Card -->
+<div class="bg-surface-container-low rounded-xl p-space-md flex flex-col gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-11 h-11 rounded-lg bg-primary text-on-primary flex items-center justify-center font-display text-[20px] font-bold shadow-sm" id="preview-avatar">
+                S
+              </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold truncate" id="preview-shop-name">
+                  Sharma General Store
+                </span>
+<span class="font-body-sm text-body-sm text-primary flex items-center gap-1 font-medium" id="preview-biz-type">
+<span class="material-symbols-outlined text-[14px]">storefront</span> Kirana &amp; FMCG
+                </span>
+</div>
+</div>
+<!-- Micro Metrics Simulation -->
+<div class="grid grid-cols-2 gap-2 mt-2 pt-2 bg-surface-container-lowest rounded-lg p-space-sm">
+<div>
+<span class="font-label-xs text-label-xs text-on-surface-variant block">Bill Recognition</span>
+<span class="font-headline-sm text-headline-sm text-primary">99.4%</span>
+</div>
+<div>
+<span class="font-label-xs text-label-xs text-on-surface-variant block">Auto GST Rules</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">5%, 12%, 18%</span>
+</div>
+</div>
+</div>
+<!-- Sample Extracted Items Tailored to Type -->
+<div>
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider block mb-2">Tailored Default Categories</span>
+<div class="flex flex-wrap gap-1.5" id="preview-tags">
+<span class="px-2 py-1 rounded bg-surface-container text-on-surface font-label-xs text-label-xs">Atta &amp; Flours</span>
+<span class="px-2 py-1 rounded bg-surface-container text-on-surface font-label-xs text-label-xs">Edible Oils</span>
+<span class="px-2 py-1 rounded bg-surface-container text-on-surface font-label-xs text-label-xs">Dairy &amp; Milk</span>
+<span class="px-2 py-1 rounded bg-surface-container text-on-surface font-label-xs text-label-xs">Spices &amp; Masala</span>
+<span class="px-2 py-1 rounded bg-surface-container text-on-surface font-label-xs text-label-xs">Biscuits &amp; Snacks</span>
+</div>
+</div>
+</div>
+<!-- Trust & Security Reassurance Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Indian Merchant Trust</h4>
+</div>
+<ul class="flex flex-col gap-space-sm font-body-sm text-body-sm text-on-surface-variant">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0 mt-0.5">check_circle</span>
+<span><strong>Your data stays yours:</strong> No supplier or competitor ever sees your buying costs or khata entries.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0 mt-0.5">receipt_long</span>
+<span><strong>Paper slip friendly:</strong> Reads handwritten mandi parchas, thermal bills, and printed GST invoices.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0 mt-0.5">phone_iphone</span>
+<span><strong>Syncs with phone:</strong> Scan bills on your mobile and verify on your laptop anytime.</span>
+</li>
+</ul>
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-tertiary text-[20px]">verified</span>
+<span class="font-label-xs text-label-xs text-on-surface-variant">
+              Compliant with GST &amp; MSME e-Invoicing guidelines (2024).
+            </span>
+</div>
+</div>
+<!-- Help Desk Quick Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[24px]">contact_support</span>
+<div>
+<div class="font-label-md text-label-md text-on-surface">Need help setting up?</div>
+<div class="font-label-xs text-label-xs text-on-surface-variant">Call our kirana onboarding team</div>
+</div>
+</div>
+<a class="px-space-sm py-1 rounded bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-label-md transition-colors" href="tel:1800000000">
+            Free Call
+          </a>
+</div>
+</aside>
+</div>
+</div>
+<!-- Interactive Logic -->
+<script>
+    const categoryConfigs = {
+      kirana: {
+        title: "Kirana / Grocery Store",
+        icon: "shopping_cart",
+        tagSummary: "Kirana & FMCG",
+        tags: ["Atta & Flours", "Edible Oils", "Dairy & Milk", "Spices & Masala", "Biscuits & Snacks", "Pulses & Dal"]
+      },
+      retail: {
+        title: "Retail Shop",
+        icon: "apparel",
+        tagSummary: "Retail & Apparel",
+        tags: ["Garments", "Footwear", "Hardware Tools", "Electronics", "Packaging Material", "Accessories"]
+      },
+      mandi: {
+        title: "Wholesale / Mandi Trader",
+        icon: "local_shipping",
+        tagSummary: "Mandi & Wholesaler",
+        tags: ["Wheat Sacks", "Basmati Rice", "Mustard Bags", "Freight Charges", "APMC Mandi Tax", "Gunny Bags"]
+      },
+      warehouse: {
+        title: "Warehouse / Godown",
+        icon: "warehouse",
+        tagSummary: "Warehouse & Logistics",
+        tags: ["Master Cartons", "Bulk Pallets", "Shrink Wrap", "Cold Storage Fee", "Barcode Labels"]
+      },
+      other: {
+        title: "General Business",
+        icon: "storefront",
+        tagSummary: "General Commerce",
+        tags: ["Operational Supplies", "Vendor Services", "Freight", "GST Invoices", "Utility Bills"]
+      }
+    };
+
+    function selectBusinessType(cardElement) {
+      const type = cardElement.getAttribute('data-biz');
+      const allCards = document.querySelectorAll('.biz-card');
+
+      allCards.forEach(c => {
+        c.classList.remove('bg-secondary-container/70', 'shadow-sm');
+        c.classList.add('bg-surface-container-low');
+        
+        const pill = c.querySelector('.selection-pill');
+        if (pill) pill.classList.add('hidden');
+        
+        const heading = c.querySelector('h3');
+        if (heading) {
+          heading.classList.remove('text-primary');
+          heading.classList.add('text-on-surface');
+        }
+      });
+
+      cardElement.classList.remove('bg-surface-container-low');
+      cardElement.classList.add('bg-secondary-container/70', 'shadow-sm');
+
+      const activePill = cardElement.querySelector('.selection-pill');
+      if (activePill) activePill.classList.remove('hidden');
+
+      const activeHeading = cardElement.querySelector('h3');
+      if (activeHeading) {
+        activeHeading.classList.remove('text-on-surface');
+        activeHeading.classList.add('text-primary');
+      }
+
+      // Update Preview Card
+      const config = categoryConfigs[type] || categoryConfigs.other;
+      const bizTypePreview = document.getElementById('preview-biz-type');
+      const tagsContainer = document.getElementById('preview-tags');
+
+      if (bizTypePreview) {
+        bizTypePreview.innerHTML = `<span class="material-symbols-outlined text-[14px]">${config.icon}</span> ${config.tagSummary}`;
+      }
+
+      if (tagsContainer) {
+        tagsContainer.innerHTML = config.tags
+          .map(tag => `<span class="px-2 py-1 rounded bg-surface-container text-on-surface font-label-xs text-label-xs">${tag}</span>`)
+          .join('');
+      }
+    }
+
+    // Dynamic Shop Name live mirror
+    const shopInput = document.getElementById('shop-name-input');
+    const previewName = document.getElementById('preview-shop-name');
+    const previewAvatar = document.getElementById('preview-avatar');
+
+    if (shopInput && previewName && previewAvatar) {
+      shopInput.addEventListener('input', (e) => {
+        const val = e.target.value.trim();
+        if (val.length > 0) {
+          previewName.textContent = val;
+          previewAvatar.textContent = val.charAt(0).toUpperCase();
+        } else {
+          previewName.textContent = "Your Shop Name";
+          previewAvatar.textContent = "S";
+        }
+      });
+    }
+  </script>
+</div></main><footer class="w-full bg-surface-container-low py-space-md mt-auto"><div class="max-w-[1280px] mx-auto px-margin-desktop flex flex-col sm:flex-row items-center justify-between gap-space-sm text-center sm:text-left"><div class="flex items-center gap-space-xs font-label-xs text-label-xs text-on-surface-variant"><span class="material-symbols-outlined text-[14px] text-primary">verified_user</span><span>ShopLedger Merchant Data Guarantee • 100% Encrypted &amp; Private</span></div><div class="flex items-center gap-space-md font-label-xs text-label-xs text-on-surface-variant"><span>English / हिंदी</span><a class="hover:text-primary underline underline-offset-2" href="#">Terms of Khata</a></div></div></footer></body></html>

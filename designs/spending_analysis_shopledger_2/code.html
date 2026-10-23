@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-primary-fixed-variant":"#16503a","secondary-container":"#dbe5dd","primary-fixed":"#b5efd1","on-primary":"#ffffff","secondary":"#57615b","tertiary-fixed":"#ffdcc3","secondary-fixed-dim":"#bfc9c1","on-secondary-fixed":"#151d19","tertiary-container":"#7f4300","surface-container-lowest":"#ffffff","error-container":"#ffdad6","on-background":"#1b1c19","surface":"#faf9f4","background":"#faf9f4","surface-container":"#efeee9","on-error-container":"#93000a","on-tertiary":"#ffffff","on-secondary-fixed-variant":"#404943","surface-container-highest":"#e3e3de","surface-container-high":"#e9e8e3","inverse-on-surface":"#f2f1ec","on-surface":"#1b1c19","secondary-fixed":"#dbe5dd","inverse-surface":"#30312e","surface-variant":"#e3e3de","primary-fixed-dim":"#99d3b6","on-tertiary-fixed-variant":"#6e3900","inverse-primary":"#99d3b6","surface-tint":"#316951","outline":"#707973","on-tertiary-container":"#ffb77d","on-secondary":"#ffffff","outline-variant":"#c0c9c2","on-primary-container":"#99d2b5","tertiary":"#5d3000","surface-dim":"#dbdad5","error":"#ba1a1a","on-tertiary-fixed":"#2f1500","surface-bright":"#faf9f4","on-primary-fixed":"#002114","primary-container":"#245c45","surface-container-low":"#f5f4ef","on-error":"#ffffff","tertiary-fixed-dim":"#ffb77d","on-secondary-container":"#5d6760","on-surface-variant":"#404943","primary":"#04442f"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"space-xl":"2.25rem","gutter":"1rem","margin":"1rem","space-md":"1rem","space-lg":"1.5rem","margin-desktop":"2rem","gutter-desktop":"1.5rem","space-xs":"0.25rem","space-sm":"0.5rem"},fontFamily:{"display":["Inter"],"label-xs":["Inter"],"headline-lg":["Inter"],"body-sm":["Inter"],"body-lg":["Inter"],"display-mobile":["Inter"],"label-md":["Inter"],"currency-stat":["Inter"],"headline-sm":["Inter"]},fontSize:{"display":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.02em","fontWeight":"700"}],"label-xs":["0.75rem",{"lineHeight":"1rem","letterSpacing":"0.02em","fontWeight":"600"}],"headline-lg":["1.5rem",{"lineHeight":"2rem","letterSpacing":"-0.015em","fontWeight":"700"}],"body-sm":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"400"}],"body-lg":["1rem",{"lineHeight":"1.5rem","fontWeight":"400"}],"display-mobile":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.01em","fontWeight":"700"}],"label-md":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"600"}],"currency-stat":["1.75rem",{"lineHeight":"2rem","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-sm":["1.25rem",{"lineHeight":"1.75rem","letterSpacing":"-0.01em","fontWeight":"600"}]}}}}</script></head><body class="bg-surface font-body-lg text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between overflow-y-auto"><div class="p-space-lg"><div class="flex items-center gap-space-sm mb-space-xl"><img alt="ShopLedger Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VRnzfpuAZPE2MEeTjoUDXehqdHDyxBez3LbbRvHo0GcGvnsMiUTupaVBxg_fzYMnbTQHqlaLUO3UaV6P9HW2UvIkxdnyvEt4paM8kVo-Suj6rS3mJoAp0ByZ-BZ9oBEbCCVgMbvz33KBpei8u47rhTPL6RgF-COnxv4yTWmVK-WWVWopqpv0ffGfD6OZrUFq7CLvRaqr4BK2rBnQ-VE6b5nJ0FYcl-CrmPrObF0LqRNVvpzfl_V0SEAjOq"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">ShopLedger</span><span class="font-label-xs text-label-xs text-on-surface-variant mt-1 leading-none">Smart Shop Bookkeeper</span></div></div><div class="mb-space-lg"><button class="w-full flex items-center justify-center gap-space-sm bg-primary-container text-on-primary font-label-md text-label-md py-space-sm px-space-md rounded-lg shadow-[0_1px_3px_rgba(37,41,35,0.06)] hover:bg-primary transition-colors"><span class="material-symbols-outlined text-[1.25rem]">add_circle</span><span>+ Upload Receipt</span></button></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-secondary-container text-on-secondary-fixed font-label-md rounded-lg"><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="dashboard" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">dashboard</span><span>Dashboard</span></div></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="receipts" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">receipt_long</span><span>Receipts</span></div><span class="bg-tertiary-fixed text-on-tertiary-fixed font-label-xs text-label-xs px-2 py-0.5 rounded-full">2 needs check</span></a><a aria-current="page" class="flex items-center justify-between px-space-md py-space-sm transition-colors bg-secondary-container text-on-secondary-fixed font-label-md rounded-lg" data-path="analysis" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">trending_up</span><span>Analysis</span></div></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="ask-shopledger" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">auto_awesome</span><span>Ask ShopLedger</span></div><span class="bg-primary-fixed text-on-primary-fixed font-label-xs text-label-xs px-2 py-0.5 rounded-full">AI</span></a></nav></div><div class="p-space-lg flex flex-col gap-space-sm"><div class="flex flex-col gap-space-xs mb-space-sm"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="help-and-faqs" href="#"><span class="material-symbols-outlined text-[1.25rem]">help</span><span>Help & FAQs</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[1.25rem]">settings</span><span>Settings</span></a><div class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">contrast</span><span>Appearance</span></div><button aria-label="Toggle theme" class="flex items-center p-1 rounded-full hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[1.25rem]">light_mode</span></button></div></div><div class="bg-surface-container-lowest p-space-sm rounded-lg shadow-[0_1px_3px_rgba(37,41,35,0.06)] flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-sm min-w-0"><img alt="Profile" class="w-8 h-8 rounded-full object-cover flex-shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFviORAjsiSsDQWbSaKHwp8QQMsMidyEJn4nfJEOndAyJAzkZy-9HMHhji6x-pR9runnlyVZ89VfB0gOuTaLD6ahza9bCaAcMcd7HofUxdBVRa2IYKYIybpHxfooCRyFnla0YhYvERsixTlkjei6JcK2jk5m6IZpECPHO7_Qr-Ak4mT7z64QWEMv1tszsdMmaCoPRY7a3XKLtma4ywzJNLxI4QtBx7lPG-PMEfLd0Ezg1jn1SgjFVf3g"/><div class="flex flex-col min-w-0"><span class="font-label-md text-label-md text-on-surface truncate">Sharma Kirana Store</span><span class="font-label-xs text-label-xs text-on-surface-variant truncate">Ramesh Sharma</span></div></div><button aria-label="Switch store or log out" class="p-1 text-on-surface-variant hover:text-on-surface transition-colors flex-shrink-0"><span class="material-symbols-outlined text-[1.25rem]">unfold_more</span></button></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-16 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-gutter-desktop"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-sm text-on-surface-variant font-body-sm text-body-sm"><span class="material-symbols-outlined text-[1.125rem]">storefront</span><span>Sharma Kirana Store (Main Bazar)</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-sm bg-surface-container px-space-md py-1.5 rounded-full"><span class="material-symbols-outlined text-[1.125rem] text-on-surface-variant">search</span><input class="bg-transparent border-0 outline-none font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant w-56" placeholder="Search receipts, items, bahi khata..." type="text"/></div><button aria-label="Notifications" class="relative p-2 rounded-full hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[1.25rem]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error"></span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFviORAjsiSsDQWbSaKHwp8QQMsMidyEJn4nfJEOndAyJAzkZy-9HMHhji6x-pR9runnlyVZ89VfB0gOuTaLD6ahza9bCaAcMcd7HofUxdBVRa2IYKYIybpHxfooCRyFnla0YhYvERsixTlkjei6JcK2jk5m6IZpECPHO7_Qr-Ak4mT7z64QWEMv1tszsdMmaCoPRY7a3XKLtma4ywzJNLxI4QtBx7lPG-PMEfLd0Ezg1jn1SgjFVf3g"/></div></header><main class="relative pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<div class="px-margin-desktop py-space-lg flex flex-col gap-space-lg max-w-[1360px] mx-auto w-full">
+<!-- Header & Filter Bar -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-secondary-container text-on-secondary-fixed text-label-xs font-label-xs">
+<span class="material-symbols-outlined text-[13px]">insights</span>
+</span>
+<span class="font-label-xs text-label-xs tracking-wider uppercase text-on-surface-variant font-semibold">Khata Expense Intelligence</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Business Spending Analysis</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+          Clear insights into where your money went, wholesale price changes, and top suppliers
+        </p>
+</div>
+<!-- Action & Filter Group -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<div class="relative inline-flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-[1.125rem] text-on-surface-variant pointer-events-none">calendar_month</span>
+<select class="appearance-none bg-surface-container-lowest text-on-surface font-label-md text-label-md pl-9 pr-9 py-2 rounded-lg shadow-sm focus:outline-none focus:bg-surface-container-high transition-colors cursor-pointer">
+<option>Last 30 Days (Oct 2024)</option>
+<option>Last Quarter (Q2 FY24-25)</option>
+<option>Previous Month (Sep 2024)</option>
+<option>Custom Date Range...</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 text-[1.125rem] text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+<div class="relative inline-flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-[1.125rem] text-on-surface-variant pointer-events-none">category</span>
+<select class="appearance-none bg-surface-container-lowest text-on-surface font-label-md text-label-md pl-9 pr-9 py-2 rounded-lg shadow-sm focus:outline-none focus:bg-surface-container-high transition-colors cursor-pointer">
+<option>All Categories</option>
+<option>Groceries & Grains</option>
+<option>Cooking Oils & Ghee</option>
+<option>Packaged Snacks</option>
+<option>Soaps & Detergents</option>
+<option>Dairy & Beverages</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 text-[1.125rem] text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+<button class="inline-flex items-center gap-space-xs bg-primary-container hover:bg-primary text-on-primary font-label-md text-label-md px-space-md py-2 rounded-lg shadow-sm transition-all active:scale-95">
+<span class="material-symbols-outlined text-[1.125rem]">file_download</span>
+<span>Download Excel / PDF for CA</span>
+</button>
+</div>
+</div>
+<!-- Top KPI Metric Summary Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- KPI 1 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between relative overflow-hidden group hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Total Money Spent</span>
+<span class="font-currency-stat text-currency-stat text-on-surface mt-1">₹1,48,650</span>
+</div>
+<span class="p-2 rounded-lg bg-surface-container text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[1.25rem]">payments</span>
+</span>
+</div>
+<div class="mt-4 pt-3 bg-surface-container-low -mx-space-md -mb-space-md px-space-md py-2 flex items-center gap-1.5 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[1rem] text-primary">verified</span>
+<span>Across <strong>34 verified</strong> purchase bills</span>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between relative overflow-hidden group hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Average Bill Size</span>
+<span class="font-currency-stat text-currency-stat text-on-surface mt-1">₹4,372</span>
+</div>
+<span class="p-2 rounded-lg bg-surface-container text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[1.25rem]">receipt_long</span>
+</span>
+</div>
+<div class="mt-4 pt-3 bg-surface-container-low -mx-space-md -mb-space-md px-space-md py-2 flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm">
+<span class="truncate">Peak: <strong>₹34,800</strong> (HUL)</span>
+<span class="material-symbols-outlined text-[1rem] text-on-surface-variant">arrow_outward</span>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between relative overflow-hidden group hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-xs text-label-xs text-tertiary-container uppercase tracking-wider font-semibold">Price Inflation Alert</span>
+<span class="font-currency-stat text-currency-stat text-tertiary mt-1">4 items risen</span>
+</div>
+<span class="p-2 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[1.25rem]">trending_up</span>
+</span>
+</div>
+<div class="mt-4 pt-3 bg-tertiary-fixed/30 -mx-space-md -mb-space-md px-space-md py-2 flex items-center justify-between font-label-xs text-label-xs text-on-tertiary-fixed">
+<span>Mustard Oil +8%</span>
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+<span>Basmati Rice +5%</span>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between relative overflow-hidden group hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Input Tax Credit (GST)</span>
+<span class="font-currency-stat text-currency-stat text-primary-container mt-1">₹18,420</span>
+</div>
+<span class="p-2 rounded-lg bg-primary-fixed text-on-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[1.25rem]">account_balance</span>
+</span>
+</div>
+<div class="mt-4 pt-3 bg-surface-container-low -mx-space-md -mb-space-md px-space-md py-2 flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm">
+<span>Ready for GSTR-3B filing</span>
+<span class="material-symbols-outlined text-[1rem] text-primary">download_done</span>
+</div>
+</div>
+</div>
+<!-- Section 4: Smart Recommendation Callout (Positioned prominently) -->
+<div class="bg-secondary-container/60 p-space-md rounded-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md shadow-sm">
+<div class="flex items-start gap-space-sm">
+<div class="p-2 rounded-lg bg-primary-container text-on-primary flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[1.25rem]">lightbulb</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-secondary-fixed">ShopLedger Buying Suggestion</span>
+<p class="font-body-sm text-body-sm text-on-secondary-fixed-variant mt-0.5 leading-relaxed">
+            You bought Sugar from <strong>Shree Balaji</strong> at <strong>₹43/kg</strong>, but <strong>Gupta Wholesale</strong> sold it last week at <strong>₹41/kg</strong>. Ordering the full monthly quota from Gupta could save you approximately <span class="font-bold text-on-secondary-fixed">₹900 next month</span>.
+          </p>
+</div>
+</div>
+<button class="flex-shrink-0 inline-flex items-center gap-1.5 bg-surface-container-lowest hover:bg-surface-container-high text-on-surface font-label-md text-label-md px-space-md py-2 rounded-lg shadow-sm transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-[1.125rem] text-primary">auto_awesome</span>
+<span>Ask ShopLedger About This →</span>
+</button>
+</div>
+<!-- Main Grid: Section 1 (Category Breakdown) & Section 3 (Top Vendors) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- Section 1: Where Did Your Money Go? (7 cols) -->
+<div class="lg:col-span-7 bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Where Did Your Money Go?</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Breakdown across 5 major wholesale categories</p>
+</div>
+<span class="font-label-xs text-label-xs bg-surface-container px-2.5 py-1 rounded-full text-on-surface-variant">October Spend</span>
+</div>
+<!-- Visual Multi-segment Progress Bar -->
+<div class="flex flex-col gap-1.5 pt-1">
+<div class="h-4 w-full rounded-full overflow-hidden flex bg-surface-container">
+<div class="h-full bg-[#16503A]" style="width: 35.2%" title="Groceries & Grains: 35.2%"></div>
+<div class="h-full bg-[#2E7D32]" style="width: 25.7%" title="Cooking Oils & Ghee: 25.7%"></div>
+<div class="h-full bg-[#D97706]" style="width: 17.7%" title="Packaged Snacks & Biscuits: 17.7%"></div>
+<div class="h-full bg-[#57615B]" style="width: 14.7%" title="Soaps, Detergents & Personal Care: 14.7%"></div>
+<div class="h-full bg-[#A3A39D]" style="width: 6.7%" title="Dairy & Beverages: 6.7%"></div>
+</div>
+<div class="flex items-center justify-between text-label-xs font-label-xs text-on-surface-variant px-0.5">
+<span>₹0</span>
+<span>Target Monthly Cap: ₹1,60,000</span>
+<span>₹1,48,650 (92.9% used)</span>
+</div>
+</div>
+<!-- Detailed Category List Cards -->
+<div class="flex flex-col gap-space-xs mt-1">
+<!-- Item 1 -->
+<div class="flex items-center justify-between p-space-sm rounded-lg hover:bg-surface transition-colors">
+<div class="flex items-center gap-space-sm min-w-0">
+<span class="w-3.5 h-3.5 rounded-full bg-[#16503A] flex-shrink-0"></span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface truncate">Groceries & Grains</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">12 bills (Atta, Rice, Pulses, Sugar)</span>
+</div>
+</div>
+<div class="text-right flex-shrink-0 ml-4">
+<span class="font-label-md text-label-md text-on-surface">₹52,400</span>
+<span class="block font-label-xs text-label-xs text-on-surface-variant">35.2%</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center justify-between p-space-sm rounded-lg hover:bg-surface transition-colors">
+<div class="flex items-center gap-space-sm min-w-0">
+<span class="w-3.5 h-3.5 rounded-full bg-[#2E7D32] flex-shrink-0"></span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface truncate">Cooking Oils & Ghee</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">8 bills (Mustard, Refined, Vanaspati)</span>
+</div>
+</div>
+<div class="text-right flex-shrink-0 ml-4">
+<span class="font-label-md text-label-md text-on-surface">₹38,150</span>
+<span class="block font-label-xs text-label-xs text-on-surface-variant">25.7%</span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex items-center justify-between p-space-sm rounded-lg hover:bg-surface transition-colors">
+<div class="flex items-center gap-space-sm min-w-0">
+<span class="w-3.5 h-3.5 rounded-full bg-[#D97706] flex-shrink-0"></span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface truncate">Packaged Snacks & Biscuits</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">6 bills (Parle, Britannia, Kurkure)</span>
+</div>
+</div>
+<div class="text-right flex-shrink-0 ml-4">
+<span class="font-label-md text-label-md text-on-surface">₹26,300</span>
+<span class="block font-label-xs text-label-xs text-on-surface-variant">17.7%</span>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="flex items-center justify-between p-space-sm rounded-lg hover:bg-surface transition-colors">
+<div class="flex items-center gap-space-sm min-w-0">
+<span class="w-3.5 h-3.5 rounded-full bg-[#57615B] flex-shrink-0"></span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface truncate">Soaps, Detergents & Personal Care</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">5 bills (Surf Excel, Lifebuoy, Vim)</span>
+</div>
+</div>
+<div class="text-right flex-shrink-0 ml-4">
+<span class="font-label-md text-label-md text-on-surface">₹21,800</span>
+<span class="block font-label-xs text-label-xs text-on-surface-variant">14.7%</span>
+</div>
+</div>
+<!-- Item 5 -->
+<div class="flex items-center justify-between p-space-sm rounded-lg hover:bg-surface transition-colors">
+<div class="flex items-center gap-space-sm min-w-0">
+<span class="w-3.5 h-3.5 rounded-full bg-[#A3A39D] flex-shrink-0"></span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface truncate">Dairy & Beverages</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">3 bills (Milk crates, Paneer, Cold drinks)</span>
+</div>
+</div>
+<div class="text-right flex-shrink-0 ml-4">
+<span class="font-label-md text-label-md text-on-surface">₹10,000</span>
+<span class="block font-label-xs text-label-xs text-on-surface-variant">6.7%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 3: Top Vendors & Spending Share (5 cols) -->
+<div class="lg:col-span-5 bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Top Wholesale Vendors</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Where you bought inventory this month</p>
+</div>
+<button class="p-1.5 rounded-md hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" title="View all suppliers">
+<span class="material-symbols-outlined text-[1.25rem]">arrow_forward</span>
+</button>
+</div>
+<div class="flex flex-col gap-3">
+<!-- Vendor 1 -->
+<div class="p-space-sm rounded-lg bg-surface flex flex-col gap-2">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface truncate">1. Gupta Wholesale Mart</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-xs">Khari Baoli • 11 bills</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface font-semibold">₹48,200</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-1.5">
+<span class="inline-flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded text-[11px] font-label-xs text-on-surface">
+<span class="material-symbols-outlined text-[12px] text-primary">qr_code_2</span> Preferred: UPI
+                </span>
+</div>
+<span class="text-label-xs font-label-xs text-primary font-semibold">32.4% share</span>
+</div>
+</div>
+<!-- Vendor 2 -->
+<div class="p-space-sm rounded-lg bg-surface flex flex-col gap-2">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface truncate">2. Hindustan Unilever Distributor</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-xs">Okhla Phase-2 • 4 bills</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface font-semibold">₹34,800</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-1.5">
+<span class="inline-flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded text-[11px] font-label-xs text-on-surface">
+<span class="material-symbols-outlined text-[12px] text-secondary">account_balance</span> Bank Transfer
+                </span>
+</div>
+<span class="text-label-xs font-label-xs text-on-surface-variant">23.4% share</span>
+</div>
+</div>
+<!-- Vendor 3 -->
+<div class="p-space-sm rounded-lg bg-surface flex flex-col gap-2">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface truncate">3. Shree Balaji Traders</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-xs">Naya Bazar • 7 bills</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface font-semibold">₹28,450</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-1.5">
+<span class="inline-flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded text-[11px] font-label-xs text-on-surface">
+<span class="material-symbols-outlined text-[12px] text-tertiary">payments</span> Cash
+                </span>
+</div>
+<span class="text-label-xs font-label-xs text-on-surface-variant">19.1% share</span>
+</div>
+</div>
+<!-- Vendor 4 -->
+<div class="p-space-sm rounded-lg bg-surface flex flex-col gap-2">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface truncate">4. Amul Dairy Sales Branch</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-xs">Direct Supply • 8 bills</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface font-semibold">₹18,900</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-1.5">
+<span class="inline-flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded text-[11px] font-label-xs text-on-surface">
+<span class="material-symbols-outlined text-[12px] text-tertiary">payments</span> Cash
+                </span>
+</div>
+<span class="text-label-xs font-label-xs text-on-surface-variant">12.7% share</span>
+</div>
+</div>
+<!-- Vendor 5 -->
+<div class="p-space-sm rounded-lg bg-surface flex flex-col gap-2">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface truncate">5. ITC Foods Agency</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-xs">Regional Depot • 4 bills</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface font-semibold">₹18,300</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-1.5">
+<span class="inline-flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded text-[11px] font-label-xs text-on-surface">
+<span class="material-symbols-outlined text-[12px] text-secondary">contract</span> Cheque
+                </span>
+</div>
+<span class="text-label-xs font-label-xs text-on-surface-variant">12.3% share</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 2: Wholesale Price Tracker (Watch list for Price Rises) -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div>
+<div class="flex items-center gap-2">
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Wholesale Price Tracker</h2>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed font-label-xs text-label-xs px-2 py-0.5 rounded-full font-semibold">
+              Watch list: 2 sharp rises
+            </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+            Unit cost movements calculated automatically from your uploaded Mandi & distributor purchase slips
+          </p>
+</div>
+<div class="flex items-center gap-2 text-label-xs font-label-xs text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-error"></span> High Alert (>5%)</span>
+<span class="flex items-center gap-1 ml-2"><span class="w-2 h-2 rounded-full bg-primary"></span> Normal / Flat</span>
+</div>
+</div>
+<!-- Price Movement Table -->
+<div class="overflow-x-auto -mx-space-lg px-space-lg">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead>
+<tr class="bg-surface-container text-on-surface-variant font-label-xs text-label-xs uppercase tracking-wider">
+<th class="py-3 px-4 rounded-l-lg">Product Description</th>
+<th class="py-3 px-4 text-right">Aug Unit Cost</th>
+<th class="py-3 px-4 text-right">Sep Unit Cost</th>
+<th class="py-3 px-4 text-right">Oct Unit Cost</th>
+<th class="py-3 px-4 text-right">3-Month Change</th>
+<th class="py-3 px-4 rounded-r-lg text-center">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y-0">
+<!-- Row 1: Fortune Mustard Oil -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-4 font-label-md text-label-md text-on-surface">
+                Fortune Mustard Oil 1L Pouch
+                <span class="block font-body-sm text-body-sm text-on-surface-variant text-xs">Category: Cooking Oils • Mandi item</span>
+</td>
+<td class="py-3.5 px-4 text-right font-body-sm text-body-sm text-on-surface-variant font-mono">₹132</td>
+<td class="py-3.5 px-4 text-right font-body-sm text-body-sm text-on-surface-variant font-mono">₹138</td>
+<td class="py-3.5 px-4 text-right font-label-md text-label-md text-on-surface font-mono font-semibold">₹149</td>
+<td class="py-3.5 px-4 text-right font-label-md text-label-md text-tertiary-container font-mono font-bold">
+                +12.8% ↑
+              </td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center gap-1 bg-tertiary-fixed text-on-tertiary-fixed font-label-xs text-label-xs px-2.5 py-1 rounded-full font-semibold">
+<span class="material-symbols-outlined text-[14px]">warning</span> Price Alert
+                </span>
+</td>
+</tr>
+<!-- Row 2: Sugar M-30 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-4 font-label-md text-label-md text-on-surface">
+                Sugar M-30 50kg Bag
+                <span class="block font-body-sm text-body-sm text-on-surface-variant text-xs">Category: Groceries • Bulk sack</span>
+</td>
+<td class="py-3.5 px-4 text-right font-body-sm text-body-sm text-on-surface-variant font-mono">₹1,950</td>
+<td class="py-3.5 px-4 text-right font-body-sm text-body-sm text-on-surface-variant font-mono">₹2,020</td>
+<td class="py-3.5 px-4 text-right font-label-md text-label-md text-on-surface font-mono font-semibold">₹2,150</td>
+<td class="py-3.5 px-4 text-right font-label-md text-label-md text-tertiary-container font-mono font-bold">
+                +10.2% ↑
+              </td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center gap-1 bg-tertiary-fixed text-on-tertiary-fixed font-label-xs text-label-xs px-2.5 py-1 rounded-full font-semibold">
+<span class="material-symbols-outlined text-[14px]">warning</span> Price Alert
+                </span>
+</td>
+</tr>
+<!-- Row 3: Tata Tea Premium -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-4 font-label-md text-label-md text-on-surface">
+                Tata Tea Premium 500g
+                <span class="block font-body-sm text-body-sm text-on-surface-variant text-xs">Category: Packaged Goods</span>
+</td>
+<td class="py-3.5 px-4 text-right font-body-sm text-body-sm text-on-surface-variant font-mono">₹190</td>
+<td class="py-3.5 px-4 text-right font-body-sm text-body-sm text-on-surface-variant font-mono">₹190</td>
+<td class="py-3.5 px-4 text-right font-label-md text-label-md text-on-surface font-mono font-semibold">₹195</td>
+<td class="py-3.5 px-4 text-right font-label-md text-label-md text-on-surface-variant font-mono">
+                +2.6%
+              </td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center bg-surface-container-high text-on-surface-variant font-label-xs text-label-xs px-2.5 py-1 rounded-full">
+                  Stable
+                </span>
+</td>
+</tr>
+<!-- Row 4: Aashirvaad Atta -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-4 font-label-md text-label-md text-on-surface">
+                Aashirvaad Shudh Chakki Atta 10kg
+                <span class="block font-body-sm text-body-sm text-on-surface-variant text-xs">Category: Groceries & Grains</span>
+</td>
+<td class="py-3.5 px-4 text-right font-body-sm text-body-sm text-on-surface-variant font-mono">₹375</td>
+<td class="py-3.5 px-4 text-right font-body-sm text-body-sm text-on-surface-variant font-mono">₹378</td>
+<td class="py-3.5 px-4 text-right font-label-md text-label-md text-on-surface font-mono font-semibold">₹380</td>
+<td class="py-3.5 px-4 text-right font-label-md text-label-md text-on-surface-variant font-mono">
+                +1.3%
+              </td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center bg-surface-container-high text-on-surface-variant font-label-xs text-label-xs px-2.5 py-1 rounded-full">
+                  Stable
+                </span>
+</td>
+</tr>
+<!-- Row 5: Maggi Masala Noodles -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-4 font-label-md text-label-md text-on-surface">
+                Maggi Masala Noodles 70g (Master Carton)
+                <span class="block font-body-sm text-body-sm text-on-surface-variant text-xs">Category: Packaged Snacks (96 units)</span>
+</td>
+<td class="py-3.5 px-4 text-right font-body-sm text-body-sm text-on-surface-variant font-mono">₹810</td>
+<td class="py-3.5 px-4 text-right font-body-sm text-body-sm text-on-surface-variant font-mono">₹810</td>
+<td class="py-3.5 px-4 text-right font-label-md text-label-md text-on-surface font-mono font-semibold">₹810</td>
+<td class="py-3.5 px-4 text-right font-label-md text-label-md text-primary font-mono">
+                0.0%
+              </td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center bg-primary-fixed text-on-primary-fixed font-label-xs text-label-xs px-2.5 py-1 rounded-full font-medium">
+                  Flat Price
+                </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer / Prompt -->
+<div class="flex flex-col sm:flex-row items-center justify-between pt-2 text-on-surface-variant text-body-sm font-body-sm gap-2">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[1.125rem] text-primary">info</span>
+          All prices verified against physical tax invoices with GSTIN validation
+        </span>
+<button class="font-label-md text-label-md text-primary hover:text-on-primary-fixed-variant transition-colors flex items-center gap-1">
+<span>Add item to price tracker</span>
+<span class="material-symbols-outlined text-[1rem]">add</span>
+</button>
+</div>
+</div>
+</div>
+</div></main></div></body></html>

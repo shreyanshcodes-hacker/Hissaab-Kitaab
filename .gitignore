@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+frontend/dist/
+backend/dist/
+
+# Environment variables & secrets (NEVER COMMIT)
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.production
+.env.production.local
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+
+# Firebase & GCP Credentials / Service Account Keys (NEVER COMMIT)
+*service-account*.json
+*serviceAccount*.json
+*firebase-adminsdk*.json
+google-credentials.json
+credentials.json
+*.pem
+*.p12
+*.key
+
+# Firebase CLI cache & emulator data
+.firebase/
+.firebaserc
+!.firebaserc.example
+firebase-debug.log
+firebase-debug.*.log
+firestore-debug.log
+ui-debug.log
+pubsub-debug.log
+storage-debug.log
+emulator-data/
+
+# IDE & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.log

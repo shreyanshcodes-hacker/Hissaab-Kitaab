@@ -1,0 +1,11 @@
+node_modules/
+dist/
+tests/
+.env
+.env.*
+*.json.key
+*service-account*.json
+*firebase-adminsdk*.json
+*.log
+Dockerfile
+.dockerignore

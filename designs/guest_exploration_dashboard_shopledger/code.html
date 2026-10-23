@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={"darkMode":"class","theme":{"extend":{"colors":{"surface-container":"#efeee9","on-background":"#1b1c19","on-secondary-container":"#5d6760","on-primary-container":"#99d2b5","surface-container-low":"#f5f4ef","inverse-surface":"#30312e","on-surface":"#1b1c19","on-primary-fixed-variant":"#16503a","tertiary-fixed-dim":"#ffb77d","tertiary":"#5d3000","secondary-fixed-dim":"#bfc9c1","inverse-primary":"#99d3b6","on-tertiary-container":"#ffb77d","secondary-fixed":"#dbe5dd","on-tertiary-fixed":"#2f1500","surface-tint":"#316951","surface":"#faf9f4","surface-container-highest":"#e3e3de","background":"#faf9f4","surface-container-lowest":"#ffffff","inverse-on-surface":"#f2f1ec","outline-variant":"#c0c9c2","primary-fixed-dim":"#99d3b6","on-surface-variant":"#404943","surface-container-high":"#e9e8e3","primary-container":"#245c45","on-secondary-fixed-variant":"#404943","on-secondary":"#ffffff","tertiary-fixed":"#ffdcc3","on-primary":"#ffffff","on-error-container":"#93000a","secondary-container":"#dbe5dd","error-container":"#ffdad6","surface-variant":"#e3e3de","error":"#ba1a1a","outline":"#707973","on-error":"#ffffff","surface-dim":"#dbdad5","surface-bright":"#faf9f4","on-tertiary":"#ffffff","primary-fixed":"#b5efd1","on-secondary-fixed":"#151d19","on-primary-fixed":"#002114","tertiary-container":"#7f4300","secondary":"#57615b","on-tertiary-fixed-variant":"#6e3900","primary":"#04442f"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter-desktop":"1.5rem","gutter":"1rem","space-xl":"2.25rem","space-md":"1rem","margin-desktop":"2rem","space-lg":"1.5rem","space-sm":"0.5rem","margin":"1rem","space-xs":"0.25rem"},"fontFamily":{"label-xs":["Inter"],"body-sm":["Inter"],"currency-stat":["Inter"],"body-lg":["Inter"],"headline-lg":["Inter"],"headline-sm":["Inter"],"display-mobile":["Inter"],"label-md":["Inter"],"display":["Inter"]},"fontSize":{"label-xs":["0.75rem",{"lineHeight":"1rem","letterSpacing":"0.02em","fontWeight":"600"}],"body-sm":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"400"}],"currency-stat":["1.75rem",{"lineHeight":"2rem","letterSpacing":"-0.02em","fontWeight":"700"}],"body-lg":["1rem",{"lineHeight":"1.5rem","fontWeight":"400"}],"headline-lg":["1.5rem",{"lineHeight":"2rem","letterSpacing":"-0.015em","fontWeight":"700"}],"headline-sm":["1.25rem",{"lineHeight":"1.75rem","letterSpacing":"-0.01em","fontWeight":"600"}],"display-mobile":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.01em","fontWeight":"700"}],"label-md":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"600"}],"display":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.02em","fontWeight":"700"}]}}}}</script></head><body class="bg-background font-body-lg text-body-lg text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(37,41,35,0.04)]"><div class="flex flex-col"><div class="h-24 px-space-lg flex items-center gap-space-sm bg-surface-container"><div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-on-primary shadow-[0_1px_3px_rgba(37,41,35,0.06)]"><span class="material-symbols-outlined text-[24px]">menu_book</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-tight">ShopLedger</span><span class="font-label-xs text-label-xs text-on-surface-variant font-medium">Smart Shop Bookkeeper</span></div></div><div class="px-space-md py-space-sm"><div class="flex items-center justify-between px-space-md py-space-xs rounded-lg bg-surface-container-high text-on-surface-variant"><div class="flex items-center gap-space-xs"><span class="w-2 h-2 rounded-full bg-tertiary-container"></span><span class="font-label-xs text-label-xs font-semibold text-tertiary">DEMO EXPLORATION</span></div><span class="material-symbols-outlined text-[16px] text-on-surface-variant">info</span></div></div><nav class="flex flex-col gap-space-xs px-space-md mt-space-sm" data-active-classes="bg-primary-container text-on-primary font-bold rounded-lg shadow-[0_1px_3px_rgba(37,41,35,0.06)]"><a aria-current="page" class="flex items-center justify-between px-space-md py-space-sm transition-colors bg-primary-container text-on-primary font-bold rounded-lg shadow-[0_1px_3px_rgba(37,41,35,0.06)]" data-path="dashboard" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">grid_view</span><span class="font-label-md text-label-md">Dashboard</span></div></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="receipts" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span class="font-label-md text-label-md">Receipts</span></div><span class="px-space-xs py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed-variant font-label-xs text-label-xs">Demo (34)</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="analysis" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">analytics</span><span class="font-label-md text-label-md">Analysis</span></div></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="ask-shopledger" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">auto_awesome</span><span class="font-label-md text-label-md">Ask ShopLedger</span></div><span class="px-space-xs py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-xs text-label-xs font-bold">AI</span></a></nav></div><div class="flex flex-col px-space-md pb-space-lg gap-space-xs"><div class="h-px bg-surface-container-highest my-space-xs"></div><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="help-and-faqs" href="#"><span class="material-symbols-outlined text-[20px]">help_outline</span><span class="font-label-md text-label-md">Help & FAQs</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="settings" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">settings</span><span class="font-label-md text-label-md">Settings</span></div><span class="px-space-xs py-0.5 rounded bg-surface-container-highest text-on-surface-variant font-label-xs text-label-xs">Demo</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-error hover:bg-error-container hover:text-on-error-container transition-colors" data-path="exit-demo" href="#"><span class="material-symbols-outlined text-[20px]">logout</span><span class="font-label-md text-label-md">Exit Demo</span></a></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 z-40 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(37,41,35,0.04)]"><div class="w-full bg-tertiary-fixed text-on-tertiary-fixed px-space-gutter-desktop py-space-xs flex items-center justify-between"><div class="flex items-center gap-space-xs font-label-xs text-label-xs"><span class="material-symbols-outlined text-[16px] text-tertiary">visibility</span><span>You are exploring ShopLedger with sample demo data — Create a free account anytime to save your real shop records</span></div><a class="font-label-xs text-label-xs px-space-sm py-0.5 rounded-lg bg-tertiary text-on-tertiary hover:bg-tertiary-container hover:text-on-tertiary transition-colors" data-path="login" href="#">Sign in / Create Account</a></div><div class="h-16 px-space-gutter-desktop flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md flex-1 max-w-xl"><div class="flex items-center gap-space-xs px-space-md py-space-xs rounded-lg bg-surface-container text-on-surface shadow-[0_1px_3px_rgba(37,41,35,0.06)]"><span class="material-symbols-outlined text-primary text-[20px]">storefront</span><span class="font-label-md text-label-md font-semibold whitespace-nowrap">Sample Kirana Store (Demo Mode)</span><span class="material-symbols-outlined text-on-surface-variant text-[18px]">expand_more</span></div><div class="relative flex-1"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span><input class="w-full pl-10 pr-space-md py-space-xs rounded-lg bg-surface-container-low text-on-surface font-body-sm text-body-sm placeholder:text-on-surface-variant focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Search demo bills, items, khata entries..." type="text"/></div></div><div class="flex items-center gap-space-sm"><button aria-label="Toggle Theme" class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">light_mode</span></button><a class="h-9 px-space-md rounded-lg bg-primary text-on-primary font-label-md text-label-md flex items-center justify-center hover:bg-primary-container hover:text-on-primary-container transition-colors shadow-[0_1px_3px_rgba(37,41,35,0.06)]" data-path="login" href="#">Sign In</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-24 bg-surface px-space-margin-desktop py-space-lg"><div class="flex flex-col w-full">
+<!-- Top Guest Mode Ambient Notification -->
+<div class="relative overflow-hidden rounded-xl bg-surface-container-high shadow-sm p-space-md mb-space-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed shadow-sm flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">explore</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="font-label-xs text-label-xs uppercase tracking-wider text-tertiary font-bold">Explore Mode Active</span>
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+<span class="font-label-xs text-label-xs text-on-surface-variant font-medium">New Delhi Kirana Sample Set</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface mt-0.5">
+          You are exploring realistic sample records. Sign up anytime to scan, read, and save your shop's real wholesale slips.
+        </p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm self-end md:self-auto flex-shrink-0">
+<button class="px-space-md py-2 rounded-lg bg-surface-container-lowest text-on-surface font-label-md text-label-md hover:bg-surface hover:shadow-sm transition-all shadow-sm" onclick="document.getElementById('auth-gate-modal').classList.remove('hidden')">
+        Sign In
+      </button>
+<button class="px-space-md py-2 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary transition-all shadow-sm flex items-center gap-1.5" onclick="document.getElementById('auth-gate-modal').classList.remove('hidden')">
+<span>Create Free Account</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Header Section with Direct In-Context Actions -->
+<header class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg pb-space-lg">
+<div class="max-w-2xl">
+<div class="inline-flex items-center gap-space-xs px-2.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-xs text-label-xs mb-space-sm">
+<span class="material-symbols-outlined text-[14px]">store</span>
+<span>Aggarwal General Store • Sadar Bazar Sample Feed</span>
+</div>
+<h1 class="font-display text-display text-on-surface tracking-tight leading-tight">
+        See how ShopLedger can organize your shop.
+      </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-space-xs">
+        Explore realistic sample data from an active Delhi kirana store. Try out features below, test search filters, or start organizing your own records in seconds.
+      </p>
+<!-- Business Type Switcher Pills -->
+<div class="flex flex-wrap items-center gap-space-xs mt-space-md">
+<span class="font-label-xs text-label-xs text-on-surface-variant mr-1">Switch sample profile:</span>
+<button class="px-3 py-1 rounded-full bg-primary-container text-on-primary font-label-xs text-label-xs shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check</span>
+<span>Kirana & Grocery</span>
+</button>
+<button class="px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-xs text-label-xs hover:bg-surface-container-highest transition-colors" onclick="showToast('Loading Sabzi Mandi sample bills...')">
+          Fruit & Vegetable Mandi
+        </button>
+<button class="px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-xs text-label-xs hover:bg-surface-container-highest transition-colors" onclick="showToast('Loading Hardware Store sample bills...')">
+          Hardware & Paint Store
+        </button>
+<button class="ml-2 inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container transition-colors font-label-xs text-label-xs" onclick="showToast('Demo dataset reset to initial state')">
+<span class="material-symbols-outlined text-[14px]">refresh</span>
+<span>Reset demo data</span>
+</button>
+</div>
+</div>
+<!-- Direct Action Triggers -->
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-sm flex-shrink-0">
+<div class="relative group">
+<button class="w-full sm:w-auto h-12 px-space-lg rounded-lg bg-primary-container text-on-primary font-label-md text-label-md flex items-center justify-center gap-space-xs shadow-md hover:bg-primary transition-all" onclick="document.getElementById('auth-gate-modal').classList.remove('hidden')">
+<span class="material-symbols-outlined text-[20px]">add_a_photo</span>
+<span>+ Upload a receipt</span>
+</button>
+<span class="absolute -top-2.5 -right-2 px-2 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-xs text-label-xs shadow-sm">
+          Sign in to save
+        </span>
+</div>
+<button class="w-full sm:w-auto h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors shadow-sm flex items-center justify-center gap-space-xs" onclick="document.getElementById('auth-gate-modal').classList.remove('hidden')">
+<span class="material-symbols-outlined text-[18px] text-secondary">edit_note</span>
+<span>Create a receipt manually</span>
+</button>
+</div>
+</header>
+<!-- Interactive 4-Card Feature Exploration Strip -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md mb-space-lg">
+<!-- Card 1: Dashboard (Current) -->
+<div class="relative p-space-md rounded-xl bg-surface-container-lowest shadow-md flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[18px]">space_dashboard</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-xs text-label-xs font-bold">
+          Active Screen
+        </span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface leading-snug">1. Store Dashboard</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Overview of monthly khata spending, pending slips, and OCR review alerts.</p>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between text-primary font-label-xs text-label-xs font-semibold">
+<span>Exploring now</span>
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+</div>
+</div>
+<!-- Card 2: Receipts -->
+<div class="cursor-pointer group p-space-md rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all flex flex-col justify-between" onclick="showToast('Opening Receipts Module in Demo Mode with 34 Invoices...')">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="w-8 h-8 rounded-lg bg-surface-container text-on-surface flex items-center justify-center group-hover:bg-primary-fixed group-hover:text-on-primary-fixed-variant transition-colors">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed-variant font-label-xs text-label-xs">
+          34 Demo Bills
+        </span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors leading-snug">2. OCR Bill Inspector</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Side-by-side verification of wrinkled paper receipts and extracted line items.</p>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between text-on-surface-variant group-hover:text-primary font-label-xs text-label-xs">
+<span>Click to inspect bills</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</div>
+</div>
+<!-- Card 3: Analysis & Price Tracker -->
+<div class="cursor-pointer group p-space-md rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all flex flex-col justify-between" onclick="showToast('Analysis Screen: Showing wholesale pulse for Atta, Mustard Oil, and pulses')">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="w-8 h-8 rounded-lg bg-surface-container text-on-surface flex items-center justify-center group-hover:bg-primary-fixed group-hover:text-on-primary-fixed-variant transition-colors">
+<span class="material-symbols-outlined text-[18px]">trending_up</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-xs text-label-xs">
+          Price Trends
+        </span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors leading-snug">3. Margin & Price Spikes</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Automatic wholesale price spike notifications and top distributor splits.</p>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between text-on-surface-variant group-hover:text-primary font-label-xs text-label-xs">
+<span>View price trends</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</div>
+</div>
+<!-- Card 4: Ask ShopLedger AI -->
+<div class="cursor-pointer group p-space-md rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all flex flex-col justify-between" onclick="document.getElementById('auth-gate-modal').classList.remove('hidden')">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="w-8 h-8 rounded-lg bg-surface-container text-on-surface flex items-center justify-center group-hover:bg-primary-fixed group-hover:text-on-primary-fixed-variant transition-colors">
+<span class="material-symbols-outlined text-[18px]">smart_toy</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-xs text-label-xs font-bold">
+          AI Assistant
+        </span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors leading-snug">4. Ask ShopLedger</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Type in Hindi or English: "How much Fortune oil did I buy last month?"</p>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between text-on-surface-variant group-hover:text-primary font-label-xs text-label-xs">
+<span>Try sample prompt</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</div>
+</div>
+</section>
+<!-- Explanation Banner for Preloaded Data -->
+<div class="rounded-xl bg-surface-container-low p-space-md mb-space-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md shadow-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">help</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface font-semibold">Why is there data here already?</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          We loaded 34 realistic wholesale invoices so you can see how ShopLedger parses supplier rates, tax lines, and credit terms without typing anything first.
+        </p>
+</div>
+</div>
+<div class="flex items-center gap-space-xs text-secondary font-label-xs text-label-xs whitespace-nowrap self-end sm:self-auto">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span>Simulated Live Session</span>
+</div>
+</div>
+<!-- Key Metric Cards (Bento Metric Strip) -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md mb-space-lg">
+<!-- Stat 1: Total Spent -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-xs text-label-xs uppercase tracking-wider text-on-surface-variant">Money Spent (October)</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed-variant font-label-xs text-label-xs font-semibold">Demo Data</span>
+</div>
+<div class="my-space-sm">
+<div class="font-currency-stat text-currency-stat text-on-surface tracking-tight">₹1,48,650</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 flex items-center gap-1">
+<span class="text-primary font-semibold flex items-center text-[13px]"><span class="material-symbols-outlined text-[15px]">arrow_upward</span> +12%</span>
+<span>vs September (34 bills)</span>
+</p>
+</div>
+<!-- Sparkline preview -->
+<div class="h-8 w-full flex items-end gap-1.5 pt-1">
+<div class="w-full bg-surface-container rounded-t h-[40%]"></div>
+<div class="w-full bg-surface-container rounded-t h-[65%]"></div>
+<div class="w-full bg-surface-container rounded-t h-[50%]"></div>
+<div class="w-full bg-surface-container rounded-t h-[80%]"></div>
+<div class="w-full bg-surface-container rounded-t h-[70%]"></div>
+<div class="w-full bg-primary-container rounded-t h-[100%]"></div>
+</div>
+</div>
+<!-- Stat 2: Items Purchased -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-xs text-label-xs uppercase tracking-wider text-on-surface-variant">Stock Acquired</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-xs text-label-xs">5 Categories</span>
+</div>
+<div class="my-space-sm">
+<div class="font-currency-stat text-currency-stat text-on-surface tracking-tight">1,280 <span class="font-body-lg text-body-lg text-on-surface-variant font-normal">units</span></div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+          Grains, FMCG soaps, Edible Oils, Spices
+        </p>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden flex">
+<div class="bg-primary-container h-full" style="width: 45%;"></div>
+<div class="bg-primary-fixed-dim h-full" style="width: 25%;"></div>
+<div class="bg-secondary-fixed h-full" style="width: 18%;"></div>
+<div class="bg-tertiary-fixed-dim h-full" style="width: 12%;"></div>
+</div>
+</div>
+<!-- Stat 3: Needs Checking (Low Confidence OCR Alert) -->
+<div class="p-space-md rounded-xl bg-tertiary-fixed/30 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-xs text-label-xs uppercase tracking-wider text-tertiary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-tertiary">warning</span>
+<span>Needs Checking</span>
+</span>
+<span class="px-2 py-0.5 rounded-full bg-tertiary text-on-tertiary font-label-xs text-label-xs font-semibold">2 Pending</span>
+</div>
+<div class="my-space-sm">
+<div class="font-currency-stat text-currency-stat text-tertiary tracking-tight">2 bills</div>
+<p class="font-body-sm text-body-sm text-on-surface mt-0.5 font-medium">
+          ₹14,200 pending review
+        </p>
+</div>
+<div class="p-2 rounded-lg bg-surface-container-lowest/80 text-on-surface-variant font-body-sm text-body-sm text-[12px] flex items-center justify-between">
+<span>Handwritten ink blur on 1 slip</span>
+<span class="material-symbols-outlined text-[16px] text-tertiary">chevron_right</span>
+</div>
+</div>
+<!-- Stat 4: Estimated GST Input -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-xs text-label-xs uppercase tracking-wider text-on-surface-variant">GST Input Credit</span>
+<span class="px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-xs text-label-xs font-semibold">ITC Ready</span>
+</div>
+<div class="my-space-sm">
+<div class="font-currency-stat text-currency-stat text-on-surface tracking-tight">₹18,420</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+          Ready for CA / GSTR-3B export
+        </p>
+</div>
+<div class="flex items-center gap-space-xs font-label-xs text-label-xs text-primary font-medium">
+<span class="material-symbols-outlined text-[15px]">file_download</span>
+<span>Download Tax Summary Report</span>
+</div>
+</div>
+</section>
+<!-- Main Split Layout (Recent Purchase Receipts + Right Inspector / Vendor Column) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg mb-space-xl">
+<!-- Left Column (Wide: 8 Cols) -->
+<div class="lg:col-span-8 flex flex-col gap-space-md">
+<!-- Table Header & Filter Bar -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-md">
+<div>
+<div class="flex items-center gap-space-xs">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Recent Purchase Receipts</h3>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed-variant font-label-xs text-label-xs">
+                Demo Feed
+              </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+              Verified computer vision data extracted from raw phone captures
+            </p>
+</div>
+<!-- Filter Tabs -->
+<div class="flex items-center bg-surface-container p-1 rounded-lg self-start sm:self-auto">
+<button class="px-space-sm py-1 rounded bg-surface-container-lowest text-on-surface font-label-xs text-label-xs font-bold shadow-sm">
+              All (34)
+            </button>
+<button class="px-space-sm py-1 rounded text-on-surface-variant hover:text-on-surface font-label-xs text-label-xs">
+              Needs checking (2)
+            </button>
+<button class="px-space-sm py-1 rounded text-on-surface-variant hover:text-on-surface font-label-xs text-label-xs">
+              Confirmed (32)
+            </button>
+</div>
+</div>
+<!-- Receipts Data Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-xs text-label-xs uppercase">
+<th class="py-2.5 px-3 rounded-l-lg">Date</th>
+<th class="py-2.5 px-3">Supplier Name</th>
+<th class="py-2.5 px-3">Items</th>
+<th class="py-2.5 px-3">Status</th>
+<th class="py-2.5 px-3 text-right">Amount</th>
+<th class="py-2.5 px-3 rounded-r-lg text-center">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container font-body-sm text-body-sm">
+<!-- Row 1: Low Confidence Warning -->
+<tr class="hover:bg-surface-container-low transition-colors group cursor-pointer" onclick="openInspectorModal('Gupta Wholesale Mart', '₹12,450', '24 Oct 2024', '14 items', 'unclear_total')">
+<td class="py-3 px-3 font-medium text-on-surface whitespace-nowrap">24 Oct 2024</td>
+<td class="py-3 px-3">
+<div class="font-semibold text-on-surface group-hover:text-primary transition-colors">Gupta Wholesale Mart</div>
+<div class="font-label-xs text-label-xs text-on-surface-variant">Chawri Bazar • Invoice #GWM-4192</div>
+</td>
+<td class="py-3 px-3 whitespace-nowrap text-on-surface-variant">14 items</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-xs text-label-xs font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                    Needs checking
+                  </span>
+</td>
+<td class="py-3 px-3 text-right font-bold text-on-surface [font-variant-numeric:tabular-nums]">₹12,450</td>
+<td class="py-3 px-3 text-center">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Low Confidence Warning -->
+<tr class="hover:bg-surface-container-low transition-colors group cursor-pointer" onclick="openInspectorModal('Shree Balaji Traders', '₹1,750', '23 Oct 2024', '6 items', 'folded_paper')">
+<td class="py-3 px-3 font-medium text-on-surface whitespace-nowrap">23 Oct 2024</td>
+<td class="py-3 px-3">
+<div class="font-semibold text-on-surface group-hover:text-primary transition-colors">Shree Balaji Traders</div>
+<div class="font-label-xs text-label-xs text-on-surface-variant">Khari Baoli • Thermal slip</div>
+</td>
+<td class="py-3 px-3 whitespace-nowrap text-on-surface-variant">6 items</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-xs text-label-xs font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                    Needs checking
+                  </span>
+</td>
+<td class="py-3 px-3 text-right font-bold text-on-surface [font-variant-numeric:tabular-nums]">₹1,750</td>
+<td class="py-3 px-3 text-center">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: Verified -->
+<tr class="hover:bg-surface-container-low transition-colors group cursor-pointer" onclick="openInspectorModal('Hindustan Unilever Dist.', '₹34,800', '21 Oct 2024', '28 items', 'verified')">
+<td class="py-3 px-3 font-medium text-on-surface whitespace-nowrap">21 Oct 2024</td>
+<td class="py-3 px-3">
+<div class="font-semibold text-on-surface group-hover:text-primary transition-colors">Hindustan Unilever Dist.</div>
+<div class="font-label-xs text-label-xs text-on-surface-variant">Authorized Distributor • GSTIN07AAAC...</div>
+</td>
+<td class="py-3 px-3 whitespace-nowrap text-on-surface-variant">28 items</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-xs text-label-xs font-medium">
+<span class="material-symbols-outlined text-[13px] text-primary">check_circle</span>
+                    Verified
+                  </span>
+</td>
+<td class="py-3 px-3 text-right font-bold text-on-surface [font-variant-numeric:tabular-nums]">₹34,800</td>
+<td class="py-3 px-3 text-center">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+</td>
+</tr>
+<!-- Row 4: Verified -->
+<tr class="hover:bg-surface-container-low transition-colors group cursor-pointer" onclick="openInspectorModal('ITC Food Products Agency', '₹22,100', '19 Oct 2024', '19 items', 'verified')">
+<td class="py-3 px-3 font-medium text-on-surface whitespace-nowrap">19 Oct 2024</td>
+<td class="py-3 px-3">
+<div class="font-semibold text-on-surface group-hover:text-primary transition-colors">ITC Food Products Agency</div>
+<div class="font-label-xs text-label-xs text-on-surface-variant">Aashirvaad & Sunfeast division</div>
+</td>
+<td class="py-3 px-3 whitespace-nowrap text-on-surface-variant">19 items</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-xs text-label-xs font-medium">
+<span class="material-symbols-outlined text-[13px] text-primary">check_circle</span>
+                    Verified
+                  </span>
+</td>
+<td class="py-3 px-3 text-right font-bold text-on-surface [font-variant-numeric:tabular-nums]">₹22,100</td>
+<td class="py-3 px-3 text-center">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+</td>
+</tr>
+<!-- Row 5: Verified -->
+<tr class="hover:bg-surface-container-low transition-colors group cursor-pointer" onclick="openInspectorModal('Amul Dairy Supply Co-Op', '₹15,300', '17 Oct 2024', '12 items', 'verified')">
+<td class="py-3 px-3 font-medium text-on-surface whitespace-nowrap">17 Oct 2024</td>
+<td class="py-3 px-3">
+<div class="font-semibold text-on-surface group-hover:text-primary transition-colors">Amul Dairy Supply Co-Op</div>
+<div class="font-label-xs text-label-xs text-on-surface-variant">Daily butter, cheese, ghee crate supply</div>
+</td>
+<td class="py-3 px-3 whitespace-nowrap text-on-surface-variant">12 items</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-xs text-label-xs font-medium">
+<span class="material-symbols-outlined text-[13px] text-primary">check_circle</span>
+                    Verified
+                  </span>
+</td>
+<td class="py-3 px-3 text-right font-bold text-on-surface [font-variant-numeric:tabular-nums]">₹15,300</td>
+<td class="py-3 px-3 text-center">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Split-Screen OCR Info Callout Banner -->
+<div class="mt-space-md p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px] text-primary">splitscreen</span>
+<span class="font-body-sm text-body-sm">
+              Clicking any sample bill opens our split-screen OCR reviewer with sample handwritten slips and computer vision bounding boxes.
+            </span>
+</div>
+<button class="text-primary font-label-md text-label-md hover:underline whitespace-nowrap flex items-center gap-1 flex-shrink-0" onclick="openInspectorModal('Gupta Wholesale Mart', '₹12,450', '24 Oct 2024', '14 items', 'unclear_total')">
+<span>Try sample preview</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Feature Teaser: Why Indian Store Owners Love It -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<div class="flex items-start gap-space-sm">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">document_scanner</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface text-[15px]">Reads Hindi & English</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Understands local bahi-khata handwriting, kutcha slips, and printed tax invoices.</p>
+</div>
+</div>
+<div class="flex items-start gap-space-sm">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">currency_rupee</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface text-[15px]">Rate Spike Detection</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Alerts you when mustard oil or basmati rice wholesale price jumps by 5%.</p>
+</div>
+</div>
+<div class="flex items-start gap-space-sm">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface text-[15px]">Safe & Offline-First</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Never lose a purchase slip. Everything is synced securely to your cloud bahi khata.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column (4 Cols: Bill Dropzone & Vendor Breakdown) -->
+<div class="lg:col-span-4 flex flex-col gap-space-md">
+<!-- Interactive Bill Dropzone (Guest Trigger) -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col items-center text-center relative overflow-hidden">
+<div class="w-14 h-14 rounded-2xl bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center mb-space-sm shadow-inner">
+<span class="material-symbols-outlined text-[30px] text-primary">cloud_upload</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Try Uploading a Bill</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 max-w-xs">
+          Drag & drop a bill photo or PDF here. Supports phone camera photos, WhatsApp forwards, and paper slips.
+        </p>
+<!-- Dropzone interactive surface -->
+<div class="w-full mt-space-md p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors flex flex-col items-center gap-space-xs" onclick="document.getElementById('auth-gate-modal').classList.remove('hidden')">
+<span class="material-symbols-outlined text-[28px] text-primary">add_photo_alternate</span>
+<span class="font-label-md text-label-md text-on-surface">Tap or drop bill snapshot here</span>
+<span class="font-label-xs text-label-xs text-on-surface-variant">PNG, JPG, PDF up to 15MB</span>
+</div>
+<!-- Action Buttons -->
+<div class="w-full flex items-center gap-space-xs mt-space-sm">
+<button class="flex-1 py-2.5 px-3 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary transition-colors flex items-center justify-center gap-1.5 shadow-sm" onclick="document.getElementById('auth-gate-modal').classList.remove('hidden')">
+<span class="material-symbols-outlined text-[18px]">photo_camera</span>
+<span>Camera</span>
+</button>
+<button class="flex-1 py-2.5 px-3 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors flex items-center justify-center gap-1.5 shadow-sm" onclick="document.getElementById('auth-gate-modal').classList.remove('hidden')">
+<span class="material-symbols-outlined text-[18px]">folder_open</span>
+<span>Choose File</span>
+</button>
+</div>
+<p class="font-label-xs text-label-xs text-on-surface-variant mt-space-sm leading-normal">
+          Clicking either will prompt you to create an account so your receipt is securely saved to your private ledger.
+        </p>
+</div>
+<!-- Top Wholesale Vendors Breakdown -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-sm">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Top Wholesale Vendors</h3>
+<span class="font-label-xs text-label-xs text-on-surface-variant">October Purchase Volume</span>
+</div>
+<span class="font-label-xs text-label-xs px-2 py-0.5 rounded bg-surface-container text-on-surface-variant">
+            34 Invoices
+          </span>
+</div>
+<div class="flex flex-col gap-space-md my-space-xs">
+<!-- Vendor 1 -->
+<div>
+<div class="flex items-center justify-between font-label-md text-label-md">
+<span class="text-on-surface font-semibold">1. Hindustan Unilever Agency</span>
+<span class="font-bold text-on-surface [font-variant-numeric:tabular-nums]">₹48,200</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full mt-1.5 overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 32%;"></div>
+</div>
+<div class="flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant mt-1">
+<span>FMCG Soaps, Shampoos & Detergent</span>
+<span class="font-medium text-primary">32% of total</span>
+</div>
+</div>
+<!-- Vendor 2 -->
+<div>
+<div class="flex items-center justify-between font-label-md text-label-md">
+<span class="text-on-surface font-semibold">2. Gupta Wholesale Mart</span>
+<span class="font-bold text-on-surface [font-variant-numeric:tabular-nums]">₹38,400</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full mt-1.5 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 26%;"></div>
+</div>
+<div class="flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant mt-1">
+<span>Dal, Basmati Rice & Sugar Crates</span>
+<span class="font-medium text-primary">26% of total</span>
+</div>
+</div>
+<!-- Vendor 3 -->
+<div>
+<div class="flex items-center justify-between font-label-md text-label-md">
+<span class="text-on-surface font-semibold">3. Amul Dairy Supply</span>
+<span class="font-bold text-on-surface [font-variant-numeric:tabular-nums]">₹24,900</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full mt-1.5 overflow-hidden">
+<div class="bg-tertiary-fixed-dim h-full rounded-full" style="width: 17%;"></div>
+</div>
+<div class="flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant mt-1">
+<span>Butter, Paneer, Ghee & Milk</span>
+<span class="font-medium text-tertiary">17% of total</span>
+</div>
+</div>
+</div>
+<button class="mt-space-sm w-full py-2 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md flex items-center justify-center gap-1" onclick="document.getElementById('auth-gate-modal').classList.remove('hidden')">
+<span>View All 12 Vendors in Analysis</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+<!-- Quick AI Query Preview Pill -->
+<div class="p-space-md rounded-xl bg-secondary-fixed/50 shadow-sm flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs text-on-secondary-fixed">
+<span class="material-symbols-outlined text-[18px]">psychology</span>
+<span class="font-label-xs text-label-xs font-bold uppercase tracking-wider">Kirana AI Sample Query</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-secondary-fixed-variant italic">
+          "Which vendor charged the highest rate for 15kg Fortune Mustard Oil tin in the last 60 days?"
+        </p>
+<button class="self-start mt-1 font-label-xs text-label-xs text-primary font-bold hover:underline flex items-center gap-0.5" onclick="document.getElementById('auth-gate-modal').classList.remove('hidden')">
+<span>See AI Answer with your data</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- OCR Split-Screen Verification Modal Preview -->
+<div class="fixed inset-0 z-50 bg-inverse-surface/60 backdrop-blur-sm hidden flex items-center justify-center p-space-md" id="inspector-modal">
+<div class="bg-surface-container-lowest rounded-2xl max-w-4xl w-full max-h-[921px] overflow-hidden shadow-2xl flex flex-col">
+<!-- Modal Top Bar -->
+<div class="px-space-lg py-space-md bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">receipt</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface" id="modal-supplier-name">Gupta Wholesale Mart</h3>
+<div class="flex items-center gap-2 font-label-xs text-label-xs text-on-surface-variant">
+<span id="modal-bill-date">24 Oct 2024</span>
+<span>•</span>
+<span id="modal-item-count">14 items extracted</span>
+<span>•</span>
+<span class="text-tertiary font-bold">Needs Checking</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="px-space-md py-1.5 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary transition-colors flex items-center gap-1 shadow-sm" onclick="document.getElementById('auth-gate-modal').classList.remove('hidden')">
+<span class="material-symbols-outlined text-[16px]">check</span>
+<span>Confirm & Save</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-surface-container hover:bg-surface-container-highest flex items-center justify-center text-on-surface-variant transition-colors" onclick="closeInspectorModal()">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+</div>
+<!-- Split Screen Content Body -->
+<div class="grid grid-cols-1 md:grid-cols-2 flex-1 overflow-y-auto">
+<!-- Left: Paper Slip Scan Preview with OCR bounding boxes -->
+<div class="p-space-md bg-surface-container-low flex flex-col items-center justify-start border-r border-surface-container">
+<div class="flex items-center justify-between w-full mb-space-xs">
+<span class="font-label-xs text-label-xs uppercase text-on-surface-variant font-bold">Uploaded Paper Receipt Scan</span>
+<span class="font-label-xs text-label-xs px-2 py-0.5 rounded bg-surface-container text-on-surface-variant">Zoom: 100%</span>
+</div>
+<!-- Synthetic Paper Receipt Canvas -->
+<div class="relative w-full max-w-sm bg-surface-container-lowest p-space-md rounded-lg shadow-md font-mono text-[12px] text-on-surface">
+<!-- Low Confidence Bounding Box on Subtotal -->
+<div class="absolute right-4 bottom-14 border-2 border-tertiary-container bg-tertiary-fixed/30 rounded px-1.5 py-0.5 animate-pulse flex items-center gap-1">
+<span class="text-[10px] font-bold text-tertiary">CONFIDENCE 64%</span>
+</div>
+<div class="text-center pb-2 border-b border-dashed border-surface-container-high">
+<div class="font-bold text-[14px]">GUPTA WHOLESALE MART</div>
+<div>Gali Batashan, Khari Baoli, Delhi-6</div>
+<div class="text-[10px] text-on-surface-variant">GST: 07AABCU9603R1ZM</div>
+</div>
+<div class="py-2 space-y-1.5 border-b border-dashed border-surface-container-high">
+<div class="flex justify-between">
+<span>1. Fortune Kachi Ghani 15L</span>
+<span class="font-bold">₹2,150.00</span>
+</div>
+<div class="flex justify-between">
+<span>2. India Gate Basmati 25kg</span>
+<span class="font-bold">₹2,850.00</span>
+</div>
+<div class="flex justify-between">
+<span>3. Tata Salt Crates (50pkt)</span>
+<span class="font-bold">₹1,150.00</span>
+</div>
+<div class="flex justify-between text-tertiary font-bold">
+<span>4. Rajdhani Chana Besan 10kg</span>
+<span>₹1,450.00*</span>
+</div>
+<div class="flex justify-between text-on-surface-variant text-[11px]">
+<span>... 10 more items listed</span>
+<span>₹4,850.00</span>
+</div>
+</div>
+<div class="pt-2 flex justify-between font-bold text-[14px]">
+<span>TOTAL PAYABLE</span>
+<span class="text-tertiary" id="modal-bill-amount">₹12,450.00</span>
+</div>
+<div class="text-[10px] text-center text-on-surface-variant mt-2">
+              Note: Handwritten signature verified at delivery
+            </div>
+</div>
+<div class="mt-space-sm font-label-xs text-label-xs text-on-surface-variant text-center">
+            Amber highlights show lines where computer vision recommends merchant verification.
+          </div>
+</div>
+<!-- Right: Extracted Structured Ledger Data Form -->
+<div class="p-space-md flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-xs text-label-xs uppercase text-on-surface-variant font-bold">Extracted Ledger Data</span>
+<span class="px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed-variant font-label-xs text-label-xs font-semibold">13/14 Validated</span>
+</div>
+<div class="space-y-space-sm">
+<div>
+<label class="font-label-xs text-label-xs text-on-surface-variant">Vendor / Firm</label>
+<input class="w-full mt-1 px-3 py-2 rounded-lg bg-surface-container-low text-on-surface font-body-sm text-body-sm focus:outline-none focus:ring-1 focus:ring-primary" type="text" value="Gupta Wholesale Mart"/>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<div>
+<label class="font-label-xs text-label-xs text-on-surface-variant">Bill Date</label>
+<input class="w-full mt-1 px-3 py-2 rounded-lg bg-surface-container-low text-on-surface font-body-sm text-body-sm focus:outline-none focus:ring-1 focus:ring-primary" type="text" value="2024-10-24"/>
+</div>
+<div>
+<label class="font-label-xs text-label-xs text-on-surface-variant">Payment Mode</label>
+<input class="w-full mt-1 px-3 py-2 rounded-lg bg-surface-container-low text-on-surface font-body-sm text-body-sm focus:outline-none focus:ring-1 focus:ring-primary" type="text" value="Khata (Credit 15 days)"/>
+</div>
+</div>
+<!-- Flagged item edit row -->
+<div class="p-space-sm rounded-lg bg-tertiary-fixed/30 border border-tertiary/20">
+<div class="flex items-center justify-between text-tertiary font-label-xs text-label-xs font-bold mb-1">
+<span>Flagged Line 4: Check Quantity & Rate</span>
+<span class="material-symbols-outlined text-[16px]">priority_high</span>
+</div>
+<div class="grid grid-cols-3 gap-2">
+<div class="col-span-2">
+<input class="w-full px-2 py-1.5 rounded bg-surface-container-lowest text-on-surface font-body-sm text-body-sm" type="text" value="Rajdhani Chana Besan 10kg"/>
+</div>
+<div>
+<input class="w-full px-2 py-1.5 rounded bg-surface-container-lowest text-on-surface font-body-sm text-body-sm font-bold text-right" type="text" value="₹1,450"/>
+</div>
+</div>
+</div>
+<div>
+<label class="font-label-xs text-label-xs text-on-surface-variant">Total Bill Amount</label>
+<div class="text-[20px] font-bold text-on-surface mt-1">₹12,450.00</div>
+</div>
+</div>
+</div>
+<div class="mt-space-lg pt-space-sm border-t border-surface-container flex items-center justify-between">
+<span class="font-label-xs text-label-xs text-on-surface-variant">Demo Review Mode</span>
+<div class="flex gap-space-xs">
+<button class="px-space-sm py-1.5 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md" onclick="closeInspectorModal()">Dismiss</button>
+<button class="px-space-md py-1.5 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary transition-colors" onclick="document.getElementById('auth-gate-modal').classList.remove('hidden')">
+                Sign in to save this bill
+              </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Friendly Guest Auth Gate Modal -->
+<div class="fixed inset-0 z-50 bg-inverse-surface/65 backdrop-blur-sm hidden flex items-center justify-center p-space-md" id="auth-gate-modal">
+<div class="bg-surface-container-lowest rounded-2xl max-w-md w-full p-space-xl shadow-2xl relative flex flex-col">
+<button class="absolute top-4 right-4 w-8 h-8 rounded-full bg-surface-container hover:bg-surface-container-highest text-on-surface flex items-center justify-center transition-colors" onclick="document.getElementById('auth-gate-modal').classList.add('hidden')">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+<!-- Shop Icon Header -->
+<div class="w-12 h-12 rounded-xl bg-primary-container text-on-primary flex items-center justify-center mb-space-sm shadow-sm">
+<span class="material-symbols-outlined text-[26px]">storefront</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Save your real shop records</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1.5">
+        Create a free account in 30 seconds to upload your first receipt and keep your private wholesale khata organized forever.
+      </p>
+<!-- Auth Action Buttons -->
+<div class="mt-space-lg flex flex-col gap-space-sm">
+<button class="w-full h-11 px-space-md rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md flex items-center justify-center gap-space-sm transition-colors shadow-sm" onclick="showToast('Redirecting to Google Secure Authentication...')">
+<svg class="w-5 h-5" viewbox="0 0 24 24">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"></path>
+</svg>
+<span>Continue with Google</span>
+</button>
+<div class="flex items-center my-1">
+<div class="flex-1 h-px bg-surface-container"></div>
+<span class="px-space-sm font-label-xs text-label-xs text-on-surface-variant uppercase">Or use phone number</span>
+<div class="flex-1 h-px bg-surface-container"></div>
+</div>
+<div class="flex items-center gap-space-xs">
+<div class="h-11 px-3 rounded-lg bg-surface-container-low text-on-surface font-body-sm text-body-sm flex items-center font-medium">
+            🇮🇳 +91
+          </div>
+<input class="h-11 flex-1 px-3 rounded-lg bg-surface-container-low text-on-surface font-body-sm text-body-sm placeholder:text-on-surface-variant focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Enter 10-digit mobile number" type="tel"/>
+</div>
+<button class="w-full h-11 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary transition-colors shadow-sm flex items-center justify-center gap-1.5" onclick="showToast('OTP sent to your mobile number')">
+<span>Get Login OTP</span>
+<span class="material-symbols-outlined text-[18px]">send</span>
+</button>
+</div>
+<!-- Dismiss Link -->
+<div class="mt-space-md text-center">
+<button class="font-label-xs text-label-xs text-secondary hover:text-on-surface underline" onclick="document.getElementById('auth-gate-modal').classList.add('hidden')">
+          Continue exploring sample demo data instead
+        </button>
+</div>
+<!-- Trust Badges -->
+<div class="mt-space-lg pt-space-md border-t border-surface-container flex items-center justify-between text-on-surface-variant text-[11px]">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">verified_user</span>
+<span>No credit card needed</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">encrypted</span>
+<span>256-bit Bank Grade</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">lock</span>
+<span>100% Private</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Toast Notification Pill for Interactive Clicks -->
+<div class="fixed bottom-6 right-6 z-50 bg-inverse-surface text-inverse-on-surface px-space-md py-space-sm rounded-lg shadow-xl font-body-sm text-body-sm flex items-center gap-space-xs transition-opacity duration-300 opacity-0 pointer-events-none" id="toast-pill">
+<span class="material-symbols-outlined text-inverse-primary text-[18px]">info</span>
+<span id="toast-message">Action triggered</span>
+</div>
+</div>
+<script>
+  function showToast(msg) {
+    const toast = document.getElementById('toast-pill');
+    const label = document.getElementById('toast-message');
+    if (!toast || !label) return;
+    label.innerText = msg;
+    toast.classList.remove('opacity-0', 'pointer-events-none');
+    toast.classList.add('opacity-100');
+    setTimeout(() => {
+      toast.classList.add('opacity-0', 'pointer-events-none');
+      toast.classList.remove('opacity-100');
+    }, 3200);
+  }
+
+  function openInspectorModal(supplier, amount, date, items, type) {
+    const modal = document.getElementById('inspector-modal');
+    if (!modal) return;
+    document.getElementById('modal-supplier-name').innerText = supplier;
+    document.getElementById('modal-bill-amount').innerText = amount;
+    document.getElementById('modal-bill-date').innerText = date;
+    document.getElementById('modal-item-count').innerText = items + ' extracted';
+    modal.classList.remove('hidden');
+  }
+
+  function closeInspectorModal() {
+    const modal = document.getElementById('inspector-modal');
+    if (modal) modal.classList.add('hidden');
+  }
+</script></main></div></body></html>

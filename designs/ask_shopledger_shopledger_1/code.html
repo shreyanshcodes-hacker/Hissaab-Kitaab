@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-primary-fixed-variant":"#16503a","secondary-container":"#dbe5dd","primary-fixed":"#b5efd1","on-primary":"#ffffff","secondary":"#57615b","tertiary-fixed":"#ffdcc3","secondary-fixed-dim":"#bfc9c1","on-secondary-fixed":"#151d19","tertiary-container":"#7f4300","surface-container-lowest":"#ffffff","error-container":"#ffdad6","on-background":"#1b1c19","surface":"#faf9f4","background":"#faf9f4","surface-container":"#efeee9","on-error-container":"#93000a","on-tertiary":"#ffffff","on-secondary-fixed-variant":"#404943","surface-container-highest":"#e3e3de","surface-container-high":"#e9e8e3","inverse-on-surface":"#f2f1ec","on-surface":"#1b1c19","secondary-fixed":"#dbe5dd","inverse-surface":"#30312e","surface-variant":"#e3e3de","primary-fixed-dim":"#99d3b6","on-tertiary-fixed-variant":"#6e3900","inverse-primary":"#99d3b6","surface-tint":"#316951","outline":"#707973","on-tertiary-container":"#ffb77d","on-secondary":"#ffffff","outline-variant":"#c0c9c2","on-primary-container":"#99d2b5","tertiary":"#5d3000","surface-dim":"#dbdad5","error":"#ba1a1a","on-tertiary-fixed":"#2f1500","surface-bright":"#faf9f4","on-primary-fixed":"#002114","primary-container":"#245c45","surface-container-low":"#f5f4ef","on-error":"#ffffff","tertiary-fixed-dim":"#ffb77d","on-secondary-container":"#5d6760","on-surface-variant":"#404943","primary":"#04442f"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"space-xl":"2.25rem","gutter":"1rem","margin":"1rem","space-md":"1rem","space-lg":"1.5rem","margin-desktop":"2rem","gutter-desktop":"1.5rem","space-xs":"0.25rem","space-sm":"0.5rem"},fontFamily:{"display":["Inter"],"label-xs":["Inter"],"headline-lg":["Inter"],"body-sm":["Inter"],"body-lg":["Inter"],"display-mobile":["Inter"],"label-md":["Inter"],"currency-stat":["Inter"],"headline-sm":["Inter"]},fontSize:{"display":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.02em","fontWeight":"700"}],"label-xs":["0.75rem",{"lineHeight":"1rem","letterSpacing":"0.02em","fontWeight":"600"}],"headline-lg":["1.5rem",{"lineHeight":"2rem","letterSpacing":"-0.015em","fontWeight":"700"}],"body-sm":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"400"}],"body-lg":["1rem",{"lineHeight":"1.5rem","fontWeight":"400"}],"display-mobile":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.01em","fontWeight":"700"}],"label-md":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"600"}],"currency-stat":["1.75rem",{"lineHeight":"2rem","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-sm":["1.25rem",{"lineHeight":"1.75rem","letterSpacing":"-0.01em","fontWeight":"600"}]}}}}</script></head><body class="bg-surface font-body-lg text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between overflow-y-auto"><div class="p-space-lg"><div class="flex items-center gap-space-sm mb-space-xl"><img alt="ShopLedger Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VRnzfpuAZPE2MEeTjoUDXehqdHDyxBez3LbbRvHo0GcGvnsMiUTupaVBxg_fzYMnbTQHqlaLUO3UaV6P9HW2UvIkxdnyvEt4paM8kVo-Suj6rS3mJoAp0ByZ-BZ9oBEbCCVgMbvz33KBpei8u47rhTPL6RgF-COnxv4yTWmVK-WWVWopqpv0ffGfD6OZrUFq7CLvRaqr4BK2rBnQ-VE6b5nJ0FYcl-CrmPrObF0LqRNVvpzfl_V0SEAjOq"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">ShopLedger</span><span class="font-label-xs text-label-xs text-on-surface-variant mt-1 leading-none">Smart Shop Bookkeeper</span></div></div><div class="mb-space-lg"><button class="w-full flex items-center justify-center gap-space-sm bg-primary-container text-on-primary font-label-md text-label-md py-space-sm px-space-md rounded-lg shadow-[0_1px_3px_rgba(37,41,35,0.06)] hover:bg-primary transition-colors"><span class="material-symbols-outlined text-[1.25rem]">add_circle</span><span>+ Upload Receipt</span></button></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-secondary-container text-on-secondary-fixed font-label-md rounded-lg"><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="dashboard" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">dashboard</span><span>Dashboard</span></div></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="receipts" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">receipt_long</span><span>Receipts</span></div><span class="bg-tertiary-fixed text-on-tertiary-fixed font-label-xs text-label-xs px-2 py-0.5 rounded-full">2 needs check</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="analysis" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">trending_up</span><span>Analysis</span></div></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="ask-shopledger" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">auto_awesome</span><span>Ask ShopLedger</span></div><span class="bg-primary-fixed text-on-primary-fixed font-label-xs text-label-xs px-2 py-0.5 rounded-full">AI</span></a></nav></div><div class="p-space-lg flex flex-col gap-space-sm"><div class="flex flex-col gap-space-xs mb-space-sm"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="help-and-faqs" href="#"><span class="material-symbols-outlined text-[1.25rem]">help</span><span>Help &amp; FAQs</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[1.25rem]">settings</span><span>Settings</span></a><div class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">contrast</span><span>Appearance</span></div><button aria-label="Toggle theme" class="flex items-center p-1 rounded-full hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[1.25rem]">light_mode</span></button></div></div><div class="bg-surface-container-lowest p-space-sm rounded-lg shadow-[0_1px_3px_rgba(37,41,35,0.06)] flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-sm min-w-0"><img alt="Profile" class="w-8 h-8 rounded-full object-cover flex-shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFviORAjsiSsDQWbSaKHwp8QQMsMidyEJn4nfJEOndAyJAzkZy-9HMHhji6x-pR9runnlyVZ89VfB0gOuTaLD6ahza9bCaAcMcd7HofUxdBVRa2IYKYIybpHxfooCRyFnla0YhYvERsixTlkjei6JcK2jk5m6IZpECPHO7_Qr-Ak4mT7z64QWEMv1tszsdMmaCoPRY7a3XKLtma4ywzJNLxI4QtBx7lPG-PMEfLd0Ezg1jn1SgjFVf3g"/><div class="flex flex-col min-w-0"><span class="font-label-md text-label-md text-on-surface truncate">Sharma Kirana Store</span><span class="font-label-xs text-label-xs text-on-surface-variant truncate">Ramesh Sharma</span></div></div><button aria-label="Switch store or log out" class="p-1 text-on-surface-variant hover:text-on-surface transition-colors flex-shrink-0"><span class="material-symbols-outlined text-[1.25rem]">unfold_more</span></button></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-16 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-gutter-desktop"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-sm text-on-surface-variant font-body-sm text-body-sm"><span class="material-symbols-outlined text-[1.125rem]">storefront</span><span>Sharma Kirana Store (Main Bazar)</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-sm bg-surface-container px-space-md py-1.5 rounded-full"><span class="material-symbols-outlined text-[1.125rem] text-on-surface-variant">search</span><input class="bg-transparent border-0 outline-none font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant w-56" placeholder="Search receipts, items, bahi khata..." type="text"/></div><button aria-label="Notifications" class="relative p-2 rounded-full hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[1.25rem]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error"></span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFviORAjsiSsDQWbSaKHwp8QQMsMidyEJn4nfJEOndAyJAzkZy-9HMHhji6x-pR9runnlyVZ89VfB0gOuTaLD6ahza9bCaAcMcd7HofUxdBVRa2IYKYIybpHxfooCRyFnla0YhYvERsixTlkjei6JcK2jk5m6IZpECPHO7_Qr-Ak4mT7z64QWEMv1tszsdMmaCoPRY7a3XKLtma4ywzJNLxI4QtBx7lPG-PMEfLd0Ezg1jn1SgjFVf3g"/></div></header><main class="relative pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<!-- Interactive Script for Tab Highlight in Shell + Chat Interaction -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Highlight the active nav link in the shell
+      const navLinks = document.querySelectorAll('nav[data-active-classes] a');
+      navLinks.forEach(link => {
+        if (link.getAttribute('data-path') === 'ask-shopledger') {
+          link.className = "flex items-center justify-between px-space-md py-space-sm bg-secondary-container text-on-secondary-fixed font-label-md text-label-md rounded-lg shadow-sm";
+        }
+      });
+    });
+
+    function fillQuery(text) {
+      const input = document.getElementById("chat-user-input");
+      if (input) {
+        input.value = text;
+        input.focus();
+        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function resetConversation() {
+      const thread = document.getElementById("chat-history-stream");
+      const greeting = document.getElementById("welcome-greeting-block");
+      if (thread && greeting) {
+        // Keeps only the greeting
+        thread.innerHTML = '';
+        thread.appendChild(greeting);
+      }
+    }
+
+    function appendMessage() {
+      const input = document.getElementById("chat-user-input");
+      const text = input ? input.value.trim() : "";
+      if (!text) return;
+
+      const stream = document.getElementById("chat-history-stream");
+
+      // User Message Bubble
+      const userBubble = document.createElement("div");
+      userBubble.className = "flex justify-end gap-space-sm items-start";
+      userBubble.innerHTML = `
+        <div class="max-w-2xl bg-secondary-container text-on-secondary-fixed p-space-md rounded-2xl rounded-tr-xs shadow-sm font-body-lg text-body-lg">
+          <p>${escapeHtml(text)}</p>
+        </div>
+        <div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center flex-shrink-0 font-label-xs text-label-xs font-bold">
+          RS
+        </div>
+      `;
+      stream.appendChild(userBubble);
+      input.value = "";
+
+      // Assistant Simulated Typing & Response
+      const assistantContainer = document.createElement("div");
+      assistantContainer.className = "flex justify-start gap-space-sm items-start animate-pulse";
+      assistantContainer.innerHTML = `
+        <div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center flex-shrink-0 shadow-sm">
+          <span class="material-symbols-outlined text-[1.125rem]">auto_awesome</span>
+        </div>
+        <div class="bg-surface-container-lowest p-space-md rounded-2xl rounded-tl-xs shadow-sm max-w-2xl text-on-surface font-body-sm text-body-sm flex items-center gap-space-sm">
+          <span class="material-symbols-outlined text-primary animate-spin text-[1.125rem]">progress_activity</span>
+          <span>Searching 38 uploaded Kirana records & verified bills...</span>
+        </div>
+      `;
+      stream.appendChild(assistantContainer);
+      stream.scrollTop = stream.scrollHeight;
+
+      setTimeout(() => {
+        assistantContainer.classList.remove("animate-pulse");
+        assistantContainer.innerHTML = `
+          <div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center flex-shrink-0 shadow-sm">
+            <span class="material-symbols-outlined text-[1.125rem]">auto_awesome</span>
+          </div>
+          <div class="flex flex-col gap-space-sm max-w-2xl">
+            <div class="bg-surface-container-lowest p-space-lg rounded-2xl rounded-tl-xs shadow-sm text-on-surface flex flex-col gap-space-md">
+              <div class="flex items-center gap-space-xs text-on-surface-variant font-label-xs text-label-xs tracking-wider uppercase">
+                <span class="w-2 h-2 rounded-full bg-primary"></span>
+                <span>Verified ShopLedger Record Insight</span>
+              </div>
+              <p class="font-body-lg text-body-lg leading-relaxed">
+                I examined all 31 verified invoices for <strong>Sharma Kirana Store</strong>. In this billing cycle, total inventory inflow stands at <strong>₹2,67,750</strong> with zero discrepancy reported on finalized purchases.
+              </p>
+              <div class="bg-surface-container-low p-space-sm rounded-lg flex items-center justify-between">
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Matched source: REC-2024-1079 and 30 other bills</span>
+                <span class="font-label-xs text-label-xs text-primary font-bold">100% verified data</span>
+              </div>
+            </div>
+          </div>
+        `;
+        stream.scrollTop = stream.scrollHeight;
+      }, 700);
+    }
+
+    function escapeHtml(string) {
+      return String(string).replace(/[&<>"'`=\/]/g, function (s) {
+        return {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;',
+          '/': '&#x2F;'
+        }[s];
+      });
+    }
+
+    function toggleDraftInclusion(btn) {
+      const statusText = document.getElementById("active-data-scope-tag");
+      const isChecked = btn.getAttribute("aria-checked") === "true";
+      const thumb = btn.querySelector(".toggle-thumb");
+      
+      if (isChecked) {
+        btn.setAttribute("aria-checked", "false");
+        btn.classList.remove("bg-primary-container");
+        btn.classList.add("bg-surface-container-highest");
+        thumb.classList.remove("translate-x-5");
+        thumb.classList.add("translate-x-0");
+        if (statusText) statusText.innerText = "Scope: 31 Verified Invoices only";
+      } else {
+        btn.setAttribute("aria-checked", "true");
+        btn.classList.remove("bg-surface-container-highest");
+        btn.classList.add("bg-primary-container");
+        thumb.classList.remove("translate-x-0");
+        thumb.classList.add("translate-x-5");
+        if (statusText) statusText.innerText = "Scope: All 38 Invoices (Including Drafts)";
+      }
+    }
+  </script>
+<!-- Sub-header bar -->
+<div class="w-full bg-surface-container-low px-gutter-desktop py-space-md shadow-sm mb-space-lg">
+<div class="max-w-[1400px] mx-auto flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<!-- Title & Subtitle -->
+<div class="flex flex-col">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[1.5rem]">auto_awesome</span>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Ask ShopLedger</h1>
+<span class="bg-primary-fixed text-on-primary-fixed font-label-xs text-label-xs px-2 py-0.5 rounded-full">Kirana Intelligence</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+          Understand your purchase records and bahi khata by asking in simple English.
+        </p>
+</div>
+<!-- Top Right Actions & Privacy Boundary Pill -->
+<div class="flex items-center flex-wrap gap-space-sm">
+<!-- Privacy Badge -->
+<div class="hidden xl:flex items-center gap-space-xs bg-surface-container-lowest text-on-surface-variant px-space-md py-1.5 rounded-full shadow-sm text-label-xs font-label-xs">
+<span class="material-symbols-outlined text-[1rem] text-primary">verified_user</span>
+<span>Strictly private • Answers only from your <strong>38 uploaded shop records</strong></span>
+</div>
+<!-- Language Pill -->
+<div class="relative group">
+<button class="flex items-center gap-space-xs bg-surface-container-lowest hover:bg-surface-container-high px-space-md py-1.5 rounded-full shadow-sm text-on-surface font-label-md text-label-md transition-colors">
+<span class="material-symbols-outlined text-[1rem] text-on-surface-variant">translate</span>
+<span>English (US)</span>
+<span class="material-symbols-outlined text-[1rem]">arrow_drop_down</span>
+</button>
+<div class="absolute right-0 mt-1 hidden group-hover:flex flex-col bg-surface-container-lowest rounded-lg shadow-md p-space-xs min-w-[140px] z-20">
+<span class="px-space-sm py-1 font-label-md text-label-md text-on-surface bg-surface-container-high rounded">English (US)</span>
+<div class="flex items-center justify-between px-space-sm py-1 font-body-sm text-body-sm text-on-surface-variant opacity-60">
+<span>हिन्दी</span>
+<span class="font-label-xs text-label-xs text-tertiary">Soon</span>
+</div>
+</div>
+</div>
+<!-- New Conversation Button -->
+<button class="flex items-center gap-space-xs bg-surface-container-lowest hover:bg-surface-container-high px-space-md py-1.5 rounded-full shadow-sm text-on-surface font-label-md text-label-md transition-colors" onclick="resetConversation()">
+<span class="material-symbols-outlined text-[1rem]">add</span>
+<span>New conversation</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Main Grid Workspace (Central Chat + Right Context Panel) -->
+<div class="w-full max-w-[1400px] mx-auto px-gutter-desktop pb-space-xl">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-start">
+<!-- Central Chat Stream (8 of 12 cols desktop, ~68%) -->
+<section class="lg:col-span-8 flex flex-col bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex-1 min-w-0">
+<!-- Chat History Stream (Scrollable) -->
+<div class="p-space-lg flex flex-col gap-space-lg max-h-[720px] overflow-y-auto" id="chat-history-stream">
+<!-- System Welcome Card -->
+<div class="flex flex-col gap-space-md bg-surface-container-low p-space-lg rounded-2xl shadow-sm" id="welcome-greeting-block">
+<div class="flex items-start gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-primary-container text-on-primary flex items-center justify-center flex-shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[1.5rem]">auto_awesome</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-xs text-label-xs text-primary uppercase font-bold tracking-wider">Sharma Kirana Ledger Bot</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface mt-0.5">Namaste Ramesh ji.</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-1 leading-relaxed">
+                  I can answer questions about your wholesale mandi purchases, supplier dues, changing item prices, or help you scan and fix physical receipts.
+                </p>
+</div>
+</div>
+<!-- Suggested questions chips -->
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Suggested queries</span>
+<div class="flex flex-wrap gap-space-xs">
+<button class="bg-surface-container-lowest hover:bg-secondary-container hover:text-on-secondary-fixed text-on-surface font-label-md text-label-md px-space-md py-1.5 rounded-full shadow-sm transition-all text-left" onclick="fillQuery('How much did I spend this month?')">
+                  "How much did I spend this month?"
+                </button>
+<button class="bg-surface-container-lowest hover:bg-secondary-container hover:text-on-secondary-fixed text-on-surface font-label-md text-label-md px-space-md py-1.5 rounded-full shadow-sm transition-all text-left" onclick="fillQuery('Which supplier did I buy from the most?')">
+                  "Which supplier did I buy from the most?"
+                </button>
+<button class="bg-surface-container-lowest hover:bg-secondary-container hover:text-on-secondary-fixed text-on-surface font-label-md text-label-md px-space-md py-1.5 rounded-full shadow-sm transition-all text-left" onclick="fillQuery('Show my most purchased items')">
+                  "Show my most purchased items"
+                </button>
+<button class="bg-surface-container-lowest hover:bg-secondary-container hover:text-on-secondary-fixed text-on-surface font-label-md text-label-md px-space-md py-1.5 rounded-full shadow-sm transition-all text-left" onclick="fillQuery('Which receipts need checking?')">
+                  "Which receipts need checking?"
+                </button>
+<button class="bg-surface-container-lowest hover:bg-secondary-container hover:text-on-secondary-fixed text-on-surface font-label-md text-label-md px-space-md py-1.5 rounded-full shadow-sm transition-all text-left" onclick="fillQuery('How has my purchase price for sugar changed?')">
+                  "How has my purchase price for sugar changed?"
+                </button>
+<button class="bg-surface-container-lowest hover:bg-secondary-container hover:text-on-secondary-fixed text-on-surface font-label-md text-label-md px-space-md py-1.5 rounded-full shadow-sm transition-all text-left" onclick="fillQuery('How do I upload a receipt and what if the ink is faded?')">
+                  "How do I upload a receipt?"
+                </button>
+</div>
+</div>
+</div>
+<!-- Conversation Exchange 1: Supplier Spending Query -->
+<div class="flex flex-col gap-space-md">
+<!-- User Message -->
+<div class="flex justify-end gap-space-sm items-start">
+<div class="max-w-2xl bg-secondary-container text-on-secondary-fixed p-space-md rounded-2xl rounded-tr-xs shadow-sm font-body-lg text-body-lg">
+<p>Which supplier did I buy from the most this month, and what did I buy?</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center flex-shrink-0 font-label-xs text-label-xs font-bold">
+                RS
+              </div>
+</div>
+<!-- Assistant Answer -->
+<div class="flex justify-start gap-space-sm items-start">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center flex-shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[1.125rem]">auto_awesome</span>
+</div>
+<div class="flex flex-col gap-space-sm max-w-2xl w-full">
+<div class="bg-surface-container-low p-space-lg rounded-2xl rounded-tl-xs shadow-sm text-on-surface flex flex-col gap-space-md">
+<p class="font-body-lg text-body-lg leading-relaxed">
+                    Between 1 Oct and 25 Oct 2024, your top supplier by total spending was <strong class="text-primary font-bold">R.K. Agro Traders</strong>, accounting for <strong class="text-primary font-bold">₹94,800 (35.4% of total verified purchases)</strong> across 3 confirmed purchase bills.
+                  </p>
+<!-- Embedded Mini Summary Card / Table -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[1.25rem]">warehouse</span>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface leading-tight">R.K. Agro Traders</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Grain Market Yard, Gate 2, Narela Mandi</span>
+</div>
+</div>
+<span class="bg-surface-container-high text-on-surface-variant font-label-xs text-label-xs px-2.5 py-1 rounded-full">
+                        3 bills verified
+                      </span>
+</div>
+<!-- Items Table -->
+<div class="w-full overflow-x-auto">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead>
+<tr class="text-on-surface-variant font-label-xs text-label-xs uppercase">
+<th class="py-2 pr-4 font-semibold">Top Item Purchased</th>
+<th class="py-2 px-4 font-semibold">Quantity</th>
+<th class="py-2 pl-4 text-right font-semibold">Total Amount</th>
+</tr>
+</thead>
+<tbody class="divide-y-0">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2 pr-4 font-medium text-on-surface">Basmati Rice (Shaktibhog)</td>
+<td class="py-2 px-4 text-on-surface-variant">12 bags</td>
+<td class="py-2 pl-4 text-right font-semibold text-on-surface" style="font-variant-numeric: tabular-nums;">₹38,500</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2 pr-4 font-medium text-on-surface">Wheat Flour (Chakki Atta)</td>
+<td class="py-2 px-4 text-on-surface-variant">20 bags</td>
+<td class="py-2 pl-4 text-right font-semibold text-on-surface" style="font-variant-numeric: tabular-nums;">₹32,400</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2 pr-4 font-medium text-on-surface">Mustard Seeds (Sarson)</td>
+<td class="py-2 px-4 text-on-surface-variant">4 sacks</td>
+<td class="py-2 pl-4 text-right font-semibold text-on-surface" style="font-variant-numeric: tabular-nums;">₹23,900</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Source Verification Indicators -->
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-xs pt-space-xs text-label-xs font-label-xs">
+<span class="text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-[1rem]">check_circle</span>
+                        Verified against REC-2024-1079, 1065, 1052. (0 unverified)
+                      </span>
+<div class="flex items-center gap-space-sm">
+<button class="text-primary hover:underline font-bold">View all 3 receipts →</button>
+<button class="text-primary hover:underline font-bold">Open ledger →</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Conversation Exchange 2: Price History with Unclear/Missing Data Boundary -->
+<div class="flex flex-col gap-space-md">
+<!-- User Message -->
+<div class="flex justify-end gap-space-sm items-start">
+<div class="max-w-2xl bg-secondary-container text-on-secondary-fixed p-space-md rounded-2xl rounded-tr-xs shadow-sm font-body-lg text-body-lg">
+<p>How has my purchase price for sugar changed?</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center flex-shrink-0 font-label-xs text-label-xs font-bold">
+                RS
+              </div>
+</div>
+<!-- Assistant Answer -->
+<div class="flex justify-start gap-space-sm items-start">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center flex-shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[1.125rem]">auto_awesome</span>
+</div>
+<div class="flex flex-col gap-space-sm max-w-2xl w-full">
+<div class="bg-surface-container-low p-space-lg rounded-2xl rounded-tl-xs shadow-sm text-on-surface flex flex-col gap-space-md">
+<p class="font-body-lg text-body-lg leading-relaxed">
+                    Your recorded purchase price for <strong class="text-on-surface font-bold">Madhur Pure Sugar (50kg Bag)</strong> has increased by <strong class="text-error font-bold">+4.8%</strong> over the last 60 days across 3 distinct deliveries.
+                  </p>
+<!-- Mini inline price progression chart -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface">60-Day Rate Progression (per 50kg bag)</span>
+<span class="bg-error-container text-on-error-container font-label-xs text-label-xs px-2 py-0.5 rounded-full font-bold">+₹100 / bag</span>
+</div>
+<!-- Steps Timeline / Rate Points -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-sm">
+<!-- Step 1 -->
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col">
+<span class="font-label-xs text-label-xs text-on-surface-variant">18 Aug 2024</span>
+<span class="font-currency-stat text-currency-stat text-on-surface mt-1" style="font-variant-numeric: tabular-nums;">₹2,100</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Adani Wilmar Dist.</span>
+</div>
+<!-- Step 2 -->
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col">
+<span class="font-label-xs text-label-xs text-on-surface-variant">15 Sep 2024</span>
+<div class="flex items-center gap-1 mt-1">
+<span class="font-currency-stat text-currency-stat text-on-surface" style="font-variant-numeric: tabular-nums;">₹2,150</span>
+<span class="material-symbols-outlined text-error text-[1rem]">arrow_upward</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Gupta Wholesale</span>
+</div>
+<!-- Step 3 -->
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col">
+<span class="font-label-xs text-label-xs text-on-surface-variant">12 Oct 2024 (Latest)</span>
+<div class="flex items-center gap-1 mt-1">
+<span class="font-currency-stat text-currency-stat text-on-surface" style="font-variant-numeric: tabular-nums;">₹2,200</span>
+<span class="material-symbols-outlined text-error text-[1rem]">arrow_upward</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Gupta Wholesale</span>
+</div>
+</div>
+<!-- Honest Plain-Language Transparency Callout -->
+<div class="bg-tertiary-fixed text-on-tertiary-fixed p-space-sm rounded-lg flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-tertiary text-[1.25rem] flex-shrink-0">info</span>
+<div class="flex flex-col gap-1 text-body-sm font-body-sm">
+<span>
+<strong>Data Boundary Alert:</strong> 1 recent bill from <em>Shree Balaji Spices</em> (#REC-2024-1076, 22 Oct) contains loose sugar line items, but is currently in <strong>Needs Review</strong> status due to a faded stamp. To keep your ledger 100% accurate, this price was excluded from calculations.
+                        </span>
+<div>
+<button class="bg-surface-container-lowest text-on-surface font-label-xs text-label-xs px-2.5 py-1 rounded shadow-sm hover:bg-surface font-bold inline-flex items-center gap-1">
+<span>Review pending bill REC-2024-1076</span>
+<span class="material-symbols-outlined text-[0.875rem]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Conversation Exchange 3: Product Help (How to Upload Faded Ink) -->
+<div class="flex flex-col gap-space-md">
+<!-- User Message -->
+<div class="flex justify-end gap-space-sm items-start">
+<div class="max-w-2xl bg-secondary-container text-on-secondary-fixed p-space-md rounded-2xl rounded-tr-xs shadow-sm font-body-lg text-body-lg">
+<p>How do I upload a receipt and what if the ink is faded?</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center flex-shrink-0 font-label-xs text-label-xs font-bold">
+                RS
+              </div>
+</div>
+<!-- Assistant Answer -->
+<div class="flex justify-start gap-space-sm items-start">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center flex-shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[1.125rem]">auto_awesome</span>
+</div>
+<div class="flex flex-col gap-space-sm max-w-2xl w-full">
+<div class="bg-surface-container-low p-space-lg rounded-2xl rounded-tl-xs shadow-sm text-on-surface flex flex-col gap-space-md">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Tips for Scanning Mandi Slips &amp; Faded Receipts:</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm">
+<div class="bg-surface-container-lowest p-space-md rounded-xl flex items-start gap-space-sm shadow-sm">
+<div class="w-6 h-6 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-label-xs flex-shrink-0">1</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Upload in 1-Click</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Click <strong>+ Upload Receipt</strong> in your left sidebar or drag &amp; drop clear photos or PDFs directly.</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-xl flex items-start gap-space-sm shadow-sm">
+<div class="w-6 h-6 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-label-xs flex-shrink-0">2</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Avoid Glare &amp; Cast Shadows</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Place paper bill on the counter under direct lighting. Hold your mobile phone parallel to the paper.</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-xl flex items-start gap-space-sm shadow-sm">
+<div class="w-6 h-6 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-label-xs flex-shrink-0">3</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">High-Contrast Filter</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">For purple stamp pads or carbon paper, turn ON the <em>High-Contrast Filter</em> right on your preview window.</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-xl flex items-start gap-space-sm shadow-sm">
+<div class="w-6 h-6 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-label-xs flex-shrink-0">4</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Tap to Rectify</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Low-confidence numbers get an amber tag in <strong>Needs Review</strong>. Tap the amber cell to type the exact digit.</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-sm pt-space-xs">
+<button class="bg-primary-container text-on-primary font-label-md text-label-md px-space-md py-space-sm rounded-lg shadow-sm hover:bg-primary transition-colors flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[1.125rem]">upload_file</span>
+<span>Try uploading now</span>
+</button>
+<button class="bg-surface-container-highest text-on-surface font-label-md text-label-md px-space-md py-space-sm rounded-lg hover:bg-surface-dim transition-colors" onclick="fillQuery('Show me which 2 receipts need review')">
+                      Show receipts needing review
+                    </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky Chat Input Bar -->
+<div class="p-space-md bg-surface-container-low shadow-sm flex flex-col gap-space-xs">
+<div class="bg-surface-container-lowest rounded-2xl p-space-sm shadow-sm flex flex-col focus-within:ring-2 focus-within:ring-primary-container transition-all">
+<!-- Text Input -->
+<textarea class="w-full bg-transparent border-0 outline-none p-space-xs font-body-lg text-body-lg text-on-surface placeholder:text-on-surface-variant resize-none" id="chat-user-input" onkeydown="if(event.key==='Enter' &amp;&amp; !event.shiftKey){event.preventDefault(); appendMessage();}" placeholder="Ask anything about your bills, rates, or suppliers... (Press Enter to send, Shift+Enter for new line)" rows="2"></textarea>
+<!-- Bottom Controls inside input card -->
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-xs pt-space-xs">
+<div class="flex items-center gap-space-xs text-on-surface-variant">
+<!-- Mic Button -->
+<button class="p-2 rounded-full hover:bg-surface-container-high transition-colors text-on-surface flex items-center justify-center" onclick="fillQuery('Total mandi purchase this week')" title="Voice input (mic enabled)" type="button">
+<span class="material-symbols-outlined text-[1.25rem]">mic</span>
+</button>
+<!-- Sample Prompts Trigger -->
+<button class="flex items-center gap-1 px- space-sm py-1 rounded-full hover:bg-surface-container-high text-label-xs font-label-xs text-on-surface-variant transition-colors" onclick="fillQuery('How much tax have I paid in total?')" type="button">
+<span class="material-symbols-outlined text-[1rem]">auto_fix_high</span>
+<span>GST/Tax query</span>
+</button>
+<span class="hidden md:inline-block text-label-xs font-label-xs text-on-surface-variant opacity-70">
+                  • Private to Sharma Kirana Store
+                </span>
+</div>
+<!-- Send Button -->
+<button class="bg-primary-container text-on-primary font-label-md text-label-md px-space-md py-2 rounded-xl shadow-sm hover:bg-primary transition-colors flex items-center gap-space-xs self-end sm:self-auto" onclick="appendMessage()" type="button">
+<span>Ask Ledger</span>
+<span class="material-symbols-outlined text-[1.125rem]">send</span>
+</button>
+</div>
+</div>
+<!-- Bottom Privacy Microcopy -->
+<div class="flex items-center justify-between px-space-xs text-label-xs font-label-xs text-on-surface-variant">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.875rem] text-primary">lock</span>
+              Strict Kirana Data Isolation: Your wholesale records are encrypted and never leave your account.
+            </span>
+<span class="hidden sm:inline">Responses based on 38 bills</span>
+</div>
+</div>
+</section>
+<!-- Compact Right Context Panel (4 of 12 cols desktop, ~32%) -->
+<aside class="lg:col-span-4 flex flex-col gap-space-lg w-full">
+<!-- Card 1: Active Data Scope -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[1.25rem]">database</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Data Scope</h3>
+</div>
+<span class="bg-surface-container-high text-on-surface-variant font-label-xs text-label-xs px-2 py-0.5 rounded-full" id="active-data-scope-tag">
+              31 Verified Invoices
+            </span>
+</div>
+<div class="flex flex-col gap-space-xs text-body-sm font-body-sm">
+<div class="flex items-center justify-between py-1">
+<span class="text-on-surface-variant">Store Ledger</span>
+<span class="font-semibold text-on-surface">Sharma Kirana (Main Bazar)</span>
+</div>
+<div class="flex items-center justify-between py-1">
+<span class="text-on-surface-variant">Billing Period</span>
+<span class="font-semibold text-on-surface">Oct 1 - Oct 25, 2024</span>
+</div>
+<div class="flex items-center justify-between py-1">
+<span class="text-on-surface-variant">Confirmed Purchases</span>
+<span class="font-bold text-primary" style="font-variant-numeric: tabular-nums;">₹2,67,750 (31 bills)</span>
+</div>
+<div class="flex items-center justify-between py-1">
+<span class="text-on-surface-variant">Draft / In Review</span>
+<span class="text-tertiary font-semibold">2 flagged, 5 drafts</span>
+</div>
+</div>
+<!-- Transparency Scope Toggle -->
+<div class="bg-surface-container-low p-space-sm rounded-lg flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Include Unverified Drafts</span>
+<span class="font-label-xs text-label-xs text-on-surface-variant">Could contain inaccurate estimates</span>
+</div>
+<button aria-checked="false" class="w-11 h-6 bg-surface-container-highest rounded-full p-0.5 transition-colors duration-200 focus:outline-none flex items-center cursor-pointer" onclick="toggleDraftInclusion(this)" role="switch" type="button">
+<div class="toggle-thumb w-5 h-5 bg-surface-container-lowest rounded-full shadow-sm transform transition-transform duration-200 translate-x-0"></div>
+</button>
+</div>
+</div>
+<!-- Card 2: Quick Prompts Library -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[1.25rem]">library_books</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Prompt Library</h3>
+</div>
+<!-- Category 1: Money & Spending -->
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Money &amp; Spending</span>
+<div class="flex flex-col gap-1.5">
+<button class="text-left font-body-sm text-body-sm text-on-surface hover:text-primary p-space-xs rounded-lg hover:bg-surface-container-low transition-colors flex items-center justify-between" onclick="fillQuery('Compare total spending this month versus September')">
+<span>"Compare spending this month vs last month"</span>
+<span class="material-symbols-outlined text-[1rem] opacity-40">chevron_right</span>
+</button>
+<button class="text-left font-body-sm text-body-sm text-on-surface hover:text-primary p-space-xs rounded-lg hover:bg-surface-container-low transition-colors flex items-center justify-between" onclick="fillQuery('How much GST input tax credit can I claim this month?')">
+<span>"Total GST input tax credit available"</span>
+<span class="material-symbols-outlined text-[1rem] opacity-40">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Category 2: Suppliers & Mandi -->
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Suppliers &amp; Mandi</span>
+<div class="flex flex-col gap-1.5">
+<button class="text-left font-body-sm text-body-sm text-on-surface hover:text-primary p-space-xs rounded-lg hover:bg-surface-container-low transition-colors flex items-center justify-between" onclick="fillQuery('List all payments made to Gupta Wholesale in October')">
+<span>"All payments to Gupta Wholesale"</span>
+<span class="material-symbols-outlined text-[1rem] opacity-40">chevron_right</span>
+</button>
+<button class="text-left font-body-sm text-body-sm text-on-surface hover:text-primary p-space-xs rounded-lg hover:bg-surface-container-low transition-colors flex items-center justify-between" onclick="fillQuery('Which supplier offers the lowest rate for Fortune Mustard Oil?')">
+<span>"Cheapest supplier for Fortune Mustard Oil"</span>
+<span class="material-symbols-outlined text-[1rem] opacity-40">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Category 3: Items & Rates -->
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Items &amp; Rates</span>
+<div class="flex flex-col gap-1.5">
+<button class="text-left font-body-sm text-body-sm text-on-surface hover:text-primary p-space-xs rounded-lg hover:bg-surface-container-low transition-colors flex items-center justify-between" onclick="fillQuery('Did wheat flour price go up or down since last month?')">
+<span>"Wheat flour rate changes"</span>
+<span class="material-symbols-outlined text-[1rem] opacity-40">chevron_right</span>
+</button>
+<button class="text-left font-body-sm text-body-sm text-on-surface hover:text-primary p-space-xs rounded-lg hover:bg-surface-container-low transition-colors flex items-center justify-between" onclick="fillQuery('What is my average cost per kg for Toor Dal?')">
+<span>"Average purchase rate for Toor Dal"</span>
+<span class="material-symbols-outlined text-[1rem] opacity-40">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Category 4: App Help -->
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">App Operations</span>
+<div class="flex flex-col gap-1.5">
+<button class="text-left font-body-sm text-body-sm text-on-surface hover:text-primary p-space-xs rounded-lg hover:bg-surface-container-low transition-colors flex items-center justify-between" onclick="fillQuery('How do I export this month ledger to Excel or PDF?')">
+<span>"How to export ledger to Excel/WhatsApp"</span>
+<span class="material-symbols-outlined text-[1rem] opacity-40">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3: Privacy & Zero Hallucination Guarantee -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center gap-space-sm text-primary">
+<span class="material-symbols-outlined text-[1.5rem]">verified</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Zero Hallucination Policy</h4>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            ShopLedger answers strictly from the physical invoices you scan. We never guess missing numbers or invent hypothetical rates.
+          </p>
+<div class="bg-surface-container-low p-space-sm rounded-lg flex items-center gap-space-xs text-on-surface font-label-xs text-label-xs">
+<span class="material-symbols-outlined text-primary text-[1rem]">lock</span>
+<span>Bahi Khata records remain encrypted and 100% merchant private.</span>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</div></main></div></body></html>

@@ -1,0 +1,161 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // =========================================================================
+    // GLOBAL SECURITY POLICY: DENY ALL BY DEFAULT
+    // =========================================================================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // =========================================================================
+    // HELPER FUNCTIONS & AUTHORIZATION PREDICATES
+    // =========================================================================
+    function isSignedIn() {
+      return request.auth != null && request.auth.uid != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // Look up the parent business document
+    function getBusiness(businessId) {
+      return get(/databases/$(database)/documents/businesses/$(businessId));
+    }
+
+    // Check if authenticated user is in memberUids or members map
+    function isBusinessMember(businessId) {
+      return isSignedIn() && (
+        request.auth.uid in getBusiness(businessId).data.memberUids ||
+        (getBusiness(businessId).data.members != null &&
+         getBusiness(businessId).data.members[request.auth.uid] != null)
+      );
+    }
+
+    // Check if authenticated user is the designated owner
+    function isBusinessOwner(businessId) {
+      return isSignedIn() && (
+        request.auth.uid == getBusiness(businessId).data.ownerUid ||
+        (getBusiness(businessId).data.members != null &&
+         getBusiness(businessId).data.members[request.auth.uid].role == 'owner')
+      );
+    }
+
+    // Check if authenticated user has write/edit permissions (owner, manager, or accountant)
+    function isBusinessEditor(businessId) {
+      return isSignedIn() && (
+        isBusinessOwner(businessId) ||
+        (getBusiness(businessId).data.members != null &&
+         getBusiness(businessId).data.members[request.auth.uid].role in ['owner', 'manager', 'accountant'])
+      );
+    }
+
+    // =========================================================================
+    // 1. USER ACCOUNTS & PROFILES (/users/{uid})
+    // =========================================================================
+    match /users/{uid} {
+      allow read, write: if isOwner(uid);
+    }
+
+    // =========================================================================
+    // 2. BUSINESSES & SHOPS (/businesses/{businessId})
+    // =========================================================================
+    match /businesses/{businessId} {
+      // Individual document read for verified members
+      allow get: if isBusinessMember(businessId);
+
+      // List queries: Allowed if filtering by member membership
+      allow list: if isSignedIn() && (
+        resource == null ||
+        request.auth.uid in resource.data.memberUids
+      );
+
+      // Creation: Only allowed if creator sets themselves as ownerUid and includes themselves in memberUids
+      allow create: if isSignedIn() &&
+        request.resource.data.ownerUid == request.auth.uid &&
+        request.auth.uid in request.resource.data.memberUids;
+
+      // Update & Delete: Owner only
+      allow update: if isBusinessOwner(businessId);
+      allow delete: if isBusinessOwner(businessId);
+
+      // -----------------------------------------------------------------------
+      // 3. PURCHASE RECEIPTS (/businesses/{businessId}/receipts/{receiptId})
+      // -----------------------------------------------------------------------
+      match /receipts/{receiptId} {
+        allow read: if isBusinessMember(businessId);
+
+        allow create: if isBusinessEditor(businessId) &&
+          request.resource.data.businessId == businessId &&
+          request.resource.data.subtotalMinor is int &&
+          request.resource.data.grandTotalMinor is int &&
+          request.resource.data.subtotalMinor >= 0 &&
+          request.resource.data.grandTotalMinor >= 0;
+
+        allow update: if isBusinessEditor(businessId) &&
+          request.resource.data.businessId == businessId &&
+          request.resource.data.subtotalMinor is int &&
+          request.resource.data.grandTotalMinor is int &&
+          request.resource.data.subtotalMinor >= 0 &&
+          request.resource.data.grandTotalMinor >= 0;
+
+        allow delete: if isBusinessOwner(businessId);
+
+        // ---------------------------------------------------------------------
+        // 4. RECEIPT LINE ITEMS (/receipts/{receiptId}/items/{itemId})
+        // ---------------------------------------------------------------------
+        match /items/{itemId} {
+          allow read: if isBusinessMember(businessId);
+
+          allow create, update: if isBusinessEditor(businessId) &&
+            request.resource.data.businessId == businessId &&
+            request.resource.data.receiptId == receiptId &&
+            request.resource.data.unitPriceMinor is int &&
+            request.resource.data.lineTotalMinor is int &&
+            request.resource.data.unitPriceMinor >= 0 &&
+            request.resource.data.lineTotalMinor >= 0;
+
+          allow delete: if isBusinessEditor(businessId);
+        }
+      }
+
+      // -----------------------------------------------------------------------
+      // 5. SUPPLIERS (/businesses/{businessId}/suppliers/{supplierId})
+      // -----------------------------------------------------------------------
+      match /suppliers/{supplierId} {
+        allow read: if isBusinessMember(businessId);
+
+        allow create, update: if isBusinessEditor(businessId) &&
+          request.resource.data.businessId == businessId;
+
+        allow delete: if isBusinessOwner(businessId);
+      }
+
+      // -----------------------------------------------------------------------
+      // 6. MASTER ITEM CATALOG (/businesses/{businessId}/items/{itemId})
+      // -----------------------------------------------------------------------
+      match /items/{itemId} {
+        allow read: if isBusinessMember(businessId);
+
+        allow create, update: if isBusinessEditor(businessId) &&
+          request.resource.data.businessId == businessId;
+
+        allow delete: if isBusinessOwner(businessId);
+      }
+
+      // -----------------------------------------------------------------------
+      // 7. CATEGORIES (/businesses/{businessId}/categories/{categoryId})
+      // -----------------------------------------------------------------------
+      match /categories/{categoryId} {
+        allow read: if isBusinessMember(businessId);
+
+        allow create, update: if isBusinessEditor(businessId) &&
+          request.resource.data.businessId == businessId;
+
+        allow delete: if isBusinessOwner(businessId);
+      }
+    }
+  }
+}

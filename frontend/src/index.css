@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-surface: #faf9f4;
+  --color-surface-dim: #dbdad5;
+  --color-surface-bright: #faf9f4;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f5f4ef;
+  --color-surface-container: #efeee9;
+  --color-surface-container-high: #e9e8e3;
+  --color-surface-container-highest: #e3e3de;
+  --color-on-surface: #1b1c19;
+  --color-on-surface-variant: #404943;
+  --color-inverse-surface: #30312e;
+  --color-inverse-on-surface: #f2f1ec;
+  --color-outline: #e6e2d6;
+  --color-outline-variant: #c0c9c2;
+  --color-background: #faf9f4;
+  --color-on-background: #1b1c19;
+  --color-surface-variant: #e3e3de;
+}
+
+.dark {
+  --color-surface: #161815;
+  --color-surface-dim: #111310;
+  --color-surface-bright: #242823;
+  --color-surface-container-lowest: #1e221d;
+  --color-surface-container-low: #242823;
+  --color-surface-container: #2b302a;
+  --color-surface-container-high: #333a32;
+  --color-surface-container-highest: #3c443b;
+  --color-on-surface: #f2f1ec;
+  --color-on-surface-variant: #c0c9c2;
+  --color-inverse-surface: #e3e3de;
+  --color-inverse-on-surface: #1b1c19;
+  --color-outline: #2e362c;
+  --color-outline-variant: #404943;
+  --color-background: #161815;
+  --color-on-background: #f2f1ec;
+  --color-surface-variant: #2b302a;
+}
+
+@layer base {
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    background-color: var(--color-surface);
+    color: var(--color-on-surface);
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  /* Strict Kirana Tabular Figures for currency and numerical columns */
+  .tabular-nums,
+  [data-tabular='true'] {
+    font-feature-settings: 'tnum' 1, 'cv05' 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Custom subtle scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-outline-variant);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-on-surface-variant);
+  }
+}
+
+@layer utilities {
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 dark:focus-visible:ring-offset-surface;
+  }
+}

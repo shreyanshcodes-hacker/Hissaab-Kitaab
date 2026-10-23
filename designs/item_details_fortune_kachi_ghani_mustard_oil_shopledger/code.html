@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-primary-fixed-variant":"#16503a","secondary-container":"#dbe5dd","primary-fixed":"#b5efd1","on-primary":"#ffffff","secondary":"#57615b","tertiary-fixed":"#ffdcc3","secondary-fixed-dim":"#bfc9c1","on-secondary-fixed":"#151d19","tertiary-container":"#7f4300","surface-container-lowest":"#ffffff","error-container":"#ffdad6","on-background":"#1b1c19","surface":"#faf9f4","background":"#faf9f4","surface-container":"#efeee9","on-error-container":"#93000a","on-tertiary":"#ffffff","on-secondary-fixed-variant":"#404943","surface-container-highest":"#e3e3de","surface-container-high":"#e9e8e3","inverse-on-surface":"#f2f1ec","on-surface":"#1b1c19","secondary-fixed":"#dbe5dd","inverse-surface":"#30312e","surface-variant":"#e3e3de","primary-fixed-dim":"#99d3b6","on-tertiary-fixed-variant":"#6e3900","inverse-primary":"#99d3b6","surface-tint":"#316951","outline":"#707973","on-tertiary-container":"#ffb77d","on-secondary":"#ffffff","outline-variant":"#c0c9c2","on-primary-container":"#99d2b5","tertiary":"#5d3000","surface-dim":"#dbdad5","error":"#ba1a1a","on-tertiary-fixed":"#2f1500","surface-bright":"#faf9f4","on-primary-fixed":"#002114","primary-container":"#245c45","surface-container-low":"#f5f4ef","on-error":"#ffffff","tertiary-fixed-dim":"#ffb77d","on-secondary-container":"#5d6760","on-surface-variant":"#404943","primary":"#04442f"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"space-xl":"2.25rem","gutter":"1rem","margin":"1rem","space-md":"1rem","space-lg":"1.5rem","margin-desktop":"2rem","gutter-desktop":"1.5rem","space-xs":"0.25rem","space-sm":"0.5rem"},fontFamily:{"display":["Inter"],"label-xs":["Inter"],"headline-lg":["Inter"],"body-sm":["Inter"],"body-lg":["Inter"],"display-mobile":["Inter"],"label-md":["Inter"],"currency-stat":["Inter"],"headline-sm":["Inter"]},fontSize:{"display":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.02em","fontWeight":"700"}],"label-xs":["0.75rem",{"lineHeight":"1rem","letterSpacing":"0.02em","fontWeight":"600"}],"headline-lg":["1.5rem",{"lineHeight":"2rem","letterSpacing":"-0.015em","fontWeight":"700"}],"body-sm":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"400"}],"body-lg":["1rem",{"lineHeight":"1.5rem","fontWeight":"400"}],"display-mobile":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.01em","fontWeight":"700"}],"label-md":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"600"}],"currency-stat":["1.75rem",{"lineHeight":"2rem","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-sm":["1.25rem",{"lineHeight":"1.75rem","letterSpacing":"-0.01em","fontWeight":"600"}]}}}}</script></head><body class="bg-surface font-body-lg text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between overflow-y-auto"><div class="p-space-lg"><div class="flex items-center gap-space-sm mb-space-xl"><img alt="ShopLedger Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VRnzfpuAZPE2MEeTjoUDXehqdHDyxBez3LbbRvHo0GcGvnsMiUTupaVBxg_fzYMnbTQHqlaLUO3UaV6P9HW2UvIkxdnyvEt4paM8kVo-Suj6rS3mJoAp0ByZ-BZ9oBEbCCVgMbvz33KBpei8u47rhTPL6RgF-COnxv4yTWmVK-WWVWopqpv0ffGfD6OZrUFq7CLvRaqr4BK2rBnQ-VE6b5nJ0FYcl-CrmPrObF0LqRNVvpzfl_V0SEAjOq"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">ShopLedger</span><span class="font-label-xs text-label-xs text-on-surface-variant mt-1 leading-none">Smart Shop Bookkeeper</span></div></div><div class="mb-space-lg"><button class="w-full flex items-center justify-center gap-space-sm bg-primary-container text-on-primary font-label-md text-label-md py-space-sm px-space-md rounded-lg shadow-[0_1px_3px_rgba(37,41,35,0.06)] hover:bg-primary transition-colors"><span class="material-symbols-outlined text-[1.25rem]">add_circle</span><span>+ Upload Receipt</span></button></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-secondary-container text-on-secondary-fixed font-label-md rounded-lg"><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="dashboard" href="#">Dashboard</a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="your-purchase-receipts---shopledger" href="#"><span>Receipts</span><span class="bg-tertiary-fixed text-on-tertiary-fixed font-label-xs text-label-xs px-2 py-0.5 rounded-full">2 needs check</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="spending-analysis---shopledger" href="#">Spending Analysis</a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="supplier-details---gupta-wholesale-mart---shopledger" href="#">Suppliers</a><a aria-current="page" class="flex items-center justify-between px-space-md py-space-sm transition-colors bg-secondary-container text-on-secondary-fixed font-label-md rounded-lg" data-path="item-details---fortune-kachi-ghani-mustard-oil---shopledger" href="#">Item Catalog</a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="ask-shopledger" href="#"><span>Ask ShopLedger</span><span class="bg-primary-fixed text-on-primary-fixed font-label-xs text-label-xs px-2 py-0.5 rounded-full">AI</span></a></nav></div><div class="p-space-lg flex flex-col gap-space-sm"><div class="flex flex-col gap-space-xs mb-space-sm"><a class="flex items-center px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="help-and-faqs" href="#">Help &amp; FAQs</a><a class="flex items-center px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="settings" href="#">Settings</a><div class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md"><span>Appearance</span><button aria-label="Toggle theme" class="flex items-center p-1 rounded-full hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[1.25rem]">light_mode</span></button></div></div><div class="bg-surface-container-lowest p-space-sm rounded-lg shadow-[0_1px_3px_rgba(37,41,35,0.06)] flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-sm min-w-0"><img alt="Profile" class="w-8 h-8 rounded-full object-cover flex-shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFviORAjsiSsDQWbSaKHwp8QQMsMidyEJn4nfJEOndAyJAzkZy-9HMHhji6x-pR9runnlyVZ89VfB0gOuTaLD6ahza9bCaAcMcd7HofUxdBVRa2IYKYIybpHxfooCRyFnla0YhYvERsixTlkjei6JcK2jk5m6IZpECPHO7_Qr-Ak4mT7z64QWEMv1tszsdMmaCoPRY7a3XKLtma4ywzJNLxI4QtBx7lPG-PMEfLd0Ezg1jn1SgjFVf3g"/><div class="flex flex-col min-w-0"><span class="font-label-md text-label-md text-on-surface truncate">Sharma Kirana Store</span><span class="font-label-xs text-label-xs text-on-surface-variant truncate">Ramesh Sharma</span></div></div><button aria-label="Switch store or log out" class="p-1 text-on-surface-variant hover:text-on-surface transition-colors flex-shrink-0"><span class="material-symbols-outlined text-[1.25rem]">unfold_more</span></button></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-16 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-gutter-desktop"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-sm text-on-surface-variant font-body-sm text-body-sm"><span class="material-symbols-outlined text-[1.125rem]">storefront</span><span>Sharma Kirana Store (Main Bazar)</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-sm bg-surface-container px-space-md py-1.5 rounded-full"><span class="material-symbols-outlined text-[1.125rem] text-on-surface-variant">search</span><input class="bg-transparent border-0 outline-none font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant w-64" placeholder="Search receipts, suppliers, items..." type="text"/></div><button aria-label="Notifications" class="relative p-2 rounded-full hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[1.25rem]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error"></span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFviORAjsiSsDQWbSaKHwp8QQMsMidyEJn4nfJEOndAyJAzkZy-9HMHhji6x-pR9runnlyVZ89VfB0gOuTaLD6ahza9bCaAcMcd7HofUxdBVRa2IYKYIybpHxfooCRyFnla0YhYvERsixTlkjei6JcK2jk5m6IZpECPHO7_Qr-Ak4mT7z64QWEMv1tszsdMmaCoPRY7a3XKLtma4ywzJNLxI4QtBx7lPG-PMEfLd0Ezg1jn1SgjFVf3g"/></div></header><main class="relative pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<div class="px-gutter-desktop py-space-lg flex flex-col gap-space-lg max-w-[1360px] mx-auto w-full">
+<!-- Navigation & Breadcrumb Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex flex-col gap-1.5">
+<nav aria-label="Breadcrumb" class="flex items-center gap-space-xs text-on-surface-variant font-label-xs text-label-xs">
+<a class="hover:text-primary transition-colors flex items-center gap-1" data-path="dashboard" href="#">
+<span class="material-symbols-outlined text-[1rem]">grid_view</span>
+<span>Dashboard</span>
+</a>
+<span class="text-outline-variant">/</span>
+<a class="hover:text-primary transition-colors" data-path="spending-analysis---shopledger" href="#">Items &amp; Stock</a>
+<span class="text-outline-variant">/</span>
+<span class="text-on-surface font-semibold truncate max-w-xs md:max-w-md">Fortune Kachi Ghani Mustard Oil</span>
+</nav>
+<div class="flex items-center gap-space-sm">
+<a class="inline-flex items-center gap-1 text-on-surface-variant hover:text-on-surface font-label-xs text-label-xs transition-colors py-0.5" data-path="spending-analysis---shopledger" href="#">
+<span class="material-symbols-outlined text-[0.875rem]">arrow_back</span>
+<span>Return to spending analysis</span>
+</a>
+<span class="text-outline-variant text-[0.75rem]">•</span>
+<a class="inline-flex items-center gap-1 text-on-surface-variant hover:text-on-surface font-label-xs text-label-xs transition-colors py-0.5" href="#">
+<span>Back to item catalog</span>
+</a>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center gap-space-sm flex-wrap">
+<button class="inline-flex items-center gap-space-xs bg-surface-container-lowest text-on-surface hover:bg-surface-container font-label-md text-label-md py-2 px-space-md rounded-lg shadow-sm transition-colors" id="open-export-btn">
+<span class="material-symbols-outlined text-[1.125rem] text-secondary">file_download</span>
+<span>Export Price History</span>
+</button>
+<button class="inline-flex items-center gap-space-xs bg-primary-container text-on-primary hover:bg-primary font-label-md text-label-md py-2 px-space-md rounded-lg shadow-sm transition-colors" id="open-edit-modal">
+<span class="material-symbols-outlined text-[1.125rem]">edit_square</span>
+<span>Edit Item Details</span>
+</button>
+</div>
+</div>
+<!-- Identity & Visual Hero Strip -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-space-lg">
+<div class="flex items-start gap-space-lg">
+<div class="w-20 h-20 md:w-24 md:h-24 rounded-lg bg-surface-container-low flex-shrink-0 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close-up commercial retail photography of a traditional 15-litre gold and yellow tin can of Fortune Kachi Ghani Mustard Oil, sharp metallic texture, natural warm store daylight, crisp clean edges on neutral ivory background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZrjf4n2Jtx50F1PLjoPLEhDLK_hdePV5B1_SLbPZZPBHdXEkzAE9liXdS63vYB1IoDwPKknFJAn7hK-qHF3pXSzq9092C42J9Cn3uPE081JeFEPkadaoIwUEOQ-k_tMLzf42RMekm3Q3Sa18nN5vdQPkjTy7sQBv3tpQqbzfA_F5o5_JKinFa2vy_yfHOFUY6AdvSZ2tjvHpwFdC6cUmtXoyRj0rSPSjXBN3uGztpaYOXaiLEcfJIqQ"/>
+</div>
+<div class="flex flex-col gap-2 min-w-0">
+<div class="flex items-center gap-space-sm flex-wrap">
+<span class="bg-secondary-container text-on-secondary-fixed font-label-xs text-label-xs px-2.5 py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.875rem]">oil_barrel</span>
+<span>Cooking Oils &amp; Ghee</span>
+</span>
+<span class="bg-surface-container-high text-on-surface-variant font-label-xs text-label-xs px-2.5 py-0.5 rounded-full">
+              SKU: 890123450912
+            </span>
+<span class="bg-primary-fixed text-on-primary-fixed font-label-xs text-label-xs px-2.5 py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.875rem]">verified</span>
+<span>Verified Master SKU</span>
+</span>
+</div>
+<h1 class="font-display text-display tracking-tight text-on-surface">
+            Fortune Kachi Ghani Mustard Oil (15L Tin)
+          </h1>
+<div class="flex items-center gap-space-md text-on-surface-variant font-body-sm text-body-sm flex-wrap">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[1.125rem] text-primary">inventory_2</span>
+<span>Standard Packaging: <strong>15 Litre Sealed Tin</strong></span>
+</span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[1.125rem] text-secondary">factory</span>
+<span>Adani Wilmar Brand</span>
+</span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[1.125rem] text-tertiary">schedule</span>
+<span>Last scanned: 24 Oct 2024</span>
+</span>
+</div>
+</div>
+</div>
+<div class="flex lg:flex-col items-center lg:items-end justify-between bg-surface-container-low lg:bg-transparent p-space-md lg:p-0 rounded-lg">
+<span class="font-label-xs text-label-xs text-on-surface-variant">Current Benchmark Rate</span>
+<div class="font-currency-stat text-currency-stat text-primary-container tabular-nums">
+          ₹2,150.00 <span class="font-label-xs text-label-xs text-on-surface-variant font-normal">/ tin</span>
+</div>
+<div class="flex items-center gap-1 font-label-xs text-label-xs text-primary mt-0.5">
+<span class="material-symbols-outlined text-[0.875rem]">trending_down</span>
+<span>-₹40 (1.8%) vs last high</span>
+</div>
+</div>
+</div>
+<!-- 4 Key Metrics Strip -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Stat 1 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant font-label-xs text-label-xs mb-space-sm">
+<span>TOTAL PURCHASED</span>
+<span class="material-symbols-outlined text-[1.125rem] text-primary">shopping_bag</span>
+</div>
+<div>
+<div class="font-headline-lg text-headline-lg text-on-surface tabular-nums">
+            32 <span class="text-body-sm font-body-sm text-on-surface-variant font-normal">Tins</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+            480 Litres total volume
+          </p>
+</div>
+<div class="mt-space-md pt-space-xs text-on-surface-variant font-label-xs text-label-xs">
+          Last 60 days inventory run
+        </div>
+</div>
+<!-- Stat 2 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant font-label-xs text-label-xs mb-space-sm">
+<span>RECORDED SPEND</span>
+<span class="material-symbols-outlined text-[1.125rem] text-tertiary">payments</span>
+</div>
+<div>
+<div class="font-headline-lg text-headline-lg text-on-surface tabular-nums">
+            ₹68,800<span class="text-body-sm font-body-sm text-on-surface-variant font-normal">.00</span>
+</div>
+<div class="flex items-center gap-1 text-tertiary-container font-label-xs text-label-xs mt-1">
+<span class="material-symbols-outlined text-[0.875rem]">workspace_premium</span>
+<span>Rank #2 spending item in store</span>
+</div>
+</div>
+<div class="mt-space-md pt-space-xs text-on-surface-variant font-label-xs text-label-xs">
+          14.2% of total oil department budget
+        </div>
+</div>
+<!-- Stat 3 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant font-label-xs text-label-xs mb-space-sm">
+<span>REORDER FREQUENCY</span>
+<span class="material-symbols-outlined text-[1.125rem] text-secondary">update</span>
+</div>
+<div>
+<div class="font-headline-lg text-headline-lg text-on-surface tabular-nums">
+            11 <span class="text-body-sm font-body-sm text-on-surface-variant font-normal">Times</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+            ~Every 5.5 days reorder cycle
+          </p>
+</div>
+<div class="mt-space-md pt-space-xs text-primary font-label-xs text-label-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.875rem]">bolt</span>
+<span>Fast moving kirana staple</span>
+</div>
+</div>
+<!-- Stat 4 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant font-label-xs text-label-xs mb-space-sm">
+<span>LATEST UNIT RATE</span>
+<span class="material-symbols-outlined text-[1.125rem] text-primary">receipt_long</span>
+</div>
+<div>
+<div class="font-headline-lg text-headline-lg text-on-surface tabular-nums">
+            ₹2,150<span class="text-body-sm font-body-sm text-on-surface-variant font-normal">/tin</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 truncate">
+            Gupta Wholesale Mart
+          </p>
+</div>
+<div class="mt-space-md pt-space-xs text-on-surface-variant font-label-xs text-label-xs">
+          Bill #REC-2024-1082 (24 Oct)
+        </div>
+</div>
+</div>
+<!-- Two-Column Asymmetrical Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT COLUMN (Wider, 8 cols): Price Trend & Ledger History -->
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+<!-- Interactive Price Tracking Chart Card -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight">
+                90-Day Unit Price Trend
+              </h2>
+<span class="font-label-xs text-label-xs text-on-surface-variant">
+                Historical purchase rate changes mapped from scanned supplier receipts
+              </span>
+</div>
+<div class="flex items-center gap-space-xs bg-surface-container-low p-1 rounded-lg">
+<button class="px-2.5 py-1 rounded font-label-xs text-label-xs bg-surface-container-lowest text-on-surface shadow-xs">Last 90 Days</button>
+<button class="px-2.5 py-1 rounded font-label-xs text-label-xs text-on-surface-variant hover:text-on-surface">6 Months</button>
+<button class="px-2.5 py-1 rounded font-label-xs text-label-xs text-on-surface-variant hover:text-on-surface">1 Year</button>
+</div>
+</div>
+<!-- Strict Unit Comparability Banner -->
+<div class="bg-secondary-container/50 p-space-md rounded-lg flex items-start gap-space-sm text-on-secondary-fixed">
+<span class="material-symbols-outlined text-[1.25rem] text-primary flex-shrink-0 mt-0.5">verified_user</span>
+<div class="text-body-sm font-body-sm leading-relaxed">
+<strong class="font-semibold text-on-surface">Strict Unit Comparability Enforced:</strong> 
+              Comparing strictly identical packaging (15L Tin containers only). Loose litre pouches and 1L plastic bottles are partitioned into separate catalog tracks to prevent skewed margin analytics.
+            </div>
+</div>
+<!-- Price Step / Trend Chart (Inline SVG Visual) -->
+<div class="relative w-full bg-surface-container-low/60 rounded-xl p-space-md">
+<div class="flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant mb-2">
+<span class="font-semibold text-primary">₹2,050 → ₹2,190 Rate Movement Range</span>
+<span class="text-outline">6 confirmed deliveries plotted</span>
+</div>
+<!-- SVG Data Visualization -->
+<div class="w-full h-56 sm:h-64 relative">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 760 220">
+<defs>
+<lineargradient id="chartFill" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#245c45" stop-opacity="0.22"></stop>
+<stop offset="100%" stop-color="#245c45" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<!-- Horizontal Reference Gridlines -->
+<line stroke="#c0c9c2" stroke-dasharray="3 3" stroke-width="0.75" x1="50" x2="740" y1="30" y2="30"></line>
+<text class="font-label-xs text-[11px]" fill="#57615b" text-anchor="end" x="40" y="34">₹2,200</text>
+<line stroke="#c0c9c2" stroke-dasharray="3 3" stroke-width="0.75" x1="50" x2="740" y1="80" y2="80"></line>
+<text class="font-label-xs text-[11px]" fill="#57615b" text-anchor="end" x="40" y="84">₹2,150</text>
+<line stroke="#c0c9c2" stroke-dasharray="3 3" stroke-width="0.75" x1="50" x2="740" y1="130" y2="130"></line>
+<text class="font-label-xs text-[11px]" fill="#57615b" text-anchor="end" x="40" y="134">₹2,100</text>
+<line stroke="#c0c9c2" stroke-dasharray="3 3" stroke-width="0.75" x1="50" x2="740" y1="180" y2="180"></line>
+<text class="font-label-xs text-[11px]" fill="#57615b" text-anchor="end" x="40" y="184">₹2,050</text>
+<!-- Shaded Area -->
+<polygon fill="url(#chartFill)" points="
+                  70,180 
+                  190,150 
+                  320,130 
+                  460,110 
+                  580,40 
+                  700,80 
+                  700,205 
+                  70,205"></polygon>
+<!-- Trend Line Path -->
+<polyline fill="none" points="
+                  70,180 
+                  190,150 
+                  320,130 
+                  460,110 
+                  580,40 
+                  700,80" stroke="#245c45" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></polyline>
+<!-- Point 1: 10 Aug (₹2050) -->
+<circle cx="70" cy="180" fill="#faf9f4" r="4.5" stroke="#245c45" stroke-width="2.5"></circle>
+<text class="font-label-xs text-[11px]" fill="#57615b" text-anchor="middle" x="70" y="202">10 Aug</text>
+<text class="font-label-xs text-[11px] font-semibold" fill="#1b1c19" text-anchor="middle" x="70" y="170">₹2,050</text>
+<!-- Point 2: 28 Aug (₹2080) -->
+<circle cx="190" cy="150" fill="#faf9f4" r="4.5" stroke="#245c45" stroke-width="2.5"></circle>
+<text class="font-label-xs text-[11px]" fill="#57615b" text-anchor="middle" x="190" y="202">28 Aug</text>
+<text class="font-label-xs text-[11px] font-semibold" fill="#1b1c19" text-anchor="middle" x="190" y="140">₹2,080</text>
+<!-- Point 3: 12 Sep (₹2100) -->
+<circle cx="320" cy="130" fill="#faf9f4" r="4.5" stroke="#245c45" stroke-width="2.5"></circle>
+<text class="font-label-xs text-[11px]" fill="#57615b" text-anchor="middle" x="320" y="202">12 Sep</text>
+<text class="font-label-xs text-[11px] font-semibold" fill="#1b1c19" text-anchor="middle" x="320" y="120">₹2,100</text>
+<!-- Point 4: 08 Oct (₹2120) -->
+<circle cx="460" cy="110" fill="#04442f" r="5" stroke="#faf9f4" stroke-width="1.5"></circle>
+<text class="font-label-xs text-[11px]" fill="#57615b" text-anchor="middle" x="460" y="202">08 Oct</text>
+<text class="font-label-xs text-[11px] font-bold" fill="#04442f" text-anchor="middle" x="460" y="100">₹2,120 ★</text>
+<!-- Point 5: 16 Oct (₹2190 Surge) -->
+<circle cx="580" cy="40" fill="#ba1a1a" r="5.5" stroke="#faf9f4" stroke-width="2"></circle>
+<text class="font-label-xs text-[11px]" fill="#57615b" text-anchor="middle" x="580" y="202">16 Oct</text>
+<text class="font-label-xs text-[11px] font-bold" fill="#ba1a1a" text-anchor="middle" x="580" y="30">₹2,190 ⚠️</text>
+<!-- Point 6: 24 Oct (₹2150 Current) -->
+<circle cx="700" cy="80" fill="#245c45" r="5" stroke="#faf9f4" stroke-width="2"></circle>
+<text class="font-label-xs text-[11px]" fill="#57615b" text-anchor="middle" x="700" y="202">24 Oct (Now)</text>
+<text class="font-label-xs text-[11px] font-bold" fill="#245c45" text-anchor="middle" x="700" y="70">₹2,150</text>
+</svg>
+</div>
+</div>
+<!-- Insight Callout Box -->
+<div class="bg-surface-container-high/60 p-space-md rounded-lg flex items-start gap-space-sm text-on-surface">
+<span class="material-symbols-outlined text-[1.25rem] text-tertiary flex-shrink-0 mt-0.5">lightbulb</span>
+<div class="font-body-sm text-body-sm leading-relaxed">
+<strong class="font-semibold text-on-surface">Wholesale Spread Insight:</strong> 
+              There is an active rate spread of <strong>₹140 per tin</strong> across suppliers. Purchasing directly through Adani Wilmar Depot or utilizing bulk leverage with Gupta Wholesale saves between <strong>₹40 to ₹70 per tin</strong> compared to spot market Mandi purchases.
+            </div>
+</div>
+</div>
+<!-- Receipt History Section -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight">
+                Scanned Receipt History
+              </h2>
+<span class="font-label-xs text-label-xs text-on-surface-variant">
+                Every verified line item extracted by ShopLedger OCR featuring this SKU
+              </span>
+</div>
+<!-- Filters -->
+<div class="flex items-center gap-space-sm flex-wrap">
+<div class="flex items-center gap-1.5 bg-surface-container-low px-space-sm py-1.5 rounded-lg text-on-surface font-label-xs text-label-xs">
+<span class="text-on-surface-variant">Supplier:</span>
+<select class="bg-transparent border-0 font-semibold outline-none cursor-pointer text-on-surface">
+<option>All Suppliers (3)</option>
+<option>Gupta Wholesale Mart</option>
+<option>Adani Wilmar Dist.</option>
+<option>Aggarwal &amp; Sons Mandi</option>
+</select>
+</div>
+<div class="flex items-center gap-1.5 bg-surface-container-low px-space-sm py-1.5 rounded-lg text-on-surface font-label-xs text-label-xs">
+<span class="text-on-surface-variant">Window:</span>
+<span class="font-semibold">Last 90 days</span>
+</div>
+</div>
+</div>
+<!-- Table Container -->
+<div class="overflow-x-auto -mx-space-lg px-space-lg">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead>
+<tr class="text-on-surface-variant font-label-xs text-label-xs uppercase tracking-wider bg-surface-container-low/70">
+<th class="py-3 px-space-md rounded-l-lg">Receipt ID</th>
+<th class="py-3 px-space-md">Supplier</th>
+<th class="py-3 px-space-md">Date</th>
+<th class="py-3 px-space-md text-right">Qty</th>
+<th class="py-3 px-space-md text-right">Unit Rate</th>
+<th class="py-3 px-space-md text-right">Line Total</th>
+<th class="py-3 px-space-md">Verification Flag</th>
+<th class="py-3 px-space-md text-right rounded-r-lg">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y-0">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-3.5 px-space-md font-label-md text-label-md text-primary truncate">
+                    #REC-2024-1082
+                  </td>
+<td class="py-3.5 px-space-md font-medium text-on-surface">
+                    Gupta Wholesale Mart
+                  </td>
+<td class="py-3.5 px-space-md text-on-surface-variant whitespace-nowrap">
+                    24 Oct 2024
+                  </td>
+<td class="py-3.5 px-space-md text-right font-medium tabular-nums text-on-surface">
+                    3 Tins
+                  </td>
+<td class="py-3.5 px-space-md text-right tabular-nums text-on-surface">
+                    ₹2,150.00
+                  </td>
+<td class="py-3.5 px-space-md text-right font-semibold tabular-nums text-on-surface">
+                    ₹6,450.00
+                  </td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1 text-[0.75rem] font-semibold text-secondary bg-surface-container px-2 py-0.5 rounded-full">
+                      Standard reorder
+                    </span>
+</td>
+<td class="py-3.5 px-space-md text-right whitespace-nowrap">
+<a class="inline-flex items-center gap-0.5 text-primary-container font-label-xs text-label-xs hover:underline" data-path="your-purchase-receipts---shopledger" href="#">
+<span>View Receipt</span>
+<span class="material-symbols-outlined text-[0.875rem]">arrow_forward</span>
+</a>
+</td>
+</tr>
+<!-- Row 2 (Surge Price) -->
+<tr class="hover:bg-surface-container-low transition-colors bg-tertiary-fixed/15">
+<td class="py-3.5 px-space-md font-label-md text-label-md text-primary truncate">
+                    #REC-2024-1061
+                  </td>
+<td class="py-3.5 px-space-md font-medium text-on-surface">
+                    Aggarwal &amp; Sons Mandi
+                  </td>
+<td class="py-3.5 px-space-md text-on-surface-variant whitespace-nowrap">
+                    16 Oct 2024
+                  </td>
+<td class="py-3.5 px-space-md text-right font-medium tabular-nums text-on-surface">
+                    5 Tins
+                  </td>
+<td class="py-3.5 px-space-md text-right tabular-nums text-error font-semibold">
+                    ₹2,190.00
+                  </td>
+<td class="py-3.5 px-space-md text-right font-semibold tabular-nums text-on-surface">
+                    ₹10,950.00
+                  </td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1 text-[0.75rem] font-semibold text-on-tertiary-fixed-variant bg-tertiary-fixed px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[0.875rem]">warning</span>
+<span>Peak festival surge (+₹40)</span>
+</span>
+</td>
+<td class="py-3.5 px-space-md text-right whitespace-nowrap">
+<a class="inline-flex items-center gap-0.5 text-primary-container font-label-xs text-label-xs hover:underline" data-path="your-purchase-receipts---shopledger" href="#">
+<span>View Receipt</span>
+<span class="material-symbols-outlined text-[0.875rem]">arrow_forward</span>
+</a>
+</td>
+</tr>
+<!-- Row 3 (Best Deal) -->
+<tr class="hover:bg-surface-container-low transition-colors bg-primary-fixed/20">
+<td class="py-3.5 px-space-md font-label-md text-label-md text-primary truncate">
+                    #REC-2024-1038
+                  </td>
+<td class="py-3.5 px-space-md font-medium text-on-surface">
+                    Adani Wilmar Dist.
+                  </td>
+<td class="py-3.5 px-space-md text-on-surface-variant whitespace-nowrap">
+                    08 Oct 2024
+                  </td>
+<td class="py-3.5 px-space-md text-right font-medium tabular-nums text-on-surface">
+                    12 Tins
+                  </td>
+<td class="py-3.5 px-space-md text-right tabular-nums text-primary font-bold">
+                    ₹2,120.00
+                  </td>
+<td class="py-3.5 px-space-md text-right font-semibold tabular-nums text-on-surface">
+                    ₹25,440.00
+                  </td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1 text-[0.75rem] font-semibold text-on-primary-fixed bg-primary-fixed px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[0.875rem]">star</span>
+<span>Best bulk volume deal</span>
+</span>
+</td>
+<td class="py-3.5 px-space-md text-right whitespace-nowrap">
+<a class="inline-flex items-center gap-0.5 text-primary-container font-label-xs text-label-xs hover:underline" data-path="your-purchase-receipts---shopledger" href="#">
+<span>View Receipt</span>
+<span class="material-symbols-outlined text-[0.875rem]">arrow_forward</span>
+</a>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-space-md font-label-md text-label-md text-primary truncate">
+                    #REC-2024-0982
+                  </td>
+<td class="py-3.5 px-space-md font-medium text-on-surface">
+                    Gupta Wholesale Mart
+                  </td>
+<td class="py-3.5 px-space-md text-on-surface-variant whitespace-nowrap">
+                    12 Sep 2024
+                  </td>
+<td class="py-3.5 px-space-md text-right font-medium tabular-nums text-on-surface">
+                    4 Tins
+                  </td>
+<td class="py-3.5 px-space-md text-right tabular-nums text-on-surface">
+                    ₹2,100.00
+                  </td>
+<td class="py-3.5 px-space-md text-right font-semibold tabular-nums text-on-surface">
+                    ₹8,400.00
+                  </td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1 text-[0.75rem] font-semibold text-secondary bg-surface-container px-2 py-0.5 rounded-full">
+                      Regular replenishment
+                    </span>
+</td>
+<td class="py-3.5 px-space-md text-right whitespace-nowrap">
+<a class="inline-flex items-center gap-0.5 text-primary-container font-label-xs text-label-xs hover:underline" data-path="your-purchase-receipts---shopledger" href="#">
+<span>View Receipt</span>
+<span class="material-symbols-outlined text-[0.875rem]">arrow_forward</span>
+</a>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-space-md font-label-md text-label-md text-primary truncate">
+                    #REC-2024-0920
+                  </td>
+<td class="py-3.5 px-space-md font-medium text-on-surface">
+                    Gupta Wholesale Mart
+                  </td>
+<td class="py-3.5 px-space-md text-on-surface-variant whitespace-nowrap">
+                    28 Aug 2024
+                  </td>
+<td class="py-3.5 px-space-md text-right font-medium tabular-nums text-on-surface">
+                    8 Tins
+                  </td>
+<td class="py-3.5 px-space-md text-right tabular-nums text-on-surface">
+                    ₹2,080.00
+                  </td>
+<td class="py-3.5 px-space-md text-right font-semibold tabular-nums text-on-surface">
+                    ₹16,640.00
+                  </td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1 text-[0.75rem] font-semibold text-secondary bg-surface-container px-2 py-0.5 rounded-full">
+                      Baseline rate
+                    </span>
+</td>
+<td class="py-3.5 px-space-md text-right whitespace-nowrap">
+<a class="inline-flex items-center gap-0.5 text-primary-container font-label-xs text-label-xs hover:underline" data-path="your-purchase-receipts---shopledger" href="#">
+<span>View Receipt</span>
+<span class="material-symbols-outlined text-[0.875rem]">arrow_forward</span>
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Bottom Reconciliation Note -->
+<div class="flex items-center justify-between text-on-surface-variant font-label-xs text-label-xs pt-space-xs">
+<span>Showing all 5 recent scanned bills • 6 earlier bills archived</span>
+<a class="text-primary hover:underline" data-path="your-purchase-receipts---shopledger" href="#">Browse Complete Store Receipts Archive →</a>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN (4 cols): Sourcing, Packaging Variants, Master Controls -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- Sourcing Suppliers Breakdown -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">
+              Suppliers Breakdown
+            </h3>
+<span class="material-symbols-outlined text-secondary text-[1.25rem]">store</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant -mt-1">
+            Where your store procures this 15L Tin SKU:
+          </p>
+<!-- Supplier Bars & Distribution -->
+<div class="flex flex-col gap-space-md mt-1">
+<!-- Vendor 1 -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between font-label-md text-label-md">
+<span class="text-on-surface">Gupta Wholesale Mart</span>
+<span class="text-primary font-bold">56.3%</span>
+</div>
+<div class="w-full h-2.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 56.3%"></div>
+</div>
+<div class="flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant">
+<span>18 Tins supplied</span>
+<span>Avg: <strong>₹2,115 / tin</strong></span>
+</div>
+</div>
+<!-- Vendor 2 -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between font-label-md text-label-md">
+<span class="text-on-surface">Adani Wilmar Dist.</span>
+<span class="text-secondary font-bold">37.5%</span>
+</div>
+<div class="w-full h-2.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 37.5%"></div>
+</div>
+<div class="flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant">
+<span>12 Tins (Direct Depot)</span>
+<span>Avg: <strong>₹2,120 / tin</strong></span>
+</div>
+</div>
+<!-- Vendor 3 -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between font-label-md text-label-md">
+<span class="text-on-surface">Aggarwal &amp; Sons Mandi</span>
+<span class="text-tertiary font-bold">6.2%</span>
+</div>
+<div class="w-full h-2.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-fixed-dim rounded-full" style="width: 6.2%"></div>
+</div>
+<div class="flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant">
+<span>2 Tins (Emergency Spot)</span>
+<span>Avg: <strong>₹2,190 / tin</strong></span>
+</div>
+</div>
+</div>
+<div class="pt-space-xs">
+<a class="w-full inline-flex items-center justify-center gap-1.5 bg-surface-container text-on-surface font-label-md text-label-md py-2 px-space-md rounded-lg hover:bg-surface-container-high transition-colors" data-path="supplier-details---gupta-wholesale-mart---shopledger" href="#">
+<span>Compare vendor rate terms</span>
+<span class="material-symbols-outlined text-[1rem]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Packaging & Units Separation Safeguard -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">
+              Packaging Standard
+            </h3>
+<span class="material-symbols-outlined text-primary text-[1.25rem]">view_in_ar</span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[1.5rem]">inventory_2</span>
+<div>
+<span class="font-label-md text-label-md text-on-surface block">Primary Unit Record</span>
+<span class="font-label-xs text-label-xs text-on-surface-variant">15L Sealed Metal Tin</span>
+</div>
+</div>
+<span class="bg-primary-fixed text-on-primary-fixed font-label-xs text-label-xs px-2 py-0.5 rounded-full">Active</span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">
+              Other Variants (Tracked Separately)
+            </span>
+<!-- Pouch Variant -->
+<div class="flex items-center justify-between p-2 rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Fortune 1L Pouch (Pack of 12)</span>
+<span class="font-body-sm text-[0.75rem] text-on-surface-variant">Carton packaging • Separate SKU</span>
+</div>
+<div class="text-right">
+<span class="font-label-md text-label-md text-on-surface tabular-nums">₹1,620</span>
+<span class="block text-[0.75rem] text-on-surface-variant">/carton</span>
+</div>
+</div>
+<!-- 5L Jar Variant -->
+<div class="flex items-center justify-between p-2 rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Fortune 5L Plastic Jar</span>
+<span class="font-body-sm text-[0.75rem] text-on-surface-variant">Single unit jar • Separate SKU</span>
+</div>
+<div class="text-right">
+<span class="font-label-md text-label-md text-on-surface tabular-nums">₹740</span>
+<span class="block text-[0.75rem] text-on-surface-variant">/jar</span>
+</div>
+</div>
+</div>
+<div class="bg-secondary-container/40 p-space-sm rounded-lg flex items-start gap-space-xs text-on-secondary-fixed">
+<span class="material-symbols-outlined text-[1.125rem] text-primary flex-shrink-0 mt-0.5">shield</span>
+<p class="font-body-sm text-[0.75rem] leading-normal">
+<strong>Anti-Merge Protection:</strong> ShopLedger keeps pouches and tins strictly isolated so your per-litre cost and ledger reconciliations remain mathematically pure.
+            </p>
+</div>
+</div>
+<!-- Master Item Configuration Guidance Card -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-tertiary text-[1.25rem]">tune</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">
+              Catalog Record Policy
+            </h3>
+</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+            Changing this item name or primary unit updates the <strong class="text-on-surface">Master Catalog Record</strong>. 
+            All 11 linked historical bills and future receipt OCR matches will automatically adopt the new description.
+          </div>
+<div class="p-space-sm bg-surface-container-low rounded-lg text-body-sm text-[0.8125rem] text-on-surface flex items-start gap-2">
+<span class="material-symbols-outlined text-[1.125rem] text-secondary mt-0.5">info</span>
+<span>Need to fix a vendor's single-bill typo instead? Open the specific receipt review and select <em class="font-semibold text-primary">"Override this receipt only"</em>.</span>
+</div>
+<button class="inline-flex items-center justify-center gap-2 bg-secondary-container text-on-secondary-fixed hover:bg-secondary-container/80 font-label-md text-label-md py-2 px-space-md rounded-lg transition-colors" id="quick-open-edit">
+<span class="material-symbols-outlined text-[1.125rem]">settings</span>
+<span>Configure Item Settings</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Edit Item Details Dialog / Modal Backdrop -->
+<div class="fixed inset-0 bg-inverse-surface/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" id="edit-modal">
+<div class="bg-surface-container-lowest w-full max-w-lg rounded-xl shadow-xl overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-150">
+<!-- Modal Header -->
+<div class="p-space-lg pb-space-md flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center text-on-primary-fixed">
+<span class="material-symbols-outlined text-[1.25rem]">edit_note</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Edit Catalog Item</h3>
+<span class="font-label-xs text-label-xs text-on-surface-variant">Update item title, category classification, and update scope</span>
+</div>
+</div>
+<button class="p-1 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" id="close-modal-x">
+<span class="material-symbols-outlined text-[1.25rem]">close</span>
+</button>
+</div>
+<!-- Modal Body Form -->
+<div class="px-space-lg py-space-md flex flex-col gap-space-md">
+<!-- Field 1: Item Name -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface">Item Title / Display Name</label>
+<input class="w-full bg-surface-container-lowest border-0 ring-1 ring-outline-variant focus:ring-2 focus:ring-primary-container px-3 py-2 rounded-lg font-body-sm text-body-sm text-on-surface outline-none" type="text" value="Fortune Kachi Ghani Mustard Oil (15L Tin)"/>
+</div>
+<!-- Field 2: Category -->
+<div class="grid grid-cols-2 gap-space-md">
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface">Category</label>
+<select class="w-full bg-surface-container-lowest border-0 ring-1 ring-outline-variant focus:ring-2 focus:ring-primary-container px-3 py-2 rounded-lg font-body-sm text-body-sm text-on-surface outline-none cursor-pointer">
+<option selected="">Cooking Oils &amp; Ghee</option>
+<option>Atta, Flours &amp; Sooji</option>
+<option>Pulses &amp; Dal</option>
+<option>Spices &amp; Masalas</option>
+<option>Packaged Foods</option>
+</select>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface">Standard Unit Packaging</label>
+<select class="w-full bg-surface-container-lowest border-0 ring-1 ring-outline-variant focus:ring-2 focus:ring-primary-container px-3 py-2 rounded-lg font-body-sm text-body-sm text-on-surface outline-none cursor-pointer">
+<option selected="">15 Litre Tin</option>
+<option>1 Litre Pouch</option>
+<option>5 Litre Jar</option>
+<option>Kilogram (Loose)</option>
+</select>
+</div>
+</div>
+<!-- Field 3: Scope Radio Options (CRITICAL FEATURE) -->
+<div class="flex flex-col gap-2 mt-1">
+<label class="font-label-md text-label-md text-on-surface">Application Scope</label>
+<div class="flex flex-col gap-space-xs">
+<!-- Option A: Global Master Record -->
+<label class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer">
+<input checked="" class="mt-1 accent-primary w-4 h-4 cursor-pointer" name="scope-choice" type="radio"/>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Apply to shared master catalog record</span>
+<span class="font-body-sm text-[0.75rem] text-on-surface-variant">Recommended. Renames across all 11 past receipts, future scans, and linked analytics.</span>
+</div>
+</label>
+<!-- Option B: Receipt Specific -->
+<label class="flex items-start gap-space-sm p-space-sm rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer">
+<input class="mt-1 accent-primary w-4 h-4 cursor-pointer" name="scope-choice" type="radio"/>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Apply only to a specific selected receipt</span>
+<span class="font-body-sm text-[0.75rem] text-on-surface-variant">Isolates one bill without modifying the master stock catalog or other historical data.</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="p-space-lg pt-space-md bg-surface-container-low flex items-center justify-end gap-space-sm">
+<button class="px-space-md py-2 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors" id="cancel-modal">
+          Cancel
+        </button>
+<button class="bg-primary-container text-on-primary hover:bg-primary px-space-md py-2 rounded-lg font-label-md text-label-md shadow-sm transition-colors flex items-center gap-1.5" id="save-modal">
+<span class="material-symbols-outlined text-[1.125rem]">check</span>
+<span>Confirm &amp; Save Changes</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Toast Notification Container (Micro-interaction) -->
+<div class="fixed bottom-6 right-6 bg-inverse-surface text-inverse-on-surface px-space-md py- space-sm py-2.5 rounded-lg shadow-xl font-label-md text-label-md flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none z-50" id="toast">
+<span class="material-symbols-outlined text-primary-fixed text-[1.25rem]">check_circle</span>
+<span id="toast-text">Catalog updated successfully</span>
+</div>
+<script>
+    (function initItemDetails() {
+      const modal = document.getElementById('edit-modal');
+      const openBtn = document.getElementById('open-edit-modal');
+      const quickOpenBtn = document.getElementById('quick-open-edit');
+      const closeX = document.getElementById('close-modal-x');
+      const cancelBtn = document.getElementById('cancel-modal');
+      const saveBtn = document.getElementById('save-modal');
+      const exportBtn = document.getElementById('open-export-btn');
+      const toast = document.getElementById('toast');
+      const toastText = document.getElementById('toast-text');
+
+      function showToast(message) {
+        if (!toast || !toastText) return;
+        toastText.textContent = message;
+        toast.classList.remove('translate-y-20', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+        setTimeout(() => {
+          toast.classList.add('translate-y-20', 'opacity-0');
+          toast.classList.remove('translate-y-0', 'opacity-100');
+        }, 3200);
+      }
+
+      function openModal() {
+        if (modal) modal.classList.remove('hidden');
+      }
+
+      function closeModal() {
+        if (modal) modal.classList.add('hidden');
+      }
+
+      if (openBtn) openBtn.addEventListener('click', openModal);
+      if (quickOpenBtn) quickOpenBtn.addEventListener('click', openModal);
+      if (closeX) closeX.addEventListener('click', closeModal);
+      if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+
+      if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+          closeModal();
+          showToast('Item details saved to master catalog');
+        });
+      }
+
+      if (exportBtn) {
+        exportBtn.addEventListener('click', () => {
+          showToast('Generating CSV report with 90-day rate logs...');
+        });
+      }
+
+      // Close modal on backdrop tap
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeModal();
+        });
+      }
+    })();
+  </script>
+</div></main></div></body></html>

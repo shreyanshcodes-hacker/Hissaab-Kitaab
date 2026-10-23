@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-primary-fixed-variant":"#16503a","secondary-container":"#dbe5dd","primary-fixed":"#b5efd1","on-primary":"#ffffff","secondary":"#57615b","tertiary-fixed":"#ffdcc3","secondary-fixed-dim":"#bfc9c1","on-secondary-fixed":"#151d19","tertiary-container":"#7f4300","surface-container-lowest":"#ffffff","error-container":"#ffdad6","on-background":"#1b1c19","surface":"#faf9f4","background":"#faf9f4","surface-container":"#efeee9","on-error-container":"#93000a","on-tertiary":"#ffffff","on-secondary-fixed-variant":"#404943","surface-container-highest":"#e3e3de","surface-container-high":"#e9e8e3","inverse-on-surface":"#f2f1ec","on-surface":"#1b1c19","secondary-fixed":"#dbe5dd","inverse-surface":"#30312e","surface-variant":"#e3e3de","primary-fixed-dim":"#99d3b6","on-tertiary-fixed-variant":"#6e3900","inverse-primary":"#99d3b6","surface-tint":"#316951","outline":"#707973","on-tertiary-container":"#ffb77d","on-secondary":"#ffffff","outline-variant":"#c0c9c2","on-primary-container":"#99d2b5","tertiary":"#5d3000","surface-dim":"#dbdad5","error":"#ba1a1a","on-tertiary-fixed":"#2f1500","surface-bright":"#faf9f4","on-primary-fixed":"#002114","primary-container":"#245c45","surface-container-low":"#f5f4ef","on-error":"#ffffff","tertiary-fixed-dim":"#ffb77d","on-secondary-container":"#5d6760","on-surface-variant":"#404943","primary":"#04442f"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"space-xl":"2.25rem","gutter":"1rem","margin":"1rem","space-md":"1rem","space-lg":"1.5rem","margin-desktop":"2rem","gutter-desktop":"1.5rem","space-xs":"0.25rem","space-sm":"0.5rem"},fontFamily:{"display":["Inter"],"label-xs":["Inter"],"headline-lg":["Inter"],"body-sm":["Inter"],"body-lg":["Inter"],"display-mobile":["Inter"],"label-md":["Inter"],"currency-stat":["Inter"],"headline-sm":["Inter"]},fontSize:{"display":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.02em","fontWeight":"700"}],"label-xs":["0.75rem",{"lineHeight":"1rem","letterSpacing":"0.02em","fontWeight":"600"}],"headline-lg":["1.5rem",{"lineHeight":"2rem","letterSpacing":"-0.015em","fontWeight":"700"}],"body-sm":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"400"}],"body-lg":["1rem",{"lineHeight":"1.5rem","fontWeight":"400"}],"display-mobile":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.01em","fontWeight":"700"}],"label-md":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"600"}],"currency-stat":["1.75rem",{"lineHeight":"2rem","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-sm":["1.25rem",{"lineHeight":"1.75rem","letterSpacing":"-0.01em","fontWeight":"600"}]}}}}</script></head><body class="bg-surface font-body-lg text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between overflow-y-auto"><div class="p-space-lg"><div class="flex items-center gap-space-sm mb-space-xl"><img alt="ShopLedger Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VRnzfpuAZPE2MEeTjoUDXehqdHDyxBez3LbbRvHo0GcGvnsMiUTupaVBxg_fzYMnbTQHqlaLUO3UaV6P9HW2UvIkxdnyvEt4paM8kVo-Suj6rS3mJoAp0ByZ-BZ9oBEbCCVgMbvz33KBpei8u47rhTPL6RgF-COnxv4yTWmVK-WWVWopqpv0ffGfD6OZrUFq7CLvRaqr4BK2rBnQ-VE6b5nJ0FYcl-CrmPrObF0LqRNVvpzfl_V0SEAjOq"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">ShopLedger</span><span class="font-label-xs text-label-xs text-on-surface-variant mt-1 leading-none">Smart Shop Bookkeeper</span></div></div><div class="mb-space-lg"><button class="w-full flex items-center justify-center gap-space-sm bg-primary-container text-on-primary font-label-md text-label-md py-space-sm px-space-md rounded-lg shadow-[0_1px_3px_rgba(37,41,35,0.06)] hover:bg-primary transition-colors"><span class="material-symbols-outlined text-[1.25rem]">add_circle</span><span>+ Upload Receipt</span></button></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-secondary-container text-on-secondary-fixed font-label-md rounded-lg"><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="dashboard" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">dashboard</span><span>Dashboard</span></div></a><a aria-current="page" class="flex items-center justify-between px-space-md py-space-sm transition-colors bg-secondary-container text-on-secondary-fixed font-label-md rounded-lg" data-path="receipts" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">receipt_long</span><span>Receipts</span></div><span class="bg-tertiary-fixed text-on-tertiary-fixed font-label-xs text-label-xs px-2 py-0.5 rounded-full">2 needs check</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="analysis" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">trending_up</span><span>Analysis</span></div></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="ask-shopledger" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">auto_awesome</span><span>Ask ShopLedger</span></div><span class="bg-primary-fixed text-on-primary-fixed font-label-xs text-label-xs px-2 py-0.5 rounded-full">AI</span></a></nav></div><div class="p-space-lg flex flex-col gap-space-sm"><div class="flex flex-col gap-space-xs mb-space-sm"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="help-and-faqs" href="#"><span class="material-symbols-outlined text-[1.25rem]">help</span><span>Help & FAQs</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[1.25rem]">settings</span><span>Settings</span></a><div class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">contrast</span><span>Appearance</span></div><button aria-label="Toggle theme" class="flex items-center p-1 rounded-full hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[1.25rem]">light_mode</span></button></div></div><div class="bg-surface-container-lowest p-space-sm rounded-lg shadow-[0_1px_3px_rgba(37,41,35,0.06)] flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-sm min-w-0"><img alt="Profile" class="w-8 h-8 rounded-full object-cover flex-shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFviORAjsiSsDQWbSaKHwp8QQMsMidyEJn4nfJEOndAyJAzkZy-9HMHhji6x-pR9runnlyVZ89VfB0gOuTaLD6ahza9bCaAcMcd7HofUxdBVRa2IYKYIybpHxfooCRyFnla0YhYvERsixTlkjei6JcK2jk5m6IZpECPHO7_Qr-Ak4mT7z64QWEMv1tszsdMmaCoPRY7a3XKLtma4ywzJNLxI4QtBx7lPG-PMEfLd0Ezg1jn1SgjFVf3g"/><div class="flex flex-col min-w-0"><span class="font-label-md text-label-md text-on-surface truncate">Sharma Kirana Store</span><span class="font-label-xs text-label-xs text-on-surface-variant truncate">Ramesh Sharma</span></div></div><button aria-label="Switch store or log out" class="p-1 text-on-surface-variant hover:text-on-surface transition-colors flex-shrink-0"><span class="material-symbols-outlined text-[1.25rem]">unfold_more</span></button></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-16 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-gutter-desktop"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-sm text-on-surface-variant font-body-sm text-body-sm"><span class="material-symbols-outlined text-[1.125rem]">storefront</span><span>Sharma Kirana Store (Main Bazar)</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-sm bg-surface-container px-space-md py-1.5 rounded-full"><span class="material-symbols-outlined text-[1.125rem] text-on-surface-variant">search</span><input class="bg-transparent border-0 outline-none font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant w-56" placeholder="Search receipts, items, bahi khata..." type="text"/></div><button aria-label="Notifications" class="relative p-2 rounded-full hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[1.25rem]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error"></span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFviORAjsiSsDQWbSaKHwp8QQMsMidyEJn4nfJEOndAyJAzkZy-9HMHhji6x-pR9runnlyVZ89VfB0gOuTaLD6ahza9bCaAcMcd7HofUxdBVRa2IYKYIybpHxfooCRyFnla0YhYvERsixTlkjei6JcK2jk5m6IZpECPHO7_Qr-Ak4mT7z64QWEMv1tszsdMmaCoPRY7a3XKLtma4ywzJNLxI4QtBx7lPG-PMEfLd0Ezg1jn1SgjFVf3g"/></div></header><main class="relative pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<div class="w-full max-w-[1536px] mx-auto px-margin md:px-margin-desktop py-space-md flex flex-col gap-space-md">
+<!-- Breadcrumb & Top Bar -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm">
+<div class="flex flex-col">
+<nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-on-surface-variant font-label-xs text-label-xs mb-1">
+<a class="hover:text-primary transition-colors" href="#">Receipts</a>
+<span class="material-symbols-outlined text-[0.875rem] opacity-40">chevron_right</span>
+<span class="text-on-surface-variant">Review</span>
+<span class="material-symbols-outlined text-[0.875rem] opacity-40">chevron_right</span>
+<span class="text-primary font-semibold">Gupta Wholesale Mart</span>
+</nav>
+<div class="flex items-baseline gap-space-sm flex-wrap">
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Review Purchase Bill #REC-2024-1089</h1>
+<span class="bg-secondary-container text-on-secondary-fixed font-label-xs text-label-xs px-2.5 py-0.5 rounded-full uppercase tracking-wider">Draft Auto-Saved</span>
+</div>
+</div>
+<!-- Action Buttons Top Header -->
+<div class="flex items-center gap-space-sm flex-wrap">
+<button class="h-10 px-space-md rounded-lg bg-surface-container hover:bg-surface-container-highest text-on-surface font-label-md text-label-md transition-colors flex items-center gap-1.5 shadow-sm">
+<span class="material-symbols-outlined text-[1.125rem]">close</span>
+<span>Discard</span>
+</button>
+<button class="h-10 px-space-md rounded-lg bg-surface-container-highest hover:bg-surface-variant text-on-surface font-label-md text-label-md transition-colors flex items-center gap-1.5 shadow-sm">
+<span class="material-symbols-outlined text-[1.125rem]">save</span>
+<span>Save Draft</span>
+</button>
+<button class="h-10 px-space-lg rounded-lg bg-primary-container hover:bg-primary text-on-primary font-label-md text-label-md transition-all flex items-center gap-2 shadow-sm" id="topConfirmBtn">
+<span class="material-symbols-outlined text-[1.25rem]">check_circle</span>
+<span>Confirm & Save (₹12,450)</span>
+</button>
+</div>
+</div>
+<!-- AI Attention Banner -->
+<div class="w-full bg-amber-50 dark:bg-tertiary/20 rounded-xl p-space-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md shadow-sm">
+<div class="flex items-start sm:items-center gap-space-sm">
+<div class="w-9 h-9 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center flex-shrink-0 mt-0.5 sm:mt-0">
+<span class="material-symbols-outlined text-[1.375rem]">warning</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md text-on-surface font-bold">AI Extraction Complete (88% confidence)</span>
+<span class="font-label-xs text-label-xs px-2 py-0.5 rounded bg-tertiary-fixed-dim/40 text-on-tertiary-fixed font-semibold">2 Needs Attention</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Please check the 2 flagged items in amber below before confirming to your bahi khata ledger.</p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm self-end sm:self-auto flex-shrink-0">
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container-lowest text-tertiary font-label-md text-label-md shadow-sm hover:bg-surface-container transition-colors flex items-center gap-1" onclick="scrollToFirstAmber()">
+<span>Jump to flagged</span>
+<span class="material-symbols-outlined text-[1rem]">arrow_downward</span>
+</button>
+</div>
+</div>
+<!-- Upload Meta Info Strip -->
+<div class="flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm px-1">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="material-symbols-outlined text-[1rem] text-primary">schedule</span>
+<span>Uploaded on 24 Oct 2024, 02:45 PM</span>
+<span class="opacity-40">•</span>
+<span class="material-symbols-outlined text-[1rem]">image</span>
+<span class="font-medium text-on-surface">Bill Photo: IMG_9201.jpg</span>
+</div>
+<div class="hidden sm:flex items-center gap-space-sm">
+<span class="font-label-xs text-label-xs bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded-full">GST Matched</span>
+<span class="font-label-xs text-label-xs bg-secondary-fixed text-on-secondary-fixed px-2 py-0.5 rounded-full">Cash Memo</span>
+</div>
+</div>
+<!-- Main Two-Column Split Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start pb-20">
+<!-- Left Column: Receipt Scan Preview & Inspector (5 Cols on large) -->
+<section class="lg:col-span-5 flex flex-col gap-space-sm sticky top-20">
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
+<!-- Toolbar -->
+<div class="p-space-sm px-space-md bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-on-surface font-label-md text-label-md">
+<span class="material-symbols-outlined text-[1.125rem] text-primary">receipt_long</span>
+<span>Source Voucher Scan</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1.5 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" id="zoomOutBtn" title="Zoom Out">
+<span class="material-symbols-outlined text-[1.25rem]">zoom_out</span>
+</button>
+<span class="font-label-xs text-label-xs text-on-surface-variant w-10 text-center" id="zoomLevelText">100%</span>
+<button class="p-1.5 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" id="zoomInBtn" title="Zoom In">
+<span class="material-symbols-outlined text-[1.25rem]">zoom_in</span>
+</button>
+<div class="h-4 w-px bg-surface-container-highest mx-1"></div>
+<button class="p-1.5 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" id="rotateBtn" title="Rotate 90deg">
+<span class="material-symbols-outlined text-[1.25rem]">rotate_right</span>
+</button>
+<button class="p-1.5 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" title="Expand View">
+<span class="material-symbols-outlined text-[1.25rem]">fullscreen</span>
+</button>
+</div>
+</div>
+<!-- Interactive Receipt Canvas Viewport -->
+<div class="relative bg-surface-container-highest/40 p-4 h-[620px] overflow-auto flex items-center justify-center select-none" id="receiptViewport">
+<!-- Simulated Authentic Paper Slip -->
+<div class="relative w-[360px] bg-[#fbf9f1] text-[#2b2923] p-6 shadow-md transition-transform duration-200 origin-center rounded-[2px]" id="receiptPaper" style="font-family: 'Courier New', Courier, monospace;">
+<!-- Subtle Paper Texture Gradient -->
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-amber-900/[0.02] to-amber-900/[0.05] pointer-events-none"></div>
+<!-- Wholesale Header -->
+<div class="text-center pb-3 leading-tight">
+<div class="text-[0.65rem] tracking-widest text-[#736e65] font-sans">|| SHREE GANESHAY NAMAHA ||</div>
+<div class="font-bold text-[1.1rem] tracking-tight uppercase mt-1 font-sans text-[#181714]">GUPTA WHOLESALE MART</div>
+<div class="text-[0.7rem] text-[#524e47] mt-0.5">Grain, Edible Oils & Spices Merchants</div>
+<div class="text-[0.68rem] text-[#69645b]">412 Khari Baoli, Delhi-110006</div>
+<div class="text-[0.68rem] text-[#3d3a33] font-sans font-bold mt-1">GSTIN: 07AAAAA0000A1Z5</div>
+</div>
+<div class="my-2 border-b border-dashed border-[#b8b2a3]"></div>
+<!-- Metadata -->
+<div class="text-[0.72rem] flex justify-between items-center py-1">
+<span>Bill No: <strong class="font-sans text-[#151d19]">GW-8821</strong></span>
+<span>Date: <strong class="font-sans text-[#151d19]">24/10/2024</strong></span>
+</div>
+<div class="text-[0.7rem] text-[#5a564e] pb-1">
+                M/s: <strong class="font-sans text-[#151d19]">Sharma Kirana Store, Main Bazar</strong>
+</div>
+<div class="my-2 border-b border-[#2b2923]"></div>
+<!-- Table Headers on Receipt -->
+<div class="text-[0.65rem] font-bold flex justify-between py-1 text-[#423f38] uppercase">
+<span class="w-6">Sn</span>
+<span class="flex-1">Particulars</span>
+<span class="w-12 text-right">Qty</span>
+<span class="w-14 text-right">Rate</span>
+<span class="w-16 text-right">Total</span>
+</div>
+<div class="border-b border-dashed border-[#b8b2a3] mb-1"></div>
+<!-- Scanned Receipt Items with bounding box indicators -->
+<div class="flex flex-col gap-1 text-[0.7rem]">
+<!-- Item 1 -->
+<div class="relative group p-1 -mx-1 rounded cursor-pointer transition-all bg-emerald-500/10 hover:bg-emerald-500/20 flex justify-between items-center" id="bbox-1">
+<div class="absolute -left-1.5 top-1/2 -translate-y-1/2 w-1 h-3 bg-primary-container rounded-full"></div>
+<span class="w-6 text-[#757064]">1</span>
+<span class="flex-1 font-semibold truncate">Aashirvaad Atta 10kg</span>
+<span class="w-12 text-right">10 Bg</span>
+<span class="w-14 text-right">380.00</span>
+<span class="w-16 text-right font-mono font-bold">3,800.00</span>
+</div>
+<!-- Item 2 -->
+<div class="relative group p-1 -mx-1 rounded cursor-pointer transition-all bg-emerald-500/10 hover:bg-emerald-500/20 flex justify-between items-center" id="bbox-2">
+<span class="w-6 text-[#757064]">2</span>
+<span class="flex-1 font-semibold truncate">Tata Salt Vac 1kg</span>
+<span class="w-12 text-right">50 Pk</span>
+<span class="w-14 text-right">24.00</span>
+<span class="w-16 text-right font-mono font-bold">1,200.00</span>
+</div>
+<!-- Item 3: AMBER FLAGGED -->
+<div class="relative group p-1 -mx-1 rounded cursor-pointer transition-all bg-amber-400/25 ring-2 ring-amber-500/80 animate-pulse flex justify-between items-center" id="bbox-3">
+<span class="w-6 text-[#757064]">3</span>
+<span class="flex-1 font-semibold truncate">Fortune Sunlite Oil 1L</span>
+<span class="w-12 text-right">30 Pch</span>
+<span class="w-14 text-right text-amber-900 font-bold bg-amber-200/80 px-1 rounded">142?</span>
+<span class="w-16 text-right font-mono font-bold">4,260.00</span>
+<span class="absolute -right-2 -top-2 flex h-4 w-4">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-4 w-4 bg-amber-600 text-[9px] text-white items-center justify-center font-sans font-bold">!</span>
+</span>
+</div>
+<!-- Item 4 -->
+<div class="relative group p-1 -mx-1 rounded cursor-pointer transition-all bg-emerald-500/10 hover:bg-emerald-500/20 flex justify-between items-center" id="bbox-4">
+<span class="w-6 text-[#757064]">4</span>
+<span class="flex-1 font-semibold truncate">Madhur Pure Sugar 5k</span>
+<span class="w-12 text-right">12 Bg</span>
+<span class="w-14 text-right">215.00</span>
+<span class="w-16 text-right font-mono font-bold">2,580.00</span>
+</div>
+<!-- Item 5: AMBER FLAGGED -->
+<div class="relative group p-1 -mx-1 rounded cursor-pointer transition-all bg-amber-400/25 ring-2 ring-amber-500/80 animate-pulse flex justify-between items-center" id="bbox-5">
+<span class="w-6 text-[#757064]">5</span>
+<span class="flex-1 font-semibold truncate">MDH Deggi Mirch 100g</span>
+<span class="w-12 text-right">15 Pk</span>
+<span class="w-14 text-right">40.66</span>
+<span class="w-16 text-right font-mono font-bold text-amber-900 bg-amber-200/80 px-1 rounded">610.00</span>
+<span class="absolute -right-2 -top-2 flex h-4 w-4">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-4 w-4 bg-amber-600 text-[9px] text-white items-center justify-center font-sans font-bold">!</span>
+</span>
+</div>
+</div>
+<div class="my-2 border-b border-[#2b2923]"></div>
+<!-- Scanned Totals -->
+<div class="text-[0.7rem] space-y-0.5">
+<div class="flex justify-between">
+<span>Subtotal:</span>
+<span class="font-mono">₹11,827.50</span>
+</div>
+<div class="flex justify-between text-[#5f5a50]">
+<span>CGST @ 2.5%:</span>
+<span class="font-mono">₹311.25</span>
+</div>
+<div class="flex justify-between text-[#5f5a50]">
+<span>SGST @ 2.5%:</span>
+<span class="font-mono">₹311.25</span>
+</div>
+<div class="border-t border-double border-[#2b2923] pt-1 mt-1 flex justify-between font-bold text-[0.8rem] font-sans">
+<span>NET TOTAL:</span>
+<span>₹12,450.00</span>
+</div>
+</div>
+<!-- Rubber Stamp Simulation -->
+<div class="mt-4 pt-2 border-t border-dashed border-[#b8b2a3] flex justify-between items-end">
+<div class="inline-block transform -rotate-6 border-2 border-dashed border-red-700/60 p-1 rounded text-[0.62rem] font-bold text-red-800 font-sans tracking-wide">
+                  PAID CASH / UPI<br/><span class="text-[0.55rem]">GUPTA WHOLESALE MART</span>
+</div>
+<div class="text-[0.6rem] text-right text-[#57534b]">
+                  Auth. Signatory<br/>
+<span class="italic text-[0.7rem]">R.K. Gupta</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Helper Footer Note -->
+<div class="px-space-md py-space-sm bg-surface-container-low text-on-surface-variant font-label-xs text-label-xs flex items-center justify-between">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[1rem] text-primary">lightbulb</span>
+              Tip: Click any item row to jump and highlight it on the voucher.
+            </span>
+<span class="text-on-surface-variant/70">Source Resolution: 2400x3200px</span>
+</div>
+</div>
+</section>
+<!-- Right Column: Editable Spreadsheet Table (7 Cols on large) -->
+<section class="lg:col-span-7 flex flex-col gap-space-md">
+<!-- Vendor & Bill Info Form Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between pb-space-sm mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[1.25rem]">storefront</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Bill Header Information</h2>
+</div>
+<div class="flex items-center gap-1 text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full font-label-xs text-label-xs">
+<span class="material-symbols-outlined text-[0.875rem]">verified</span>
+<span>Matched to Store Contact</span>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-space-sm">
+<!-- Vendor -->
+<div class="sm:col-span-2 flex flex-col gap-1">
+<label class="font-label-xs text-label-xs text-on-surface-variant">Bought From (Vendor Name)</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low text-on-surface font-label-md text-label-md px-3 py-2 rounded-lg outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary-container transition-all" type="text" value="Gupta Wholesale Mart"/>
+<span class="absolute right-2.5 top-1/2 -translate-y-1/2 material-symbols-outlined text-primary text-[1rem]">check_circle</span>
+</div>
+</div>
+<!-- Bill Date -->
+<div class="flex flex-col gap-1">
+<label class="font-label-xs text-label-xs text-on-surface-variant">Bill Date (DD/MM/YYYY)</label>
+<input class="w-full bg-surface-container-low text-on-surface font-label-md text-label-md px-3 py-2 rounded-lg outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary-container transition-all" type="text" value="24/10/2024"/>
+</div>
+<!-- Bill No -->
+<div class="flex flex-col gap-1">
+<label class="font-label-xs text-label-xs text-on-surface-variant">Bill / Memo No.</label>
+<input class="w-full bg-surface-container-low text-on-surface font-label-md text-label-md px-3 py-2 rounded-lg outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary-container transition-all" type="text" value="GW-8821"/>
+</div>
+<!-- Payment Type -->
+<div class="sm:col-span-2 flex flex-col gap-1">
+<label class="font-label-xs text-label-xs text-on-surface-variant">Payment Mode</label>
+<select class="w-full bg-surface-container-low text-on-surface font-label-md text-label-md px-3 py-2 rounded-lg outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary-container transition-all">
+<option selected="">Paid via UPI (GooglePay / PhonePe)</option>
+<option>Paid via Cash (Rokad)</option>
+<option>Credit / Udhar Khata (Pay Later)</option>
+<option>Bank IMPS / RTGS</option>
+</select>
+</div>
+<!-- Purchase Category -->
+<div class="sm:col-span-2 flex flex-col gap-1">
+<label class="font-label-xs text-label-xs text-on-surface-variant">Expense Category</label>
+<input class="w-full bg-surface-container-low text-on-surface font-label-md text-label-md px-3 py-2 rounded-lg outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary-container transition-all" type="text" value="Wholesale Inventory (Stock for Resale)"/>
+</div>
+</div>
+</div>
+<!-- Editable Items Table Card -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="p-space-md bg-surface-container-low flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-sm">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Extracted Items (5 Line Items)</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Verify quantities, prices and categories assigned by computer vision.</p>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="h-8 px-2.5 rounded-lg bg-surface-container hover:bg-surface-container-highest text-on-surface font-label-xs text-label-xs flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[1rem]">tune</span>
+<span>Bulk Reclassify</span>
+</button>
+</div>
+</div>
+<!-- Spreadsheet Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse" id="itemsLedgerTable">
+<thead>
+<tr class="bg-surface-container-high/60 text-on-surface-variant font-label-xs text-label-xs uppercase tracking-wider">
+<th class="py-2.5 px-3 w-8 text-center">#</th>
+<th class="py-2.5 px-3 min-w-[200px]">Item Name</th>
+<th class="py-2.5 px-3 min-w-[140px]">Category</th>
+<th class="py-2.5 px-3 w-24 text-right">Quantity</th>
+<th class="py-2.5 px-3 w-28 text-right">Unit Price (₹)</th>
+<th class="py-2.5 px-3 w-32 text-right">Total (₹)</th>
+<th class="py-2.5 px-3 min-w-[190px]">AI Check / Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container font-body-sm text-body-sm text-on-surface">
+<!-- Row 1: High Confidence -->
+<tr class="hover:bg-surface-container-low transition-colors group cursor-pointer" id="row-1" onclick="focusReceiptItem(1)">
+<td class="py-3 px-3 text-center font-label-md text-label-md text-on-surface-variant">1</td>
+<td class="py-3 px-3 font-medium">
+<input class="w-full bg-transparent border-0 outline-none focus:bg-surface-container-low focus:px-2 rounded py-1 transition-all" type="text" value="Aashirvaad Shudh Chakki Atta 10kg"/>
+</td>
+<td class="py-3 px-3">
+<span class="inline-block bg-secondary-container text-on-secondary-fixed text-label-xs font-label-xs px-2 py-1 rounded">Atta & Flour ▾</span>
+</td>
+<td class="py-3 px-3 text-right">
+<input class="w-16 text-right bg-transparent border-0 outline-none focus:bg-surface-container-low rounded py-1" type="text" value="10 Bags"/>
+</td>
+<td class="py-3 px-3 text-right tabular-nums">
+<input class="w-20 text-right bg-transparent border-0 outline-none focus:bg-surface-container-low rounded py-1 font-mono" type="text" value="380.00"/>
+</td>
+<td class="py-3 px-3 text-right tabular-nums font-semibold font-mono">
+                    3,800.00
+                  </td>
+<td class="py-3 px-3">
+<div class="flex items-center gap-1.5 text-emerald-700 bg-emerald-50 px-2 py-1 rounded-md w-fit">
+<span class="material-symbols-outlined text-[1rem]">check_circle</span>
+<span class="font-label-xs text-label-xs">99% Match</span>
+</div>
+</td>
+</tr>
+<!-- Row 2: High Confidence -->
+<tr class="hover:bg-surface-container-low transition-colors group cursor-pointer" id="row-2" onclick="focusReceiptItem(2)">
+<td class="py-3 px-3 text-center font-label-md text-label-md text-on-surface-variant">2</td>
+<td class="py-3 px-3 font-medium">
+<input class="w-full bg-transparent border-0 outline-none focus:bg-surface-container-low focus:px-2 rounded py-1 transition-all" type="text" value="Tata Salt Vacuum Evaporated 1kg"/>
+</td>
+<td class="py-3 px-3">
+<span class="inline-block bg-secondary-container text-on-secondary-fixed text-label-xs font-label-xs px-2 py-1 rounded">Spices & Salt ▾</span>
+</td>
+<td class="py-3 px-3 text-right">
+<input class="w-16 text-right bg-transparent border-0 outline-none focus:bg-surface-container-low rounded py-1" type="text" value="50 Pkt"/>
+</td>
+<td class="py-3 px-3 text-right tabular-nums">
+<input class="w-20 text-right bg-transparent border-0 outline-none focus:bg-surface-container-low rounded py-1 font-mono" type="text" value="24.00"/>
+</td>
+<td class="py-3 px-3 text-right tabular-nums font-semibold font-mono">
+                    1,200.00
+                  </td>
+<td class="py-3 px-3">
+<div class="flex items-center gap-1.5 text-emerald-700 bg-emerald-50 px-2 py-1 rounded-md w-fit">
+<span class="material-symbols-outlined text-[1rem]">check_circle</span>
+<span class="font-label-xs text-label-xs">98% Match</span>
+</div>
+</td>
+</tr>
+<!-- Row 3: FLAGGED AMBER (Handwritten unit price conflict) -->
+<tr class="bg-amber-50/70 dark:bg-amber-950/20 hover:bg-amber-100/60 transition-colors group cursor-pointer border-l-4 border-amber-500" id="row-3" onclick="focusReceiptItem(3)">
+<td class="py-3 px-3 text-center font-label-md text-label-md text-tertiary">3</td>
+<td class="py-3 px-3 font-medium">
+<input class="w-full bg-white text-on-surface px-2 py-1 rounded border-0 outline-none ring-1 ring-amber-400 font-medium" type="text" value="Fortune Sunlite Refined Oil 1L"/>
+</td>
+<td class="py-3 px-3">
+<span class="inline-block bg-amber-100 text-amber-900 text-label-xs font-label-xs px-2 py-1 rounded font-semibold">Cooking Oils ▾</span>
+</td>
+<td class="py-3 px-3 text-right">
+<input class="w-20 text-right bg-white px-2 py-1 rounded border-0 outline-none ring-1 ring-amber-300" type="text" value="30 Pouches"/>
+</td>
+<td class="py-3 px-3 text-right tabular-nums">
+<div class="relative inline-block">
+<input class="w-20 text-right font-mono bg-white text-on-surface px-2 py-1 rounded border-0 outline-none ring-2 ring-amber-500 font-bold" id="row3Price" type="text" value="142.00"/>
+</div>
+</td>
+<td class="py-3 px-3 text-right tabular-nums font-semibold font-mono text-tertiary">
+                    4,260.00
+                  </td>
+<td class="py-3 px-3">
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center gap-1 text-amber-900 bg-amber-200/70 px-2 py-1 rounded text-label-xs font-label-xs">
+<span class="material-symbols-outlined text-[0.875rem] text-amber-700">edit_note</span>
+<span>Digit ambiguous: ₹142 or ₹147?</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-xs text-label-xs hover:bg-tertiary-fixed-dim transition-colors" onclick="acceptPrice(3, '142.00')">
+                          Keep 142
+                        </button>
+<button class="px-2 py-0.5 rounded bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-xs text-label-xs transition-colors" onclick="acceptPrice(3, '147.00')">
+                          Set 147
+                        </button>
+</div>
+</div>
+</td>
+</tr>
+<!-- Row 4: High Confidence -->
+<tr class="hover:bg-surface-container-low transition-colors group cursor-pointer" id="row-4" onclick="focusReceiptItem(4)">
+<td class="py-3 px-3 text-center font-label-md text-label-md text-on-surface-variant">4</td>
+<td class="py-3 px-3 font-medium">
+<input class="w-full bg-transparent border-0 outline-none focus:bg-surface-container-low focus:px-2 rounded py-1 transition-all" type="text" value="Madhur Pure & Hygienic Sugar 5kg"/>
+</td>
+<td class="py-3 px-3">
+<span class="inline-block bg-secondary-container text-on-secondary-fixed text-label-xs font-label-xs px-2 py-1 rounded">Sugar & Jaggery ▾</span>
+</td>
+<td class="py-3 px-3 text-right">
+<input class="w-16 text-right bg-transparent border-0 outline-none focus:bg-surface-container-low rounded py-1" type="text" value="12 Bags"/>
+</td>
+<td class="py-3 px-3 text-right tabular-nums">
+<input class="w-20 text-right bg-transparent border-0 outline-none focus:bg-surface-container-low rounded py-1 font-mono" type="text" value="215.00"/>
+</td>
+<td class="py-3 px-3 text-right tabular-nums font-semibold font-mono">
+                    2,580.00
+                  </td>
+<td class="py-3 px-3">
+<div class="flex items-center gap-1.5 text-emerald-700 bg-emerald-50 px-2 py-1 rounded-md w-fit">
+<span class="material-symbols-outlined text-[1rem]">check_circle</span>
+<span class="font-label-xs text-label-xs">96% Match</span>
+</div>
+</td>
+</tr>
+<!-- Row 5: FLAGGED AMBER (Line total arithmetic verification) -->
+<tr class="bg-amber-50/70 dark:bg-amber-950/20 hover:bg-amber-100/60 transition-colors group cursor-pointer border-l-4 border-amber-500" id="row-5" onclick="focusReceiptItem(5)">
+<td class="py-3 px-3 text-center font-label-md text-label-md text-tertiary">5</td>
+<td class="py-3 px-3 font-medium">
+<input class="w-full bg-white text-on-surface px-2 py-1 rounded border-0 outline-none ring-1 ring-amber-400 font-medium" type="text" value="MDH Deggi Mirch 100g"/>
+</td>
+<td class="py-3 px-3">
+<span class="inline-block bg-amber-100 text-amber-900 text-label-xs font-label-xs px-2 py-1 rounded font-semibold">Spices & Masala ▾</span>
+</td>
+<td class="py-3 px-3 text-right">
+<input class="w-16 text-right bg-white px-2 py-1 rounded border-0 outline-none ring-1 ring-amber-300" type="text" value="15 Pkt"/>
+</td>
+<td class="py-3 px-3 text-right tabular-nums">
+<input class="w-20 text-right bg-white px-2 py-1 rounded border-0 outline-none ring-1 ring-amber-300 font-mono" type="text" value="40.66"/>
+</td>
+<td class="py-3 px-3 text-right tabular-nums font-semibold font-mono">
+<input class="w-24 text-right bg-white text-on-surface px-2 py-1 rounded border-0 outline-none ring-2 ring-amber-500 font-bold" id="row5Total" type="text" value="610.00"/>
+</td>
+<td class="py-3 px-3">
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center gap-1 text-amber-900 bg-amber-200/70 px-2 py-1 rounded text-label-xs font-label-xs">
+<span class="material-symbols-outlined text-[0.875rem] text-amber-700">calculate</span>
+<span>15 × 40.66 = 609.90 (₹0.10 diff)</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-xs text-label-xs hover:bg-tertiary-fixed-dim transition-colors" onclick="resolveRow5()">
+                          Round to ₹610.00
+                        </button>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Add Manual Line Row -->
+<div class="p-space-sm px-space-md bg-surface-container-low flex items-center justify-between">
+<button class="h-9 px-space-md rounded-lg bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-md text-label-md flex items-center gap-1.5 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-primary text-[1.125rem]">add</span>
+<span>+ Add Missing Item</span>
+</button>
+<div class="text-on-surface-variant font-label-xs text-label-xs">
+              Keyboard shortcut: <kbd class="px-1.5 py-0.5 bg-surface-container rounded text-on-surface">Tab</kbd> between cells
+            </div>
+</div>
+<!-- Calculated Tax and Grand Total Breakdown -->
+<div class="p-space-lg bg-surface-container-lowest flex flex-col md:flex-row justify-between items-start md:items-end gap-space-lg">
+<div class="space-y-1.5 max-w-sm">
+<span class="font-label-md text-label-md text-on-surface font-bold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[1.125rem]">gavel</span>
+                GST Compliance Summary
+              </span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Tax split automatically derived from Gupta Wholesale's registered GST rate slab for Food & Groceries (5%).</p>
+</div>
+<div class="w-full md:w-72 bg-surface-container-low p-space-md rounded-xl space-y-2">
+<div class="flex justify-between items-center text-on-surface-variant font-body-sm text-body-sm">
+<span>Subtotal (5 items)</span>
+<span class="font-mono text-on-surface font-medium">₹11,827.50</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant font-body-sm text-body-sm">
+<span>CGST (2.5%)</span>
+<span class="font-mono text-on-surface">₹311.25</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant font-body-sm text-body-sm">
+<span>SGST (2.5%)</span>
+<span class="font-mono text-on-surface">₹311.25</span>
+</div>
+<div class="h-px bg-surface-container-highest my-1"></div>
+<div class="flex justify-between items-center text-on-surface font-label-md text-label-md font-bold pt-1">
+<span>Grand Total</span>
+<span class="font-currency-stat text-headline-sm text-primary tabular-nums">₹12,450.00</span>
+</div>
+<div class="flex items-center gap-1 text-emerald-800 text-[0.7rem] font-medium justify-end">
+<span class="material-symbols-outlined text-[0.875rem]">done_all</span>
+<span>Matches paper total exactly</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Bottom Sticky Affirmation / Confirmation Bar -->
+<div class="fixed bottom-0 left-0 lg:left-72 right-0 bg-surface-container-lowest/95 backdrop-blur-md px-gutter md:px-gutter-desktop py-3 shadow-[0_-2px_12px_rgba(0,0,0,0.06)] z-30 flex flex-col sm:flex-row items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-md">
+<div class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></div>
+<div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-space-sm">
+<span class="font-label-md text-label-md text-on-surface font-bold" id="bottomFlagText">2 items flagged for verification</span>
+<span class="hidden sm:inline text-on-surface-variant/40">•</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Press <kbd class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface text-label-xs">Enter</kbd> to jump to next item</span>
+<span class="hidden sm:inline text-on-surface-variant/40">•</span>
+<span class="text-emerald-700 font-label-xs text-label-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.875rem]">cloud_done</span>
+<span>All edits auto-saved</span>
+</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm w-full sm:w-auto justify-end">
+<button class="px-space-md py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-highest text-on-surface font-label-md text-label-md transition-colors">
+          Discard
+        </button>
+<button class="flex-1 sm:flex-initial px-space-xl py-2.5 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-label-md text-label-md transition-all shadow-md flex items-center justify-center gap-2" id="finalConfirmBtn">
+<span class="material-symbols-outlined text-[1.25rem]">check_circle</span>
+<span>Confirm & Add to Ledger (₹12,450)</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+    // Receipt Zoom and Rotate Interactions
+    let currentZoom = 1;
+    let currentRotation = 0;
+    const receiptPaper = document.getElementById('receiptPaper');
+    const zoomLevelText = document.getElementById('zoomLevelText');
+
+    function updateTransform() {
+      if (receiptPaper) {
+        receiptPaper.style.transform = `scale(${currentZoom}) rotate(${currentRotation}deg)`;
+      }
+      if (zoomLevelText) {
+        zoomLevelText.innerText = Math.round(currentZoom * 100) + '%';
+      }
+    }
+
+    document.getElementById('zoomInBtn')?.addEventListener('click', () => {
+      if (currentZoom < 1.7) {
+        currentZoom += 0.15;
+        updateTransform();
+      }
+    });
+
+    document.getElementById('zoomOutBtn')?.addEventListener('click', () => {
+      if (currentZoom > 0.65) {
+        currentZoom -= 0.15;
+        updateTransform();
+      }
+    });
+
+    document.getElementById('rotateBtn')?.addEventListener('click', () => {
+      currentRotation = (currentRotation + 90) % 360;
+      updateTransform();
+    });
+
+    // Cross-highlighting between table row & receipt bounding box
+    function focusReceiptItem(index) {
+      // Clear previous active highlights on receipt
+      for (let i = 1; i <= 5; i++) {
+        const box = document.getElementById(`bbox-${i}`);
+        if (box) {
+          box.classList.remove('ring-4', 'ring-primary', 'bg-primary-fixed/40');
+        }
+      }
+
+      // Highlight target bounding box
+      const targetBbox = document.getElementById(`bbox-${index}`);
+      if (targetBbox) {
+        targetBbox.classList.add('ring-4', 'ring-primary', 'bg-primary-fixed/40');
+        targetBbox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function scrollToFirstAmber() {
+      const row3 = document.getElementById('row-3');
+      if (row3) {
+        row3.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        focusReceiptItem(3);
+      }
+    }
+
+    function acceptPrice(rowIndex, val) {
+      const input = document.getElementById(`row${rowIndex}Price`);
+      if (input) {
+        input.value = val;
+        input.classList.remove('ring-amber-500');
+        input.classList.add('ring-emerald-600', 'bg-emerald-50');
+      }
+      const row = document.getElementById(`row-${rowIndex}`);
+      if (row) {
+        row.classList.remove('border-amber-500', 'bg-amber-50/70');
+        row.classList.add('bg-emerald-50/40');
+      }
+      checkRemainingFlags();
+    }
+
+    function resolveRow5() {
+      const totalInput = document.getElementById('row5Total');
+      if (totalInput) {
+        totalInput.classList.remove('ring-amber-500');
+        totalInput.classList.add('ring-emerald-600', 'bg-emerald-50');
+      }
+      const row5 = document.getElementById('row-5');
+      if (row5) {
+        row5.classList.remove('border-amber-500', 'bg-amber-50/70');
+        row5.classList.add('bg-emerald-50/40');
+      }
+      checkRemainingFlags();
+    }
+
+    function checkRemainingFlags() {
+      const amberElements = document.querySelectorAll('.border-amber-500');
+      const bottomText = document.getElementById('bottomFlagText');
+      if (amberElements.length === 0 && bottomText) {
+        bottomText.innerText = 'All items reviewed & verified';
+        bottomText.classList.remove('text-on-surface');
+        bottomText.classList.add('text-emerald-700');
+      } else if (bottomText) {
+        bottomText.innerText = `${amberElements.length} items flagged for verification`;
+      }
+    }
+
+    // Interactive confirmation notifications
+    const confirmHandlers = [document.getElementById('topConfirmBtn'), document.getElementById('finalConfirmBtn')];
+    confirmHandlers.forEach(btn => {
+      btn?.addEventListener('click', () => {
+        btn.innerHTML = '<span class="material-symbols-outlined text-[1.25rem] animate-spin">refresh</span><span>Saving to Ledger...</span>';
+        setTimeout(() => {
+          btn.innerHTML = '<span class="material-symbols-outlined text-[1.25rem]">task_alt</span><span>Posted in Bahi Khata!</span>';
+          btn.classList.remove('bg-primary-container');
+          btn.classList.add('bg-emerald-700');
+        }, 800);
+      });
+    });
+  </script>
+</div></main></div></body></html>

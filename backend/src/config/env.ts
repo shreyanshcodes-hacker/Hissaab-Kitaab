@@ -11,8 +11,13 @@ dotenv.config({ path: fs.existsSync(backendEnvPath) ? backendEnvPath : localEnvP
 const envSchema = z.object({
   PORT: z.string().default('5001').transform((val) => parseInt(val, 10)),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-  CORS_ORIGIN: z.string().default('http://localhost:5173,http://localhost:4173'),
-  FIREBASE_PROJECT_ID: z.string().default('shopledger-v1'),
+  CORS_ORIGIN: z
+    .string()
+    .default(
+      'http://localhost:5173,http://localhost:4173,http://localhost:3000,http://localhost:5000,https://my-ledgeriq.web.app,https://my-ledgeriq.firebaseapp.com'
+    ),
+  CORS_ALLOWED_ORIGINS: z.string().optional(),
+  FIREBASE_PROJECT_ID: z.string().default('my-ledgeriq'),
   FIREBASE_STORAGE_BUCKET: z.string().optional(),
   FIREBASE_CLIENT_EMAIL: z.string().optional(),
   FIREBASE_PRIVATE_KEY: z.string().optional(),
@@ -32,4 +37,11 @@ if (!parsed.success) {
 
 export const env = parsed.data;
 
-export const allowedOrigins = env.CORS_ORIGIN.split(',').map((o) => o.trim());
+const rawOrigins = env.CORS_ALLOWED_ORIGINS || env.CORS_ORIGIN;
+export const allowedOrigins = Array.from(
+  new Set([
+    ...rawOrigins.split(',').map((o) => o.trim()).filter(Boolean),
+    'https://my-ledgeriq.web.app',
+    'https://my-ledgeriq.firebaseapp.com',
+  ])
+);

@@ -19,7 +19,8 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { Button } from '../components/common/Button';
-import { apiClient } from '../api/client';
+import { apiClient, getActiveTenantContext } from '../api/client';
+import { receiptService } from '../api/receiptService';
 import { useToast } from '../context/ToastContext';
 import { cn } from '../utils/cn';
 import { formatPaise } from '../utils/money';
@@ -235,7 +236,7 @@ export const UploadReceiptPage: React.FC = () => {
       setOcrProgressPercent(94);
     }, 2700);
 
-    // Real API Call with graceful fallback
+    // Real API Call with graceful fallback to user's Firestore tenant
     try {
       const response: any = await apiClient.uploadReceipt(stagedFile.file);
       if (response?.data?.receipt?.id) {
@@ -249,9 +250,42 @@ export const UploadReceiptPage: React.FC = () => {
         }
       }
     } catch (err: any) {
-      console.warn('[Upload] API upload deferred or offline; proceeding with high-fidelity client simulation:', err);
-      // Fallback synthetic finding
-      setExtractedReceiptId('REC-2024-1089');
+      console.warn('[Upload] API upload deferred or offline; provisioning draft in user Firestore tenant:', err);
+      const { isGuestMode } = getActiveTenantContext();
+      if (!isGuestMode) {
+        try {
+          const today = new Date().toISOString().slice(0, 10);
+          const created = await receiptService.createReceipt({
+            invoiceNumber: `SCAN-${Date.now().toString().slice(-4)}`,
+            receiptDate: today,
+            purchaseDate: today,
+            supplier: {
+              name: stagedFile.name.replace(/\.[^.]+$/, '') || 'Scanned Wholesale Bill',
+            },
+            payment: { method: 'upi', status: 'paid' },
+            items: [
+              {
+                rawName: 'Scanned Item #1 (Verify Name & Rate)',
+                category: 'General Grocery',
+                quantity: 1,
+                unit: 'piece',
+                unitPriceMinor: 10000,
+                taxRatePercent: 5,
+              },
+            ],
+          });
+          setExtractedReceiptId(created.id);
+          setFindings({
+            lineItemsCount: 1,
+            grandTotalMinor: Math.round(created.grandTotal * 100),
+            needsCheckCount: 1,
+          });
+        } catch {
+          setExtractedReceiptId('REC-2024-1089');
+        }
+      } else {
+        setExtractedReceiptId('REC-2024-1089');
+      }
     }
 
     setTimeout(() => {

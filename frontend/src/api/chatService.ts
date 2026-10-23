@@ -1,11 +1,34 @@
-import { apiClient } from './client';
+import { apiClient, getActiveTenantContext } from './client';
+import { receiptService } from './receiptService';
 import { DEMO_RECEIPTS } from '../data/demoData';
-import type { ChatMessage } from '../types';
+import type { ChatMessage, Receipt } from '../types';
 
-let sessionMessages: ChatMessage[] = [];
+function getChatStorageKey(): string {
+  const { businessId, isGuestMode } = getActiveTenantContext();
+  return `shopledger_chat_${isGuestMode ? 'guest' : businessId || 'default'}`;
+}
 
-function isScopeAllowedClient(message: string): boolean {
+function loadSessionMessages(): ChatMessage[] {
+  try {
+    const raw = sessionStorage.getItem(getChatStorageKey());
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveSessionMessages(messages: ChatMessage[]): void {
+  try {
+    sessionStorage.setItem(getChatStorageKey(), JSON.stringify(messages.slice(-40)));
+  } catch {
+    // Ignore storage quota errors
+  }
+}
+
+export function isScopeAllowedClient(message: string, hasHistory = false): boolean {
   const text = message.toLowerCase().trim();
+  if (!text) return false;
+
   const injectionPatterns = [
     'ignore previous instructions',
     'system prompt',
@@ -23,23 +46,70 @@ function isScopeAllowedClient(message: string): boolean {
     return false;
   }
 
-  const domainKeywords = [
-    'bill', 'receipt', 'invoice', 'voucher', 'spend', 'spent', 'cost', 'price', 'rate',
-    'supplier', 'vendor', 'mandi', 'oil', 'sugar', 'atta', 'flour', 'rice', 'dal',
-    'parle', 'fortune', 'amul', 'tata', 'balaji', 'gupta', 'rk', 'r.k.', 'motherson',
-    'himalaya', 'item', 'inventory', 'stock', 'udhar', 'credit', 'paid', 'unpaid',
-    'ledger', 'bahi khata', 'gst', 'tax', 'review', 'check', 'verify', 'pending',
-    'flagged', 'help', 'how to', 'upload', 'features', 'camera', 'scan', 'shopledger',
-    'hi', 'hello', 'namaste', 'tally', 'summary', 'month',
+  const offTopicPatterns = [
+    'write a poem',
+    'write a story',
+    'write python',
+    'javascript code',
+    'who is the president',
+    'prime minister',
+    'world cup',
+    'cricket score',
+    'weather in',
+    'movie review',
+    'recipe for',
+    'horoscope',
+    'bitcoin',
+    'stock market',
   ];
-  return domainKeywords.some((kw) => text.includes(kw));
+  if (offTopicPatterns.some((off) => text.includes(off))) {
+    return false;
+  }
+
+  const domainKeywords = [
+    'bill', 'bills', 'receipt', 'receipts', 'invoice', 'invoices', 'voucher', 'vouchers',
+    'spend', 'spent', 'spending', 'cost', 'price', 'prices', 'rate', 'rates', 'total', 'amount',
+    'rupee', 'rupees', 'rs', '₹', 'margin', 'discount', 'expensive', 'cheapest', 'lowest', 'highest',
+    'supplier', 'suppliers', 'vendor', 'vendors', 'wholesaler', 'party', 'mandi', 'distributor',
+    'oil', 'sugar', 'atta', 'flour', 'rice', 'dal', 'pulses', 'salt', 'tea', 'chai', 'soap',
+    'detergent', 'biscuit', 'snack', 'namkeen', 'spices', 'masala', 'milk', 'dairy', 'ghee',
+    'parle', 'fortune', 'amul', 'tata', 'balaji', 'gupta', 'rk', 'r.k.', 'motherson', 'himalaya', 'patel',
+    'item', 'items', 'product', 'products', 'category', 'categories', 'catalog', 'inventory', 'stock',
+    'quantity', 'kg', 'bag', 'pouch', 'liter', 'box', 'carton', 'packet',
+    'udhar', 'credit', 'paid', 'unpaid', 'payment', 'cash', 'upi', 'cheque',
+    'ledger', 'bahi', 'khata', 'gst', 'gstin', 'tax', 'slab', 'hsn',
+    'review', 'check', 'checking', 'verify', 'verified', 'pending', 'flagged', 'draft', 'confirm',
+    'help', 'how', 'upload', 'feature', 'features', 'camera', 'scan', 'shopledger', 'setting', 'profile',
+    'shop', 'store', 'kirana', 'branch', 'godown', 'analytics', 'dashboard', 'trend', 'summary', 'report',
+    'buy', 'bought', 'purchase', 'purchased', 'order', 'ordered', 'compare', 'comparison',
+    'month', 'week', 'today', 'yesterday', 'year', 'date', 'recent', 'last', 'top',
+    'hi', 'hello', 'namaste', 'tally', 'kitna', 'kya', 'kaun', 'sabse', 'sasta', 'mehnga', 'hisab', 'kharcha', 'maal',
+  ];
+
+  if (domainKeywords.some((kw) => text.includes(kw))) {
+    return true;
+  }
+
+  if (
+    hasHistory &&
+    ['why', 'when', 'which', 'who', 'what about', 'and for', 'show me', 'more', 'details', 'list'].some((f) =>
+      text.includes(f)
+    )
+  ) {
+    return true;
+  }
+
+  return false;
 }
 
-function buildGroundedFallbackReply(query: string): Omit<ChatMessage, 'id' | 'sender' | 'timestamp'> {
+async function buildGroundedFallbackReply(
+  query: string,
+  hasHistory: boolean
+): Promise<Omit<ChatMessage, 'id' | 'sender' | 'timestamp'>> {
   const clean = query.trim();
   const lower = clean.toLowerCase();
 
-  if (!isScopeAllowedClient(clean)) {
+  if (!isScopeAllowedClient(clean, hasHistory)) {
     return {
       text: 'I am ShopLedger’s shopkeeper bookkeeping assistant. I can only answer questions regarding your store’s purchase receipts, wholesale prices, suppliers, bahi khata ledger, or how to use ShopLedger features. Please ask a question related to your store.',
       citedReceiptIds: [],
@@ -49,15 +119,29 @@ function buildGroundedFallbackReply(query: string): Omit<ChatMessage, 'id' | 'se
   if (lower.includes('how to') || lower.includes('camera') || lower.includes('scan') || lower.includes('upload')) {
     return {
       text:
-        'To add and verify receipts in ShopLedger:\n\n1. Tap **+ Upload Bill** in the top navigation or on your dashboard.\n2. Snap a photo using your phone camera or drag a PDF/JPG invoice.\n3. ShopLedger automatically extracts line items, quantities, and GST rates.\n4. Jump into the **Review Workspace** (`/receipts/:id/review`) to verify flagged items and commit to your Bahi Khata.',
+        'To add and verify receipts in ShopLedger:\n\n1. Tap **+ Upload Receipt** in the sidebar or on your dashboard.\n2. Snap a photo using your phone camera or drag a PDF/JPG invoice.\n3. ShopLedger automatically extracts line items, quantities, and GST rates.\n4. Jump into the **Review Workspace** (`/receipts/:id/review`) to verify flagged items and commit to your Bahi Khata.',
       citedReceiptIds: [],
     };
   }
 
-  const confirmed = DEMO_RECEIPTS.filter((r) => r.status === 'verified');
-  const needsReview = DEMO_RECEIPTS.filter((r) => r.status === 'needs_review');
+  const { isGuestMode } = getActiveTenantContext();
+  let receipts: Receipt[] = [];
+  if (isGuestMode) {
+    receipts = [...DEMO_RECEIPTS];
+  } else {
+    receipts = await receiptService.getReceipts({ limit: 50 }).catch(() => []);
+  }
+
+  const confirmed = receipts.filter((r) => r.status === 'verified');
+  const needsReview = receipts.filter((r) => r.status === 'needs_review');
 
   if (lower.includes('review') || lower.includes('pending') || lower.includes('flagged') || lower.includes('check')) {
+    if (needsReview.length === 0) {
+      return {
+        text: 'All purchase vouchers in your store are currently verified and cleared! There are zero pending review flags.',
+        citedReceiptIds: [],
+      };
+    }
     return {
       text:
         `You currently have **${needsReview.length} purchase bills** flagged for review due to low OCR confidence or arithmetic discrepancies:\n\n` +
@@ -69,7 +153,7 @@ function buildGroundedFallbackReply(query: string): Omit<ChatMessage, 'id' | 'se
     };
   }
 
-  if (lower.includes('mustard') || lower.includes('oil') || lower.includes('lowest') || lower.includes('rate') || lower.includes('rice') || lower.includes('sugar')) {
+  if (isGuestMode && (lower.includes('mustard') || lower.includes('oil') || lower.includes('lowest') || lower.includes('rate') || lower.includes('rice') || lower.includes('sugar'))) {
     return {
       text:
         'Based on your verified store bills, you purchased **Fortune Kachi Ghani Mustard Oil 1L** across wholesale invoices:\n\n' +
@@ -98,75 +182,86 @@ function buildGroundedFallbackReply(query: string): Omit<ChatMessage, 'id' | 'se
     };
   }
 
-  const supplierKeywords = ['gupta', 'balaji', 'r.k.', 'rk', 'motherson', 'himalaya', 'delhi flour'];
-  const matchedSup = supplierKeywords.find((kw) => lower.includes(kw));
-  if (matchedSup) {
-    const bills = confirmed.filter((r) => r.supplierName.toLowerCase().includes(matchedSup));
-    if (bills.length > 0) {
-      const total = bills.reduce((acc, r) => acc + r.grandTotal, 0);
-      const supName = bills[0].supplierName;
-      return {
-        text:
-          `You have recorded **${bills.length} confirmed bills** from **${supName}** totaling **₹${total.toLocaleString('en-IN', { minimumFractionDigits: 2 })}**:\n\n` +
-          bills.map((r) => `• Bill #${r.invoiceNo} on ${r.billDate}: ₹${r.grandTotal.toLocaleString('en-IN')}`).join('\n'),
-        citedReceiptIds: bills.map((r) => r.id),
-      };
-    }
+  const totalSpend = confirmed.reduce((acc, r) => acc + r.grandTotal, 0);
+  if (confirmed.length === 0) {
+    return {
+      text:
+        `Your store ledger currently has **0 confirmed purchase bills** (₹0.00 total spend)` +
+        (needsReview.length > 0 ? ` and **${needsReview.length} bill(s)** awaiting review.` : '.') +
+        `\n\nOnce you upload or manually create and confirm purchase bills, I can compare supplier rates, calculate category totals, and answer specific item price questions for your store.`,
+      citedReceiptIds: needsReview.slice(0, 3).map((r) => r.id),
+    };
   }
 
-  const totalSpend = confirmed.reduce((acc, r) => acc + r.grandTotal, 0);
   return {
     text:
-      `I analyzed your store's bahi khata records. You currently have **${confirmed.length} confirmed purchase bills** totaling **₹${totalSpend.toLocaleString('en-IN', { minimumFractionDigits: 2 })}**, and **${needsReview.length} bills** awaiting review in your inbox.\n\n` +
-      `You can ask me about supplier price comparisons (e.g. "Who is offering the lowest price for mustard oil?"), specific supplier spend totals, or bills pending verification.`,
+      `I analyzed your store's bahi khata records. You currently have **${confirmed.length} confirmed purchase bill(s)** totaling **₹${totalSpend.toLocaleString('en-IN', { minimumFractionDigits: 2 })}**` +
+      (needsReview.length > 0 ? `, and **${needsReview.length} bill(s)** awaiting review in your inbox.` : '.') +
+      `\n\nYou can ask me about supplier spend totals, bills pending verification, or item rate comparisons.`,
     citedReceiptIds: confirmed.slice(0, 3).map((r) => r.id),
   };
 }
 
 export const chatService = {
   async getMessages(): Promise<ChatMessage[]> {
-    return [...sessionMessages];
+    return loadSessionMessages();
   },
 
   clearMessages(): void {
-    sessionMessages = [];
+    saveSessionMessages([]);
   },
 
   async sendMessage(query: string): Promise<ChatMessage> {
+    const existingMessages = loadSessionMessages();
+    const historyPayload = existingMessages.slice(-8).map((m) => ({
+      role: m.sender === 'user' ? ('user' as const) : ('model' as const),
+      text: m.text,
+    }));
+
     const userMsg: ChatMessage = {
       id: `user-${Date.now()}`,
       sender: 'user',
       text: query,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
-    sessionMessages.push(userMsg);
+    const updatedMessages = [...existingMessages, userMsg];
+    saveSessionMessages(updatedMessages);
 
-    try {
-      const res: any = await apiClient.post('/chat', { message: query });
-      if (res?.data) {
-        const assistantMsg: ChatMessage = {
-          id: `assistant-${Date.now()}`,
-          sender: 'assistant',
-          text: res.data.message,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          structuredCard: res.data.structuredCard,
-          citedReceiptIds: (res.data.citations || []).map((c: any) => c.receiptId),
-        };
-        sessionMessages.push(assistantMsg);
-        return assistantMsg;
+    const { isGuestMode, businessId } = getActiveTenantContext();
+
+    if (!isGuestMode && businessId) {
+      try {
+        const res: any = await apiClient.post(
+          '/chat',
+          { message: query, history: historyPayload },
+          false,
+          businessId
+        );
+        if (res?.data) {
+          const assistantMsg: ChatMessage = {
+            id: `assistant-${Date.now()}`,
+            sender: 'assistant',
+            text: res.data.message,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            structuredCard: res.data.structuredCard,
+            citedReceiptIds: (res.data.citations || []).map((c: any) => c.receiptId),
+          };
+          saveSessionMessages([...updatedMessages, assistantMsg]);
+          return assistantMsg;
+        }
+      } catch (err: any) {
+        console.warn('[ChatService] Backend request failed, using grounded client engine:', err);
       }
-    } catch (err: any) {
-      console.warn('[ChatService] Backend request failed, using grounded client engine:', err);
     }
 
-    const fallback = buildGroundedFallbackReply(query);
+    const fallback = await buildGroundedFallbackReply(query, historyPayload.length > 0);
     const fallbackMsg: ChatMessage = {
       id: `assistant-${Date.now()}`,
       sender: 'assistant',
       ...fallback,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
-    sessionMessages.push(fallbackMsg);
+    saveSessionMessages([...updatedMessages, fallbackMsg]);
     return fallbackMsg;
   },
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -42,8 +42,31 @@ export const AppShell: React.FC<AppShellProps> = ({
   const { user, logout, updateUserProfile } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentBranch, setCurrentBranch] = useState(user?.activeBranch || 'Main Branch');
+  const [globalSearch, setGlobalSearch] = useState('');
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const handleGlobalSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmed = globalSearch.trim();
+    if (trimmed) {
+      navigate(`/receipts?search=${encodeURIComponent(trimmed)}`);
+    } else {
+      navigate('/receipts');
+    }
+  };
 
   const resolvedOwnerName =
     user?.displayName || (user?.email ? user.email.split('@')[0] : 'Store Owner');
@@ -312,16 +335,22 @@ export const AppShell: React.FC<AppShellProps> = ({
         </div>
 
         {/* Center: Quick Search Bar */}
-        <div className="flex-1 max-w-md mx-4 hidden md:block">
+        <form
+          onSubmit={handleGlobalSearchSubmit}
+          className="flex-1 max-w-md mx-4 hidden md:block"
+        >
           <div className="relative flex items-center">
             <Search className="w-4 h-4 text-on-surface-variant absolute left-3.5 pointer-events-none" />
             <input
+              ref={searchInputRef}
               type="text"
+              value={globalSearch}
+              onChange={(e) => setGlobalSearch(e.target.value)}
               placeholder="Search receipts, items, bahi khata... (Ctrl + K)"
               className="w-full h-9 pl-9 pr-4 rounded-full bg-surface-container text-body-sm text-on-surface placeholder:text-on-surface-variant/70 border border-transparent focus:border-outline focus:bg-surface-container-lowest outline-none transition-all"
             />
           </div>
-        </div>
+        </form>
 
         {/* Right Controls: Theme Toggle, Notifications, User Menu */}
         <div className="flex items-center gap-2">

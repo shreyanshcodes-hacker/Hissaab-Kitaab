@@ -32,10 +32,11 @@ export class ChatService {
    * Evaluates if a query is within the permissible scope of ShopLedger.
    * ShopLedger Assistant answers questions ONLY about store procurement records or app features.
    */
-  isScopeAllowed(message: string): boolean {
+  isScopeAllowed(message: string, hasHistory = false): boolean {
     const text = message.toLowerCase().trim();
+    if (!text) return false;
 
-    // Block obvious jailbreaks / prompt injection attempts
+    // 1. Block obvious jailbreaks / prompt injection attempts
     const injectionPatterns = [
       'ignore previous instructions',
       'system prompt',
@@ -55,60 +56,65 @@ export class ChatService {
       }
     }
 
-    // Explicit domain keywords related to retail bookkeeping, procurement, mandi, bills, products, or app help
+    // 2. Block clearly off-topic general-purpose requests (coding, trivia, politics, poems, recipes)
+    const offTopicPatterns = [
+      'write a poem',
+      'write a story',
+      'write python',
+      'javascript code',
+      'who is the president',
+      'prime minister',
+      'world cup',
+      'cricket score',
+      'weather in',
+      'movie review',
+      'recipe for',
+      'horoscope',
+      'bitcoin',
+      'stock market',
+    ];
+    for (const off of offTopicPatterns) {
+      if (text.includes(off)) {
+        return false;
+      }
+    }
+
+    // 3. Expanded domain vocabulary covering retail bookkeeping, procurement, mandi, products, dates, quantities, Hinglish & follow-ups
     const domainKeywords = [
-      'bill',
-      'receipt',
-      'invoice',
-      'voucher',
-      'spend',
-      'spent',
-      'cost',
-      'price',
-      'rate',
-      'supplier',
-      'vendor',
-      'mandi',
-      'oil',
-      'sugar',
-      'atta',
-      'flour',
-      'rice',
-      'dal',
-      'parle',
-      'fortune',
-      'amul',
-      'tata',
-      'balaji',
-      'gupta',
-      'item',
-      'inventory',
-      'stock',
-      'udhar',
-      'credit',
-      'paid',
-      'unpaid',
-      'ledger',
-      'bahi khata',
-      'gst',
-      'tax',
-      'review',
-      'check',
-      'verify',
-      'help',
-      'how to',
-      'upload',
-      'features',
-      'camera',
-      'scan',
-      'shopledger',
-      'hi',
-      'hello',
-      'namaste',
-      'tally',
+      'bill', 'bills', 'receipt', 'receipts', 'invoice', 'invoices', 'voucher', 'vouchers',
+      'spend', 'spent', 'spending', 'cost', 'price', 'prices', 'rate', 'rates', 'total', 'amount',
+      'rupee', 'rupees', 'rs', '₹', 'margin', 'discount', 'expensive', 'cheapest', 'lowest', 'highest',
+      'supplier', 'suppliers', 'vendor', 'vendors', 'wholesaler', 'party', 'mandi', 'distributor',
+      'oil', 'sugar', 'atta', 'flour', 'rice', 'dal', 'pulses', 'salt', 'tea', 'chai', 'soap',
+      'detergent', 'biscuit', 'snack', 'namkeen', 'spices', 'masala', 'milk', 'dairy', 'ghee',
+      'parle', 'fortune', 'amul', 'tata', 'balaji', 'gupta', 'rk', 'r.k.', 'motherson', 'himalaya', 'patel',
+      'item', 'items', 'product', 'products', 'category', 'categories', 'catalog', 'inventory', 'stock',
+      'quantity', 'kg', 'bag', 'pouch', 'liter', 'box', 'carton', 'packet',
+      'udhar', 'credit', 'paid', 'unpaid', 'payment', 'cash', 'upi', 'cheque',
+      'ledger', 'bahi', 'khata', 'gst', 'gstin', 'tax', 'slab', 'hsn',
+      'review', 'check', 'checking', 'verify', 'verified', 'pending', 'flagged', 'draft', 'confirm',
+      'help', 'how', 'upload', 'feature', 'features', 'camera', 'scan', 'shopledger', 'setting', 'profile',
+      'shop', 'store', 'kirana', 'branch', 'godown', 'analytics', 'dashboard', 'trend', 'summary', 'report',
+      'buy', 'bought', 'purchase', 'purchased', 'order', 'ordered', 'compare', 'comparison',
+      'month', 'week', 'today', 'yesterday', 'year', 'date', 'recent', 'last', 'top',
+      'hi', 'hello', 'namaste', 'tally', 'kitna', 'kya', 'kaun', 'sabse', 'sasta', 'mehnga', 'hisab', 'kharcha', 'maal',
     ];
 
-    return domainKeywords.some((kw) => text.includes(kw));
+    if (domainKeywords.some((kw) => text.includes(kw))) {
+      return true;
+    }
+
+    // Allow conversational follow-up questions when there is active chat history
+    if (
+      hasHistory &&
+      ['why', 'when', 'which', 'who', 'what about', 'and for', 'show me', 'more', 'details', 'list'].some((f) =>
+        text.includes(f)
+      )
+    ) {
+      return true;
+    }
+
+    return false;
   }
 
   /**
@@ -117,12 +123,13 @@ export class ChatService {
   async processChatQuery(
     businessId: string,
     message: string,
-    _history?: { role: 'user' | 'model'; text: string }[]
+    history?: { role: 'user' | 'model'; text: string }[]
   ) {
     const rawClean = message.trim();
+    const validHistory = Array.isArray(history) ? history.slice(-8) : [];
 
     // 1. Enforce strict conversational scope
-    if (!this.isScopeAllowed(rawClean)) {
+    if (!this.isScopeAllowed(rawClean, validHistory.length > 0)) {
       return {
         message:
           'I am ShopLedger’s shopkeeper bookkeeping assistant. I can only answer questions regarding your store’s purchase receipts, wholesale prices, suppliers, bahi khata ledger, or how to use ShopLedger features. Please ask a question related to your store.',
@@ -418,6 +425,11 @@ export class ChatService {
           })),
         };
 
+        const historyTurns = validHistory.map((h) => ({
+          role: h.role,
+          parts: [{ text: h.text }],
+        }));
+
         const aiResponse = await this.aiClient.models.generateContent({
           model: env.GEMINI_MODEL || 'gemini-2.5-flash',
           contents: [
@@ -426,12 +438,16 @@ export class ChatService {
               parts: [
                 {
                   text:
-                    `SYSTEM: You are ShopLedger AI, a concise, grounded bookkeeping assistant for an Indian Kirana store.\n` +
-                    `STRICT RULES: Answer ONLY using the verified store JSON context below. Never invent totals or transactions. Format currency in ₹.\n` +
-                    `VERIFIED STORE CONTEXT: ${JSON.stringify(boundedContext)}\n\n` +
-                    `MERCHANT QUESTION: ${rawClean}`,
+                    `SYSTEM: You are ShopLedger AI, a concise, grounded bookkeeping assistant for an Indian retail/Kirana store.\n` +
+                    `STRICT RULES: Answer ONLY using the verified store JSON context below or explain how ShopLedger features work. Never invent totals or transactions. Format currency in ₹.\n` +
+                    `VERIFIED STORE CONTEXT: ${JSON.stringify(boundedContext)}`,
                 },
               ],
+            },
+            ...historyTurns,
+            {
+              role: 'user',
+              parts: [{ text: `MERCHANT QUESTION: ${rawClean}` }],
             },
           ],
         });

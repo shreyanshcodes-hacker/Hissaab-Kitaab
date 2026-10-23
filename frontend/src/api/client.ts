@@ -25,6 +25,43 @@ export class ApiError extends Error {
   }
 }
 
+export function getActiveTenantContext(): {
+  isGuestMode: boolean;
+  uid: string | null;
+  businessId: string | null;
+} {
+  const storedBusinessId = localStorage.getItem('shopledger_active_business_id');
+  const currentUser = auth.currentUser;
+
+  if (storedBusinessId === 'biz_guest_demo') {
+    return {
+      isGuestMode: true,
+      uid: null,
+      businessId: 'biz_guest_demo',
+    };
+  }
+
+  if (currentUser) {
+    const validStored =
+      storedBusinessId &&
+      storedBusinessId !== 'biz_sharma_kirana' &&
+      storedBusinessId !== 'biz_guest_demo'
+        ? storedBusinessId
+        : `biz_${currentUser.uid}`;
+    return {
+      isGuestMode: false,
+      uid: currentUser.uid,
+      businessId: validStored,
+    };
+  }
+
+  return {
+    isGuestMode: true,
+    uid: null,
+    businessId: null,
+  };
+}
+
 /**
  * Retrieves the fresh Firebase ID token from the authenticated user.
  * Sends token in the Authorization: Bearer <token> header and attaches business context.

@@ -24,8 +24,16 @@ interface AuthContextType {
   authError: string | null;
   isConfigured: boolean;
   loginWithEmail: (email: string, password: string) => Promise<void>;
-  signupWithEmail: (shopName: string, email: string, password: string, businessType?: string) => Promise<void>;
+  signupWithEmail: (
+    shopName: string,
+    email: string,
+    password: string,
+    businessType?: string,
+    ownerName?: string,
+    phone?: string
+  ) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
+  updateUserProfile: (updates: Partial<UserProfile>) => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   signInAsGuest: () => void;
   exitGuestMode: () => void;
@@ -34,6 +42,94 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export function getInitials(name?: string, fallback: string = 'SL'): string {
+  if (!name || !name.trim()) return fallback;
+  const parts = name.trim().split(/\s+/);
+  if (parts.length >= 2) {
+    return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
+  }
+  return parts[0].slice(0, 2).toUpperCase();
+}
+
+function getCachedProfile(uid: string): Partial<UserProfile> | null {
+  try {
+    const raw = localStorage.getItem(`shopledger_profile_${uid}`);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function setCachedProfile(uid: string, profile: UserProfile): void {
+  try {
+    localStorage.setItem(`shopledger_profile_${uid}`, JSON.stringify(profile));
+    if (profile.activeBusinessId) {
+      localStorage.setItem('shopledger_active_business_id', profile.activeBusinessId);
+    }
+  } catch {
+    // Ignore storage quota errors
+  }
+}
+
+function resolveUserBusinessId(uid: string, storedBusinessId?: string): string {
+  if (storedBusinessId && storedBusinessId !== 'biz_sharma_kirana') {
+    return storedBusinessId;
+  }
+  return `biz_${uid}`;
+}
+
+async function ensureBusinessTenantInFirestore(profile: UserProfile): Promise<void> {
+  const businessId = resolveUserBusinessId(profile.uid, profile.activeBusinessId);
+  try {
+    localStorage.setItem('shopledger_active_business_id', businessId);
+  } catch {
+    // Ignore storage errors
+  }
+
+  try {
+    const bizRef = doc(db, 'businesses', businessId);
+    const bizSnap = await getDoc(bizRef);
+    const nowIso = new Date().toISOString();
+
+    if (!bizSnap.exists()) {
+      await setDoc(bizRef, {
+        id: businessId,
+        name: profile.shopName,
+        legalName: profile.shopName,
+        businessType: profile.businessType || 'kirana',
+        gstin: profile.gstin || '',
+        ownerUid: profile.uid,
+        memberUids: [profile.uid],
+        members: {
+          [profile.uid]: {
+            uid: profile.uid,
+            role: 'owner',
+            displayName: profile.displayName,
+            email: profile.email,
+            addedAt: nowIso,
+            addedBy: profile.uid,
+          },
+        },
+        currency: 'INR',
+        currencySymbol: '₹',
+        phone: profile.phone || '',
+        email: profile.email || '',
+        settings: {
+          defaultTaxSlabs: [0, 5, 12, 18, 28],
+          confidenceThreshold: 0.85,
+          requireReviewForUncertain: true,
+          dailyReconciliationReminder: true,
+          language: 'en',
+        },
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
+    }
+  } catch (err) {
+    console.warn('[AuthContext] Business tenant provisioning warning:', err);
+  }
+}
 
 // Helper to translate Firebase Auth error codes into Kirana-friendly copy
 export function formatAuthError(errorCode: string): string {
@@ -85,6 +181,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (currentUser) {
         setIsGuest(false);
+        const cached = getCachedProfile(currentUser.uid);
+        const emailPrefix = currentUser.email ? currentUser.email.split('@')[0] : 'Store Owner';
+
         try {
           // Attempt to retrieve profile from Firestore /users/{uid}
           const userDocRef = doc(db, 'users', currentUser.uid);
@@ -92,43 +191,84 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
           if (snap.exists()) {
             const data = snap.data();
-            setUser({
+            const businessId = resolveUserBusinessId(
+              currentUser.uid,
+              data.activeBusinessId || cached?.activeBusinessId
+            );
+            const resolvedProfile: UserProfile = {
               uid: currentUser.uid,
-              displayName: currentUser.displayName || data.displayName || 'Storekeeper',
-              email: currentUser.email || '',
-              phone: currentUser.phoneNumber || data.phone || '',
-              shopName: data.shopName || `${currentUser.displayName || 'My Shop'} Store`,
-              businessType: data.businessType || 'kirana',
+              displayName:
+                data.displayName ||
+                cached?.displayName ||
+                currentUser.displayName ||
+                emailPrefix,
+              email: currentUser.email || data.email || cached?.email || '',
+              phone: data.phone || cached?.phone || currentUser.phoneNumber || '',
+              shopName:
+                data.shopName ||
+                cached?.shopName ||
+                (currentUser.displayName ? `${currentUser.displayName}'s Shop` : `${emailPrefix} Store`),
+              businessType: data.businessType || cached?.businessType || 'kirana',
               role: data.role || 'owner',
-              activeBranch: data.activeBranch || 'Main Branch',
+              activeBranch: data.activeBranch || cached?.activeBranch || 'Main Branch',
+              activeBusinessId: businessId,
+              gstin: data.gstin || cached?.gstin || '',
+              createdAt:
+                typeof data.createdAt?.toDate === 'function'
+                  ? data.createdAt.toDate().toISOString()
+                  : data.createdAt || cached?.createdAt || currentUser.metadata?.creationTime || new Date().toISOString(),
               isGuest: false,
-            });
+            };
+            setCachedProfile(currentUser.uid, resolvedProfile);
+            setUser(resolvedProfile);
+            await ensureBusinessTenantInFirestore(resolvedProfile);
           } else {
-            // Profile fallback if Firestore document is still provisioning
-            setUser({
+            // Profile fallback if Firestore document is still provisioning during signup
+            const businessId = resolveUserBusinessId(currentUser.uid, cached?.activeBusinessId);
+            const resolvedProfile: UserProfile = {
               uid: currentUser.uid,
-              displayName: currentUser.displayName || 'Storekeeper',
-              email: currentUser.email || '',
-              phone: currentUser.phoneNumber || '',
-              shopName: `${currentUser.displayName || 'Kirana'} Store`,
-              businessType: 'kirana',
+              displayName:
+                cached?.displayName ||
+                currentUser.displayName ||
+                emailPrefix,
+              email: currentUser.email || cached?.email || '',
+              phone: cached?.phone || currentUser.phoneNumber || '',
+              shopName:
+                cached?.shopName ||
+                (currentUser.displayName ? `${currentUser.displayName}'s Shop` : `${emailPrefix} Store`),
+              businessType: cached?.businessType || 'kirana',
               role: 'owner',
-              activeBranch: 'Main Branch',
+              activeBranch: cached?.activeBranch || 'Main Branch',
+              activeBusinessId: businessId,
+              gstin: cached?.gstin || '',
+              createdAt: cached?.createdAt || currentUser.metadata?.creationTime || new Date().toISOString(),
               isGuest: false,
-            });
+            };
+            setCachedProfile(currentUser.uid, resolvedProfile);
+            setUser(resolvedProfile);
+            await ensureBusinessTenantInFirestore(resolvedProfile);
           }
         } catch (err) {
           console.warn('[AuthContext] Firestore profile fetch error:', err);
-          setUser({
+          const businessId = resolveUserBusinessId(currentUser.uid, cached?.activeBusinessId);
+          const resolvedProfile: UserProfile = {
             uid: currentUser.uid,
-            displayName: currentUser.displayName || 'Storekeeper',
-            email: currentUser.email || '',
-            shopName: 'Sharma Kirana Store',
-            businessType: 'kirana',
+            displayName: cached?.displayName || currentUser.displayName || emailPrefix,
+            email: currentUser.email || cached?.email || '',
+            phone: cached?.phone || currentUser.phoneNumber || '',
+            shopName:
+              cached?.shopName ||
+              (currentUser.displayName ? `${currentUser.displayName}'s Shop` : `${emailPrefix} Store`),
+            businessType: cached?.businessType || 'kirana',
             role: 'owner',
-            activeBranch: 'Main Branch',
+            activeBranch: cached?.activeBranch || 'Main Branch',
+            activeBusinessId: businessId,
+            gstin: cached?.gstin || '',
+            createdAt: cached?.createdAt || currentUser.metadata?.creationTime || new Date().toISOString(),
             isGuest: false,
-          });
+          };
+          setCachedProfile(currentUser.uid, resolvedProfile);
+          setUser(resolvedProfile);
         }
       } else {
         // If not in guest mode, user is unauthenticated
@@ -167,16 +307,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     shopName: string,
     email: string,
     password: string,
-    businessType: string = 'kirana'
+    businessType: string = 'kirana',
+    ownerName?: string,
+    phone?: string
   ) => {
     setLoading(true);
     setAuthError(null);
 
+    const resolvedOwnerName =
+      ownerName && ownerName.trim()
+        ? ownerName.trim()
+        : email.includes('@')
+          ? email.split('@')[0]
+          : shopName.trim();
+    const resolvedShopName = shopName.trim() || `${resolvedOwnerName}'s Shop`;
+    const resolvedPhone = phone?.trim() || '';
+
     if (!isConfigured && import.meta.env.VITE_USE_FIREBASE_EMULATORS !== 'true') {
       setUser({
         ...DEMO_USER_PROFILE,
-        shopName,
+        displayName: resolvedOwnerName,
+        shopName: resolvedShopName,
         email,
+        phone: resolvedPhone,
         businessType,
       });
       setLoading(false);
@@ -185,24 +338,55 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
-      const user = cred.user;
+      const createdUser = cred.user;
+      const nowIso = new Date().toISOString();
+      const businessId = `biz_${createdUser.uid}`;
 
-      // Update display name
-      await updateProfile(user, { displayName: shopName });
+      const newProfile: UserProfile = {
+        uid: createdUser.uid,
+        displayName: resolvedOwnerName,
+        email: createdUser.email || email,
+        phone: resolvedPhone,
+        shopName: resolvedShopName,
+        businessType,
+        role: 'owner',
+        activeBranch: 'Main Branch',
+        activeBusinessId: businessId,
+        gstin: '',
+        createdAt: nowIso,
+        isGuest: false,
+      };
 
-      // Initialize user and shop records in Firestore
+      // Cache & set state immediately so onAuthStateChanged never shows a dummy fallback
+      setCachedProfile(createdUser.uid, newProfile);
+      setUser(newProfile);
+
+      // Update Firebase Auth display name to the actual user's name
+      await updateProfile(createdUser, { displayName: resolvedOwnerName });
+
+      // Initialize user and isolated business tenant records in Firestore
       try {
-        await setDoc(doc(db, 'users', user.uid), {
-          uid: user.uid,
-          shopName,
-          email,
-          businessType,
-          role: 'owner',
-          createdAt: serverTimestamp(),
-        });
+        await setDoc(
+          doc(db, 'users', createdUser.uid),
+          {
+            uid: createdUser.uid,
+            displayName: resolvedOwnerName,
+            shopName: resolvedShopName,
+            email: createdUser.email || email,
+            phone: resolvedPhone,
+            businessType,
+            role: 'owner',
+            activeBranch: 'Main Branch',
+            activeBusinessId: businessId,
+            createdAt: serverTimestamp(),
+          },
+          { merge: true }
+        );
+
+        await ensureBusinessTenantInFirestore(newProfile);
 
         // Send email verification
-        await sendEmailVerification(user);
+        await sendEmailVerification(createdUser);
       } catch (firestoreErr) {
         console.warn('[AuthContext] Firestore initialization error:', firestoreErr);
       }
@@ -231,22 +415,70 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     try {
       const cred = await signInWithPopup(auth, googleProvider);
-      const user = cred.user;
+      const gUser = cred.user;
+      const emailPrefix = gUser.email ? gUser.email.split('@')[0] : 'Store Owner';
+      const displayName = gUser.displayName || emailPrefix;
+      const defaultShopName = `${displayName}'s Store`;
+      const businessId = `biz_${gUser.uid}`;
 
       // Ensure Firestore document exists
       try {
-        const userDocRef = doc(db, 'users', user.uid);
+        const userDocRef = doc(db, 'users', gUser.uid);
         const snap = await getDoc(userDocRef);
         if (!snap.exists()) {
-          await setDoc(userDocRef, {
-            uid: user.uid,
-            displayName: user.displayName || 'Google Merchant',
-            email: user.email,
-            shopName: `${user.displayName || 'Kirana'} Store`,
+          const newProfile: UserProfile = {
+            uid: gUser.uid,
+            displayName,
+            email: gUser.email || '',
+            phone: gUser.phoneNumber || '',
+            shopName: defaultShopName,
             businessType: 'kirana',
             role: 'owner',
+            activeBranch: 'Main Branch',
+            activeBusinessId: businessId,
+            createdAt: new Date().toISOString(),
+            isGuest: false,
+          };
+          setCachedProfile(gUser.uid, newProfile);
+          setUser(newProfile);
+
+          await setDoc(userDocRef, {
+            uid: gUser.uid,
+            displayName,
+            email: gUser.email,
+            phone: gUser.phoneNumber || '',
+            shopName: defaultShopName,
+            businessType: 'kirana',
+            role: 'owner',
+            activeBranch: 'Main Branch',
+            activeBusinessId: businessId,
             createdAt: serverTimestamp(),
           });
+
+          await ensureBusinessTenantInFirestore(newProfile);
+        } else {
+          const data = snap.data();
+          const resolvedBusinessId = resolveUserBusinessId(gUser.uid, data.activeBusinessId);
+          const existingProfile: UserProfile = {
+            uid: gUser.uid,
+            displayName: data.displayName || displayName,
+            email: gUser.email || data.email || '',
+            phone: data.phone || gUser.phoneNumber || '',
+            shopName: data.shopName || defaultShopName,
+            businessType: data.businessType || 'kirana',
+            role: data.role || 'owner',
+            activeBranch: data.activeBranch || 'Main Branch',
+            activeBusinessId: resolvedBusinessId,
+            gstin: data.gstin || '',
+            createdAt:
+              typeof data.createdAt?.toDate === 'function'
+                ? data.createdAt.toDate().toISOString()
+                : data.createdAt || new Date().toISOString(),
+            isGuest: false,
+          };
+          setCachedProfile(gUser.uid, existingProfile);
+          setUser(existingProfile);
+          await ensureBusinessTenantInFirestore(existingProfile);
         }
       } catch (firestoreErr) {
         console.warn('[AuthContext] Google sign-in firestore sync error:', firestoreErr);
@@ -262,6 +494,64 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const updateUserProfile = async (updates: Partial<UserProfile>) => {
+    if (!user) return;
+    const businessId = resolveUserBusinessId(user.uid, updates.activeBusinessId || user.activeBusinessId);
+    const updated: UserProfile = {
+      ...user,
+      ...updates,
+      activeBusinessId: businessId,
+    };
+    setUser(updated);
+    setCachedProfile(user.uid, updated);
+
+    if (firebaseUser && updates.displayName && updates.displayName !== firebaseUser.displayName) {
+      try {
+        await updateProfile(firebaseUser, { displayName: updates.displayName });
+      } catch (err) {
+        console.warn('[AuthContext] updateProfile error:', err);
+      }
+    }
+
+    if (isConfigured && !isGuest) {
+      try {
+        await setDoc(
+          doc(db, 'users', user.uid),
+          {
+            uid: user.uid,
+            displayName: updated.displayName,
+            shopName: updated.shopName,
+            email: updated.email,
+            phone: updated.phone || '',
+            businessType: updated.businessType,
+            activeBranch: updated.activeBranch || 'Main Branch',
+            activeBusinessId: businessId,
+            gstin: updated.gstin || '',
+            updatedAt: serverTimestamp(),
+          },
+          { merge: true }
+        );
+
+        await ensureBusinessTenantInFirestore(updated);
+        await setDoc(
+          doc(db, 'businesses', businessId),
+          {
+            name: updated.shopName,
+            legalName: updated.shopName,
+            businessType: updated.businessType || 'kirana',
+            gstin: updated.gstin || '',
+            phone: updated.phone || '',
+            email: updated.email || '',
+            updatedAt: serverTimestamp(),
+          },
+          { merge: true }
+        );
+      } catch (err) {
+        console.warn('[AuthContext] Failed to persist profile update to Firestore:', err);
+      }
     }
   };
 
@@ -286,11 +576,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsGuest(true);
     setUser(DEMO_GUEST_PROFILE);
     setAuthError(null);
+    try {
+      localStorage.setItem('shopledger_active_business_id', 'biz_guest_demo');
+    } catch {
+      // Ignore storage error
+    }
   };
 
   const exitGuestMode = () => {
     setIsGuest(false);
     setUser(null);
+    try {
+      localStorage.removeItem('shopledger_active_business_id');
+    } catch {
+      // Ignore storage error
+    }
   };
 
   const logout = async () => {
@@ -298,6 +598,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsGuest(false);
     setUser(null);
     setFirebaseUser(null);
+    try {
+      localStorage.removeItem('shopledger_active_business_id');
+    } catch {
+      // Ignore storage error
+    }
 
     try {
       if (isConfigured || import.meta.env.VITE_USE_FIREBASE_EMULATORS === 'true') {
@@ -327,6 +632,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         loginWithEmail,
         signupWithEmail,
         signInWithGoogle,
+        updateUserProfile,
         resetPassword,
         signInAsGuest,
         exitGuestMode,

@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import { db } from '../config/firebase-admin.js';
-import { BadRequestError, ForbiddenError, UnauthorizedError } from '../utils/errors.js';
+import { ForbiddenError, UnauthorizedError } from '../utils/errors.js';
 import type { BusinessRole } from '../types/models.js';
 
 export async function requireBusinessTenant(req: Request, _res: Response, next: NextFunction): Promise<void> {
@@ -11,7 +11,7 @@ export async function requireBusinessTenant(req: Request, _res: Response, next: 
   // Extract businessId from header or query param
   let businessId = (req.headers['x-business-id'] as string) || (req.query.businessId as string);
 
-  // If not provided in header or query, attempt to read activeBusinessId from user profile
+  // If not provided in header or query, attempt to read activeBusinessId from user profile, or default to biz_{uid}
   if (!businessId) {
     try {
       const userDoc = await db.collection('users').doc(req.user.uid).get();
@@ -19,16 +19,62 @@ export async function requireBusinessTenant(req: Request, _res: Response, next: 
         businessId = userDoc.data()?.activeBusinessId;
       }
     } catch {
-      // Fall through to error
+      // Fall through
+    }
+    if (!businessId) {
+      businessId = `biz_${req.user.uid}`;
     }
   }
 
-  if (!businessId) {
-    return next(new BadRequestError('Missing business context. Provide x-business-id header or businessId parameter'));
-  }
-
   try {
-    const businessDoc = await db.collection('businesses').doc(businessId).get();
+    const businessRef = db.collection('businesses').doc(businessId);
+    let businessDoc = await businessRef.get();
+
+    // Auto-provision the user's isolated business tenant if requesting their own biz_{uid}
+    if (!businessDoc.exists && businessId === `biz_${req.user.uid}`) {
+      const uid = req.user.uid;
+      const userDoc = await db.collection('users').doc(uid).get().catch(() => null);
+      const userData = userDoc?.exists ? userDoc.data() : undefined;
+      const nowIso = new Date().toISOString();
+      const ownerName = userData?.displayName || req.user.name || (req.user.email ? req.user.email.split('@')[0] : 'Store Owner');
+      const shopName = userData?.shopName || `${ownerName}'s Shop`;
+
+      const newBusiness = {
+        id: businessId,
+        name: shopName,
+        legalName: shopName,
+        businessType: userData?.businessType || 'kirana',
+        gstin: userData?.gstin || '',
+        ownerUid: uid,
+        memberUids: [uid],
+        members: {
+          [uid]: {
+            uid,
+            role: 'owner',
+            displayName: ownerName,
+            email: req.user.email || userData?.email || '',
+            addedAt: nowIso,
+            addedBy: uid,
+          },
+        },
+        currency: 'INR',
+        currencySymbol: '₹',
+        phone: userData?.phone || '',
+        email: req.user.email || userData?.email || '',
+        settings: {
+          defaultTaxSlabs: [0, 5, 12, 18, 28],
+          confidenceThreshold: 0.85,
+          requireReviewForUncertain: true,
+          dailyReconciliationReminder: true,
+          language: 'en',
+        },
+        createdAt: nowIso,
+        updatedAt: nowIso,
+      };
+
+      await businessRef.set(newBusiness, { merge: true });
+      businessDoc = await businessRef.get();
+    }
 
     if (!businessDoc.exists) {
       return next(new ForbiddenError('Business not found or access denied'));

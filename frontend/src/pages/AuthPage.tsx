@@ -38,10 +38,12 @@ export const AuthPage: React.FC = () => {
   const isSignUpDefault = location.pathname === '/signup';
 
   const [isSignUp, setIsSignUp] = useState(isSignUpDefault);
-  const [shopName, setShopName] = useState('Sharma Kirana Store');
+  const [ownerName, setOwnerName] = useState('');
+  const [shopName, setShopName] = useState('');
+  const [phone, setPhone] = useState('');
   const [businessType, setBusinessType] = useState('kirana');
-  const [email, setEmail] = useState('sharma.kirana@gmail.com');
-  const [password, setPassword] = useState('password123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [resetEmail, setResetEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
@@ -55,11 +57,11 @@ export const AuthPage: React.FC = () => {
 
     try {
       if (isSignUp) {
-        await signupWithEmail(shopName, email, password, businessType);
+        await signupWithEmail(shopName, email, password, businessType, ownerName, phone);
         showToast({
           type: 'success',
           title: 'Shop Account Provisioned',
-          message: `Welcome to ShopLedger, ${shopName}! Verification email dispatched.`,
+          message: `Welcome to ShopLedger, ${ownerName || shopName}! Verification email dispatched.`,
         });
       } else {
         await loginWithEmail(email, password);
@@ -268,31 +270,47 @@ export const AuthPage: React.FC = () => {
           {isSignUp && (
             <>
               <Input
+                label="Your Full Name (Owner / Merchant)"
+                placeholder="e.g. Shreyansh Jaiswal"
+                value={ownerName}
+                onChange={(e) => setOwnerName(e.target.value)}
+                required={true}
+              />
+              <Input
                 label="Your Shop / Business Name"
-                placeholder="e.g. Sharma General Store, Laxmi Traders"
+                placeholder="e.g. Jaiswal General Store, Laxmi Traders"
                 value={shopName}
                 onChange={(e) => setShopName(e.target.value)}
                 required={true}
               />
-              <Select
-                label="Business Type"
-                value={businessType}
-                onChange={(e) => setBusinessType(e.target.value)}
-                options={[
-                  { value: 'kirana', label: 'Kirana / Grocery Store' },
-                  { value: 'retail', label: 'Retail Shop (Clothing, Hardware, Chemist)' },
-                  { value: 'mandi', label: 'Wholesale / Mandi Commission Agent' },
-                  { value: 'warehouse', label: 'Warehouse / Godown' },
-                  { value: 'other', label: 'Other Business' },
-                ]}
-              />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <Select
+                  label="Business Type"
+                  value={businessType}
+                  onChange={(e) => setBusinessType(e.target.value)}
+                  options={[
+                    { value: 'kirana', label: 'Kirana / Grocery Store' },
+                    { value: 'retail', label: 'Retail Shop' },
+                    { value: 'mandi', label: 'Wholesale / Mandi' },
+                    { value: 'warehouse', label: 'Warehouse / Godown' },
+                    { value: 'other', label: 'Other Business' },
+                  ]}
+                />
+                <Input
+                  label="Phone Number (Optional)"
+                  type="tel"
+                  placeholder="+91 98765 43210"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+              </div>
             </>
           )}
 
           <Input
             label="Store Email Address"
             type="email"
-            placeholder="sharma.kirana@gmail.com"
+            placeholder="you@yourshop.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required={true}

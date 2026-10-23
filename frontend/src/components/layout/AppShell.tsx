@@ -22,6 +22,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
+import { useAuth, getInitials } from '../../context/AuthContext';
 import { Dropdown } from '../common/Dropdown';
 import { Button } from '../common/Button';
 import { cn } from '../../utils/cn';
@@ -38,10 +39,18 @@ export const AppShell: React.FC<AppShellProps> = ({
   needsCheckingCount = 2,
 }) => {
   const { theme, toggleTheme } = useTheme();
+  const { user, logout, updateUserProfile } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [currentBranch, setCurrentBranch] = useState('Main Bazar Branch');
+  const [currentBranch, setCurrentBranch] = useState(user?.activeBranch || 'Main Branch');
   const location = useLocation();
   const navigate = useNavigate();
+
+  const resolvedOwnerName =
+    user?.displayName || (user?.email ? user.email.split('@')[0] : 'Store Owner');
+  const resolvedShopName = user?.shopName || `${resolvedOwnerName}'s Shop`;
+  const resolvedBranch = user?.activeBranch || currentBranch || 'Main Branch';
+  const ownerInitials = getInitials(resolvedOwnerName, 'SO');
+  const shopInitials = getInitials(resolvedShopName, 'SL');
 
   const navItems = [
     {
@@ -95,29 +104,35 @@ export const AppShell: React.FC<AppShellProps> = ({
   const branchOptions = [
     {
       id: 'main',
-      label: 'Main Bazar Store',
+      label: 'Main Branch',
       description: 'Primary retail counter',
-      onClick: () => setCurrentBranch('Main Bazar Store'),
+      onClick: () => {
+        setCurrentBranch('Main Branch');
+        updateUserProfile({ activeBranch: 'Main Branch' });
+      },
     },
     {
       id: 'godown',
       label: 'Godown #2 (Mandi Yard)',
       description: 'Bulk wholesale storage',
-      onClick: () => setCurrentBranch('Godown #2 (Mandi Yard)'),
+      onClick: () => {
+        setCurrentBranch('Godown #2 (Mandi Yard)');
+        updateUserProfile({ activeBranch: 'Godown #2 (Mandi Yard)' });
+      },
     },
   ];
 
   const userMenuItems = [
     {
       id: 'profile',
-      label: 'Ramesh Sharma (Owner)',
-      description: 'sharma.kirana@gmail.com',
+      label: `${resolvedOwnerName} (${user?.isGuest ? 'Guest Demo' : 'Owner'})`,
+      description: user?.email || resolvedShopName,
       icon: <User className="w-4 h-4" />,
       onClick: () => navigate('/profile'),
     },
     {
       id: 'privacy',
-      label: 'Data Privacy & GST Slabs',
+      label: 'Store Settings & GST Slabs',
       icon: <ShieldCheck className="w-4 h-4" />,
       onClick: () => navigate('/settings'),
     },
@@ -126,7 +141,10 @@ export const AppShell: React.FC<AppShellProps> = ({
       label: 'Log out from store',
       destructive: true,
       icon: <LogOut className="w-4 h-4" />,
-      onClick: () => navigate('/auth'),
+      onClick: async () => {
+        await logout();
+        navigate('/login');
+      },
     },
   ];
 
@@ -244,14 +262,14 @@ export const AppShell: React.FC<AppShellProps> = ({
                 <div className="w-full flex items-center justify-between p-2 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors cursor-pointer border border-outline/50">
                   <div className="flex items-center gap-2.5 min-w-0">
                     <div className="w-8 h-8 rounded-lg bg-primary-fixed text-primary font-bold flex items-center justify-center flex-shrink-0 text-label-xs">
-                      SK
+                      {shopInitials}
                     </div>
                     <div className="flex flex-col text-left min-w-0">
                       <span className="font-label-md text-label-xs text-on-surface font-bold truncate">
-                        Sharma Kirana Store
+                        {resolvedShopName}
                       </span>
                       <span className="font-body-sm text-[0.6875rem] text-on-surface-variant truncate">
-                        {currentBranch}
+                        {resolvedBranch}
                       </span>
                     </div>
                   </div>
@@ -287,9 +305,9 @@ export const AppShell: React.FC<AppShellProps> = ({
 
           <div className="flex items-center gap-2 text-on-surface-variant font-label-md text-label-xs hidden sm:flex">
             <Store className="w-4 h-4 text-primary" />
-            <span className="font-bold text-on-surface">Sharma Kirana Store</span>
+            <span className="font-bold text-on-surface">{resolvedShopName}</span>
             <span className="text-outline-variant">•</span>
-            <span>{currentBranch}</span>
+            <span>{resolvedBranch}</span>
           </div>
         </div>
 
@@ -328,8 +346,11 @@ export const AppShell: React.FC<AppShellProps> = ({
           {/* User Profile Dropdown */}
           <Dropdown
             trigger={
-              <div className="w-9 h-9 rounded-full bg-primary text-on-primary font-bold flex items-center justify-center text-label-xs cursor-pointer ring-2 ring-outline/60 hover:ring-primary transition-all">
-                RS
+              <div
+                title={`${resolvedOwnerName} (${resolvedShopName})`}
+                className="w-9 h-9 rounded-full bg-primary text-on-primary font-bold flex items-center justify-center text-label-xs cursor-pointer ring-2 ring-outline/60 hover:ring-primary transition-all"
+              >
+                {ownerInitials}
               </div>
             }
             items={userMenuItems}

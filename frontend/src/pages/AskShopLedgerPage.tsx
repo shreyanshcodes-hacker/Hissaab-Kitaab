@@ -11,12 +11,18 @@ import {
 import { Button } from '../components/common/Button';
 import { chatService } from '../api/chatService';
 import type { ChatMessage } from '../types';
+import { useAuth, getInitials } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { cn } from '../utils/cn';
 
 export const AskShopLedgerPage: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { showToast } = useToast();
+
+  const resolvedOwnerName =
+    user?.displayName || (user?.email ? user.email.split('@')[0] : 'Store Owner');
+  const userInitials = getInitials(resolvedOwnerName, 'SO');
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputText, setInputText] = useState('');
@@ -128,7 +134,7 @@ export const AskShopLedgerPage: React.FC = () => {
               </div>
               <div className="space-y-1.5">
                 <h2 className="font-headline-sm text-xl font-bold text-on-surface">
-                  Namaste Ramesh ji 👋
+                  Namaste {resolvedOwnerName} ji 👋
                 </h2>
                 <p className="text-body-sm text-on-surface-variant leading-relaxed">
                   Ask anything about your store's purchase receipts, mandi commodity rates, supplier price changes, or how to use ShopLedger features.
@@ -250,7 +256,7 @@ export const AskShopLedgerPage: React.FC = () => {
 
                 {isUser && (
                   <div className="w-8 h-8 rounded-xl bg-surface-container-high text-on-surface flex items-center justify-center flex-shrink-0 font-label-xs text-xs font-bold mt-0.5">
-                    RS
+                    {userInitials}
                   </div>
                 )}
               </div>

@@ -51,10 +51,14 @@ export async function getAuthHeaders(
     headers['Authorization'] = 'Bearer dev_token';
   }
 
+  const storedBusinessId = localStorage.getItem('shopledger_active_business_id');
   const effectiveBusinessId =
     businessId ||
-    localStorage.getItem('shopledger_active_business_id') ||
-    'biz_sharma_kirana';
+    (currentUser
+      ? storedBusinessId && storedBusinessId !== 'biz_sharma_kirana'
+        ? storedBusinessId
+        : `biz_${currentUser.uid}`
+      : storedBusinessId || '');
 
   if (effectiveBusinessId) {
     headers['x-business-id'] = effectiveBusinessId;

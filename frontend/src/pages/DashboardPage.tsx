@@ -19,16 +19,22 @@ import { DataTable, type Column } from '../components/common/DataTable';
 import { receiptService } from '../api/receiptService';
 import { analyticsService, type AnalyticsSummary } from '../api/analyticsService';
 import type { Receipt as ReceiptType } from '../types';
+import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { showToast } = useToast();
+
+  const resolvedOwnerName =
+    user?.displayName || (user?.email ? user.email.split('@')[0] : 'Store Owner');
+  const resolvedShopName = user?.shopName || `${resolvedOwnerName}'s Shop`;
 
   const [receipts, setReceipts] = useState<ReceiptType[]>([]);
   const [metrics, setMetrics] = useState<AnalyticsSummary | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedBranch, setSelectedBranch] = useState('Main Bazar Branch');
+  const [selectedBranch, setSelectedBranch] = useState(user?.activeBranch || 'Main Branch');
   const [selectedPeriod, setSelectedPeriod] = useState<'this_month' | 'last_30_days' | 'all_time'>('this_month');
   const [selectedPeriodLabel, setSelectedPeriodLabel] = useState('This Month (Current)');
 
@@ -141,13 +147,13 @@ export const DashboardPage: React.FC = () => {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="font-headline-lg text-2xl sm:text-3xl font-bold text-on-surface tracking-tight">
-              Namaste Ramesh ji 👋
+              Namaste {resolvedOwnerName} ji 👋
             </h1>
           </div>
           <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
             Store purchase summary for{' '}
-            <span className="font-semibold text-on-surface">{metrics?.period?.label || selectedPeriodLabel}</span> • Sharma Kirana
-            Store ({selectedBranch})
+            <span className="font-semibold text-on-surface">{metrics?.period?.label || selectedPeriodLabel}</span> •{' '}
+            {resolvedShopName} ({user?.activeBranch || selectedBranch})
           </p>
         </div>
 

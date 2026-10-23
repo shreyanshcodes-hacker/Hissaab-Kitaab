@@ -123,5 +123,8 @@ export interface UserProfile {
   businessType: string;
   role: 'owner' | 'staff';
   activeBranch: string;
+  activeBusinessId?: string;
+  gstin?: string;
+  createdAt?: string;
   isGuest?: boolean;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShieldCheck, Save } from 'lucide-react';
 import { PageHeader } from '../components/common/PageHeader';
@@ -6,24 +6,57 @@ import { Button } from '../components/common/Button';
 import { Input } from '../components/common/Input';
 import { Select } from '../components/common/Select';
 import { Card } from '../components/common/Card';
+import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 
 export const SettingsPage: React.FC = () => {
   const navigate = useNavigate();
+  const { user, updateUserProfile } = useAuth();
   const { showToast } = useToast();
 
-  const [shopName, setShopName] = useState('Sharma Kirana Store');
-  const [branchName, setBranchName] = useState('Main Bazar Branch');
-  const [gstin, setGstin] = useState('07AABCS1429B1Z8');
+  const [ownerName, setOwnerName] = useState(user?.displayName || '');
+  const [shopName, setShopName] = useState(user?.shopName || '');
+  const [branchName, setBranchName] = useState(user?.activeBranch || 'Main Branch');
+  const [businessType, setBusinessType] = useState(user?.businessType || 'kirana');
+  const [gstin, setGstin] = useState(user?.gstin || '');
   const [confidenceThreshold, setConfidenceThreshold] = useState('85');
   const [nightTallyEnabled, setNightTallyEnabled] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
 
-  const handleSave = () => {
-    showToast({
-      type: 'success',
-      title: 'Settings Saved',
-      message: 'Store configuration and tax preferences updated.',
-    });
+  useEffect(() => {
+    if (user) {
+      setOwnerName(user.displayName || '');
+      setShopName(user.shopName || '');
+      setBranchName(user.activeBranch || 'Main Branch');
+      setBusinessType(user.businessType || 'kirana');
+      setGstin(user.gstin || '');
+    }
+  }, [user]);
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      await updateUserProfile({
+        displayName: ownerName.trim() || user?.displayName || 'Store Owner',
+        shopName: shopName.trim() || user?.shopName || 'My Shop',
+        activeBranch: branchName.trim() || 'Main Branch',
+        businessType,
+        gstin: gstin.trim(),
+      });
+      showToast({
+        type: 'success',
+        title: 'Settings Saved',
+        message: 'Store configuration and profile preferences updated.',
+      });
+    } catch (err: any) {
+      showToast({
+        type: 'error',
+        title: 'Save Failed',
+        message: err?.message || 'Unable to save store settings.',
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -38,6 +71,7 @@ export const SettingsPage: React.FC = () => {
         actions={
           <Button
             variant="primary"
+            isLoading={isSaving}
             onClick={handleSave}
             leftIcon={<Save className="w-4 h-4" />}
             className="shadow-card font-bold"
@@ -52,9 +86,16 @@ export const SettingsPage: React.FC = () => {
         <h3 className="font-headline-sm text-lg font-bold text-on-surface">Store Profile & GSTIN</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Input
+            label="Owner / Merchant Name"
+            value={ownerName}
+            onChange={(e) => setOwnerName(e.target.value)}
+            placeholder="Your full name"
+          />
+          <Input
             label="Shop / Business Name"
             value={shopName}
             onChange={(e) => setShopName(e.target.value)}
+            placeholder="Your store name"
           />
           <Input
             label="Active Branch"
@@ -65,11 +106,13 @@ export const SettingsPage: React.FC = () => {
             label="Store GSTIN (Optional if exempt)"
             value={gstin}
             onChange={(e) => setGstin(e.target.value)}
+            placeholder="e.g. 07AABCS1429B1Z8"
             helperText="15-character Indian Goods & Services Tax ID"
           />
           <Select
             label="Primary Business Category"
-            defaultValue="kirana"
+            value={businessType}
+            onChange={(e) => setBusinessType(e.target.value)}
             options={[
               { value: 'kirana', label: 'Kirana / Grocery Store' },
               { value: 'retail', label: 'Retail Merchant' },

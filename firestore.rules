@@ -63,8 +63,11 @@ service cloud.firestore {
     // 2. BUSINESSES & SHOPS (/businesses/{businessId})
     // =========================================================================
     match /businesses/{businessId} {
-      // Individual document read for verified members
-      allow get: if isBusinessMember(businessId);
+      // Individual document read for verified members (or checking existence before creation)
+      allow get: if isSignedIn() && (
+        resource == null ||
+        isBusinessMember(businessId)
+      );
 
       // List queries: Allowed if filtering by member membership
       allow list: if isSignedIn() && (

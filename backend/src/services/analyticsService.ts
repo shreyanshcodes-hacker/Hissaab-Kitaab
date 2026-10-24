@@ -545,7 +545,7 @@ export class AnalyticsService {
       lowestRateRupees: it.minRateMinor / 100,
       highestRateRupees: it.maxRateMinor / 100,
       lastPurchaseDate: it.lastPurchaseDate,
-      hasInflation: it.latestRateMinor > it.minRateMinor,
+      hasInflation: false,
       rateVariancePercentage:
         it.minRateMinor > 0
           ? Math.round(((it.maxRateMinor - it.minRateMinor) / it.minRateMinor) * 1000) / 10

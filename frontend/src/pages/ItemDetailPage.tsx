@@ -3,9 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
   Edit,
+  Filter,
 } from 'lucide-react';
 import { Button } from '../components/common/Button';
 import { Badge } from '../components/common/Badge';
+import { Dropdown } from '../components/common/Dropdown';
 import { Modal } from '../components/common/Modal';
 import { Input } from '../components/common/Input';
 import { itemService } from '../api/itemService';
@@ -18,6 +20,7 @@ export const ItemDetailPage: React.FC = () => {
   const { showToast } = useToast();
 
   const [item, setItem] = useState<CatalogItem | null>(null);
+  const [supplierFilter, setSupplierFilter] = useState('');
   const [showEditModal, setShowEditModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -124,13 +127,35 @@ export const ItemDetailPage: React.FC = () => {
 
       {/* Price Divergence Across Suppliers Table */}
       <div className="p-5 rounded-2xl bg-surface-container-lowest border border-outline shadow-card space-y-4">
-        <div>
-          <h3 className="font-headline-sm text-lg font-bold text-on-surface">
-            Wholesale Purchase Price History Across Invoices
-          </h3>
-          <p className="text-label-xs text-on-surface-variant mt-0.5">
-            Every entry corresponds to a verified supplier voucher.
-          </p>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h3 className="font-headline-sm text-lg font-bold text-on-surface">
+              Wholesale Purchase Price History Across Invoices
+            </h3>
+            <p className="text-label-xs text-on-surface-variant mt-0.5">
+              Every entry corresponds to a verified supplier voucher.
+            </p>
+          </div>
+
+          <Dropdown
+            trigger={
+              <button className="h-8 px-3 bg-surface-container-low hover:bg-surface-container rounded-lg border border-outline/70 text-on-surface font-label-md text-label-xs flex items-center gap-1.5 transition-colors self-start sm:self-auto">
+                <Filter className="w-3.5 h-3.5 text-primary" />
+                <span>{supplierFilter || 'All Suppliers'}</span>
+                <span className="text-on-surface-variant text-[10px]">▼</span>
+              </button>
+            }
+            items={[
+              { id: 'all', label: 'All Suppliers', onClick: () => setSupplierFilter('') },
+              ...Array.from(new Set(item.priceHistory.map((p) => p.supplierName).filter(Boolean))).map(
+                (sup) => ({
+                  id: sup,
+                  label: sup,
+                  onClick: () => setSupplierFilter(sup),
+                })
+              ),
+            ]}
+          />
         </div>
 
         <div className="overflow-x-auto">
@@ -147,7 +172,9 @@ export const ItemDetailPage: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-outline/60">
-              {item.priceHistory.map((ph, idx) => (
+              {item.priceHistory
+                .filter((ph) => !supplierFilter || ph.supplierName === supplierFilter)
+                .map((ph, idx) => (
                 <tr key={idx} className="hover:bg-surface-container-low/60">
                   <td className="p-3 font-semibold text-on-surface tabular-nums">{ph.date}</td>
                   <td className="p-3 text-on-surface">{ph.supplierName}</td>

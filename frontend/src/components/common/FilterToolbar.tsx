@@ -36,7 +36,7 @@ export const FilterToolbar: React.FC<FilterToolbarProps> = ({
       )}
     >
       {/* Search Input */}
-      <div className="flex-1 min-w-[240px]">
+      <div className="flex-1 min-w-0 sm:min-w-[240px]">
         <Input
           type="search"
           value={searchValue}

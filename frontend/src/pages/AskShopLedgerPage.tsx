@@ -13,12 +13,15 @@ import { chatService } from '../api/chatService';
 import type { ChatMessage } from '../types';
 import { useAuth, getInitials } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { useLanguage } from '../context/LanguageContext';
 import { cn } from '../utils/cn';
+import { FormattedText } from '../components/chat/FormattedText';
 
 export const AskShopLedgerPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { showToast } = useToast();
+  const { isHindi } = useLanguage();
 
   const resolvedOwnerName =
     user?.displayName || (user?.email ? user.email.split('@')[0] : 'Store Owner');
@@ -73,12 +76,19 @@ export const AskShopLedgerPage: React.FC = () => {
     });
   };
 
-  const promptSuggestions = [
-    'Which vendor gave me the lowest price for Fortune Mustard Oil 1L pouch in the last 60 days?',
-    'How much did I spend with Shree Balaji Traders this month?',
-    'Which items have pending low-confidence check warnings?',
-    'Compare my edible oil prices across suppliers',
-  ];
+  const promptSuggestions = isHindi
+    ? [
+        'पिछले 60 दिनों में फॉर्च्यून सरसों तेल का सबसे कम भाव किस सप्लायर ने दिया?',
+        'इस महीने श्री बालाजी ट्रेडर्स से कुल कितना सामान खरीदा?',
+        'किन सामानों में कम विश्वास या जांच की चेतावनी बाकी है?',
+        'अलग-अलग सप्लायरों के खाद्य तेल के भाव की तुलना करें',
+      ]
+    : [
+        'Which vendor gave me the lowest price for Fortune Mustard Oil 1L pouch in the last 60 days?',
+        'How much did I spend with Shree Balaji Traders this month?',
+        'Which items have pending low-confidence check warnings?',
+        'Compare my edible oil prices across suppliers',
+      ];
 
   return (
     <div className="max-w-5xl mx-auto space-y-6 pb-20">
@@ -90,14 +100,16 @@ export const AskShopLedgerPage: React.FC = () => {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="font-headline-sm text-xl font-bold text-on-surface">Ask ShopLedger</h1>
+              <h1 className="font-headline-sm text-xl font-bold text-on-surface">
+                {isHindi ? 'हिसाब किताब AI से पूछें' : 'Ask Hissaab Kitaab AI'}
+              </h1>
               <span className="bg-primary-fixed text-on-primary-fixed text-label-xs font-semibold px-2 py-0.5 rounded-full">
-                Gemini 2.5 Grounded
+                {isHindi ? 'Gemini AI कनेक्टेड' : 'Gemini Grounded'}
               </span>
             </div>
             <p className="text-label-xs text-on-surface-variant flex items-center gap-1.5 mt-0.5">
               <span className="w-2 h-2 rounded-full bg-primary inline-block"></span>
-              Connected strictly to your shop’s verified purchase bills
+              {isHindi ? 'केवल आपकी दुकान के सत्यापित खरीद बिलों से जुड़ा है' : 'Connected strictly to your shop’s verified purchase bills'}
             </p>
           </div>
         </div>
@@ -109,7 +121,7 @@ export const AskShopLedgerPage: React.FC = () => {
             onClick={handleResetContext}
             leftIcon={<RotateCcw className="w-3.5 h-3.5" />}
           >
-            Reset Context
+            {isHindi ? 'बातचीत रीसेट करें' : 'Reset Context'}
           </Button>
         </div>
       </div>
@@ -118,7 +130,10 @@ export const AskShopLedgerPage: React.FC = () => {
       <div className="flex items-center gap-2.5 p-3 rounded-xl bg-surface-container-low border border-outline text-label-xs text-on-surface-variant">
         <ShieldCheck className="w-4 h-4 text-primary flex-shrink-0" />
         <span>
-          <strong>Private Shop Scope:</strong> Answers are derived strictly from your authenticated store records and deterministic ledger arithmetic. Zero cross-tenant data leakage.
+          <strong>{isHindi ? 'गोपनीय दुकान डेटा:' : 'Private Shop Scope:'}</strong>{' '}
+          {isHindi
+            ? 'उत्तर केवल आपके प्रमाणित बिलों और बही-खाते के आधार पर दिए जाते हैं। अन्य दुकानों से कोई डेटा शेयर नहीं होता।'
+            : 'Answers are derived strictly from your authenticated store records and deterministic ledger arithmetic. Zero cross-tenant data leakage.'}
         </span>
       </div>
 
@@ -134,10 +149,12 @@ export const AskShopLedgerPage: React.FC = () => {
               </div>
               <div className="space-y-1.5">
                 <h2 className="font-headline-sm text-xl font-bold text-on-surface">
-                  Namaste {resolvedOwnerName} ji 👋
+                  {isHindi ? `नमस्ते ${resolvedOwnerName} जी 👋` : `Namaste ${resolvedOwnerName} ji 👋`}
                 </h2>
                 <p className="text-body-sm text-on-surface-variant leading-relaxed">
-                  Ask anything about your store's purchase receipts, mandi commodity rates, supplier price changes, or how to use ShopLedger features.
+                  {isHindi
+                    ? 'अपनी दुकान के खरीद बिल, मंडी के थोक भाव, सप्लायर रेट में बदलाव या हिसाब किताब के फीचर्स के बारे में कुछ भी पूछें।'
+                    : "Ask anything about your store's purchase receipts, mandi commodity rates, supplier price changes, or how to use Hissaab Kitaab features."}
                 </p>
               </div>
 
@@ -180,7 +197,11 @@ export const AskShopLedgerPage: React.FC = () => {
                       : 'bg-surface-container-low text-on-surface rounded-tl-xs border border-outline/30'
                   )}
                 >
-                  <p className="whitespace-pre-line leading-relaxed">{msg.text}</p>
+                  {isUser ? (
+                    <p className="whitespace-pre-line leading-relaxed">{msg.text}</p>
+                  ) : (
+                    <FormattedText text={msg.text} />
+                  )}
 
                   {/* Render Structured Comparison Card (Stitch Accurate) */}
                   {msg.structuredCard && (
@@ -271,7 +292,11 @@ export const AskShopLedgerPage: React.FC = () => {
               </div>
               <div className="p-3.5 rounded-2xl rounded-tl-xs bg-surface-container-low border border-outline/30 text-xs text-on-surface-variant flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-primary animate-ping"></div>
-                <span>Cross-checking shop procurement records & verifying rates…</span>
+                <span>
+                  {isHindi
+                    ? 'दुकान के खरीद रिकॉर्ड और भाव का विश्लेषण हो रहा है…'
+                    : 'Cross-checking shop procurement records & verifying rates…'}
+                </span>
               </div>
             </div>
           )}
@@ -288,7 +313,11 @@ export const AskShopLedgerPage: React.FC = () => {
             onKeyDown={(e) => {
               if (e.key === 'Enter') handleSend();
             }}
-            placeholder="Ask about your purchase bills, rates, or suppliers (e.g. Which vendor gave lowest price for sugar?)..."
+            placeholder={
+              isHindi
+                ? 'दुकान के बिल, सप्लायर भाव या बही-खाते के बारे में कुछ भी पूछें... (Enter दबाएं)'
+                : 'Ask about your purchase bills, rates, or suppliers (e.g. Which vendor gave lowest price for sugar?)...'
+            }
             className="flex-1 bg-surface-container-lowest text-sm text-on-surface px-4 py-2.5 rounded-xl border border-outline/40 outline-none focus:ring-2 focus:ring-primary transition-all placeholder:text-on-surface-variant"
           />
           <Button
@@ -298,7 +327,7 @@ export const AskShopLedgerPage: React.FC = () => {
             leftIcon={<Send className="w-4 h-4" />}
             className="font-bold flex-shrink-0"
           >
-            Send
+            {isHindi ? 'भेजें' : 'Send'}
           </Button>
         </div>
       </div>

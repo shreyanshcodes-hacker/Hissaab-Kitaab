@@ -4,12 +4,13 @@ import {
   TrendingUp,
   Receipt,
   Store,
-  PlusCircle,
+  Upload,
   Calendar,
   AlertTriangle,
   ArrowRight,
   Clock,
   RefreshCw,
+  Filter,
 } from 'lucide-react';
 import { MetricCard } from '../components/common/Card';
 import { Badge } from '../components/common/Badge';
@@ -21,11 +22,13 @@ import { analyticsService, type AnalyticsSummary } from '../api/analyticsService
 import type { Receipt as ReceiptType } from '../types';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { useLanguage } from '../context/LanguageContext';
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { showToast } = useToast();
+  const { isHindi } = useLanguage();
 
   const resolvedOwnerName =
     user?.displayName || (user?.email ? user.email.split('@')[0] : 'Store Owner');
@@ -37,6 +40,8 @@ export const DashboardPage: React.FC = () => {
   const [selectedBranch, setSelectedBranch] = useState(user?.activeBranch || 'Main Branch');
   const [selectedPeriod, setSelectedPeriod] = useState<'this_month' | 'last_30_days' | 'all_time'>('this_month');
   const [selectedPeriodLabel, setSelectedPeriodLabel] = useState('This Month (Current)');
+  const [recentStatusFilter, setRecentStatusFilter] = useState<'all' | 'needs_review' | 'verified'>('all');
+  const [recentSearch, setRecentSearch] = useState('');
 
   // Evening checklist state for shopkeepers
   const [nightChecklist, setNightChecklist] = useState({
@@ -49,10 +54,10 @@ export const DashboardPage: React.FC = () => {
     setIsLoading(true);
     try {
       const [rData, mData] = await Promise.all([
-        receiptService.getReceipts({ limit: 5 }),
+        receiptService.getReceipts({ limit: 15 }),
         analyticsService.getSummary({ period: selectedPeriod }),
       ]);
-      setReceipts(rData.slice(0, 5));
+      setReceipts(rData);
       setMetrics(mData);
     } catch (err: any) {
       showToast({
@@ -72,7 +77,7 @@ export const DashboardPage: React.FC = () => {
   const columns: Column<ReceiptType>[] = [
     {
       key: 'invoiceNo',
-      title: 'Bill / Voucher ID',
+      title: isHindi ? 'बिल / वाउचर ID' : 'Bill / Voucher ID',
       render: (item) => (
         <div className="flex flex-col">
           <span className="font-bold text-on-surface">{item.invoiceNo}</span>
@@ -82,7 +87,7 @@ export const DashboardPage: React.FC = () => {
     },
     {
       key: 'supplierName',
-      title: 'Supplier & Mandi',
+      title: isHindi ? 'सप्लायर और मंडी' : 'Supplier & Mandi',
       render: (item) => (
         <div className="flex items-center gap-2">
           <Store className="w-4 h-4 text-primary flex-shrink-0" />
@@ -92,11 +97,11 @@ export const DashboardPage: React.FC = () => {
     },
     {
       key: 'billDate',
-      title: 'Date',
+      title: isHindi ? 'तारीख' : 'Date',
     },
     {
       key: 'grandTotal',
-      title: 'Amount (₹)',
+      title: isHindi ? 'रकम (₹)' : 'Amount (₹)',
       align: 'right',
       tabular: true,
       render: (item) => (
@@ -107,20 +112,26 @@ export const DashboardPage: React.FC = () => {
     },
     {
       key: 'status',
-      title: 'Verification',
+      title: isHindi ? 'सत्यापन' : 'Verification',
       align: 'center',
       render: (item) => (
         <Badge
           variant={item.status === 'verified' ? 'verified' : 'needs_checking'}
           icon={true}
         >
-          {item.status === 'verified' ? 'Verified' : 'Needs checking'}
+          {isHindi
+            ? item.status === 'verified'
+              ? 'सत्यापित'
+              : 'जांच बाकी'
+            : item.status === 'verified'
+            ? 'Verified'
+            : 'Needs checking'}
         </Badge>
       ),
     },
     {
       key: 'actions',
-      title: 'Action',
+      title: isHindi ? 'कार्रवाई' : 'Action',
       align: 'right',
       render: (item) => (
         <Button
@@ -134,7 +145,13 @@ export const DashboardPage: React.FC = () => {
             )
           }
         >
-          {item.status === 'needs_review' ? 'Review & Verify' : 'View Scan'}
+          {isHindi
+            ? item.status === 'needs_review'
+              ? 'जांचें और सत्यापित करें'
+              : 'बिल देखें'
+            : item.status === 'needs_review'
+            ? 'Review & Verify'
+            : 'View Scan'}
         </Button>
       ),
     },
@@ -147,11 +164,11 @@ export const DashboardPage: React.FC = () => {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="font-headline-lg text-2xl sm:text-3xl font-bold text-on-surface tracking-tight">
-              Namaste {resolvedOwnerName} ji 👋
+              {isHindi ? `नमस्ते ${resolvedOwnerName} जी 👋` : `Namaste ${resolvedOwnerName} ji 👋`}
             </h1>
           </div>
           <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-            Store purchase summary for{' '}
+            {isHindi ? 'दुकान खरीद सारांश अवधि: ' : 'Store purchase summary for '}
             <span className="font-semibold text-on-surface">{metrics?.period?.label || selectedPeriodLabel}</span> •{' '}
             {resolvedShopName} ({user?.activeBranch || selectedBranch})
           </p>
@@ -168,8 +185,8 @@ export const DashboardPage: React.FC = () => {
               </button>
             }
             items={[
-              { id: 'main', label: 'Main Bazar Branch', onClick: () => setSelectedBranch('Main Bazar Branch') },
-              { id: 'godown', label: 'Godown #2 (Mandi Yard)', onClick: () => setSelectedBranch('Godown #2 (Mandi Yard)') },
+              { id: 'main', label: isHindi ? 'मुख्य बाज़ार शाखा' : 'Main Bazar Branch', onClick: () => setSelectedBranch(isHindi ? 'मुख्य बाज़ार शाखा' : 'Main Bazar Branch') },
+              { id: 'godown', label: isHindi ? 'गोदाम #2 (मंडी यार्ड)' : 'Godown #2 (Mandi Yard)', onClick: () => setSelectedBranch(isHindi ? 'गोदाम #2 (मंडी यार्ड)' : 'Godown #2 (Mandi Yard)') },
             ]}
           />
 
@@ -184,26 +201,26 @@ export const DashboardPage: React.FC = () => {
             items={[
               {
                 id: 'this_month',
-                label: 'This Month (Current)',
+                label: isHindi ? 'यह महीना (चालू)' : 'This Month (Current)',
                 onClick: () => {
                   setSelectedPeriod('this_month');
-                  setSelectedPeriodLabel('This Month (Current)');
+                  setSelectedPeriodLabel(isHindi ? 'यह महीना (चालू)' : 'This Month (Current)');
                 },
               },
               {
                 id: 'last_30_days',
-                label: 'Last 30 Days',
+                label: isHindi ? 'पिछले 30 दिन' : 'Last 30 Days',
                 onClick: () => {
                   setSelectedPeriod('last_30_days');
-                  setSelectedPeriodLabel('Last 30 Days');
+                  setSelectedPeriodLabel(isHindi ? 'पिछले 30 दिन' : 'Last 30 Days');
                 },
               },
               {
                 id: 'all_time',
-                label: 'All Time History',
+                label: isHindi ? 'शुरू से अब तक' : 'All Time History',
                 onClick: () => {
                   setSelectedPeriod('all_time');
-                  setSelectedPeriodLabel('All Time History');
+                  setSelectedPeriodLabel(isHindi ? 'शुरू से अब तक' : 'All Time History');
                 },
               },
             ]}
@@ -216,16 +233,16 @@ export const DashboardPage: React.FC = () => {
             leftIcon={<RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />}
             className="shadow-sm"
           >
-            Refresh
+            {isHindi ? 'रिफ्रेश' : 'Refresh'}
           </Button>
 
           <Button
             variant="primary"
             onClick={() => navigate('/receipts/upload')}
-            leftIcon={<PlusCircle className="w-5 h-5" />}
+            leftIcon={<Upload className="w-5 h-5" />}
             className="shadow-card font-bold"
           >
-            + Upload Bill
+            {isHindi ? 'बिल अपलोड करें' : 'Upload Bill'}
           </Button>
         </div>
       </div>
@@ -239,10 +256,10 @@ export const DashboardPage: React.FC = () => {
             </div>
             <div>
               <span className="text-label-xs font-bold text-tertiary uppercase tracking-wide">
-                Action Required Before Night Tally:
+                {isHindi ? 'दुकान बंद करने से पहले आवश्यक जांच:' : 'Action Required Before Night Tally:'}
               </span>
               <p className="font-semibold text-body-sm text-on-surface mt-0.5">
-                {metrics.needsReviewReceipts[0]?.supplierName || 'Wholesale Supplier'} ({metrics.needsReviewReceipts[0]?.invoiceNumber || 'Voucher'}) • {metrics.needsCheckingCount} bills have low rate confidence or handwritten mandi chits
+                {metrics.needsReviewReceipts[0]?.supplierName || (isHindi ? 'थोक सप्लायर' : 'Wholesale Supplier')} ({metrics.needsReviewReceipts[0]?.invoiceNumber || (isHindi ? 'वाउचर' : 'Voucher')}) • {metrics.needsCheckingCount} {isHindi ? 'बिलों में अस्पष्ट लिखावट या जोड़ की जांच बाकी है' : 'bills have low rate confidence or handwritten mandi chits'}
               </p>
             </div>
           </div>
@@ -259,7 +276,7 @@ export const DashboardPage: React.FC = () => {
             rightIcon={<ArrowRight className="w-4 h-4" />}
             className="w-full sm:w-auto font-bold flex-shrink-0"
           >
-            Review Flagged Bills ({metrics.needsCheckingCount})
+            {isHindi ? `लंबित बिल जांचें (${metrics.needsCheckingCount})` : `Review Flagged Bills (${metrics.needsCheckingCount})`}
           </Button>
         </div>
       )}
@@ -267,40 +284,40 @@ export const DashboardPage: React.FC = () => {
       {/* ===================== 4 KEY FINANCIAL METRICS ===================== */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
         <MetricCard
-          label="Money Spent This Period"
+          label={isHindi ? 'कुल खरीद खर्च' : 'Money Spent This Period'}
           value={metrics ? metrics.totalSpentRupees : 0}
           isCurrency={true}
-          trend={{ value: 'Confirmed Only', isPositive: true }}
-          subtitle="Drafts and unverified slips isolated"
+          trend={{ value: isHindi ? 'केवल पक्के बिल' : 'Confirmed Only', isPositive: true }}
+          subtitle={isHindi ? 'ड्राफ्ट और असत्यापित पर्चे अलग' : 'Drafts and unverified slips isolated'}
           icon={<TrendingUp className="w-5 h-5 text-primary" />}
         />
         <MetricCard
-          label="Confirmed Invoices"
-          value={`${metrics?.confirmedReceiptsCount || 0} Bills`}
-          trend={{ value: `${metrics?.totalConfirmedStoreCount || 0} cleared total`, isPositive: true }}
-          subtitle={`Across ${metrics?.topSuppliers.length || 0} active suppliers`}
+          label={isHindi ? 'पुष्टि किए गए बिल' : 'Confirmed Invoices'}
+          value={`${metrics?.confirmedReceiptsCount || 0} ${isHindi ? 'बिल' : 'Bills'}`}
+          trend={{ value: `${metrics?.totalConfirmedStoreCount || 0} ${isHindi ? 'कुल सत्यापित' : 'cleared total'}`, isPositive: true }}
+          subtitle={isHindi ? `${metrics?.topSuppliers.length || 0} सक्रिय सप्लायरों से` : `Across ${metrics?.topSuppliers.length || 0} active suppliers`}
           icon={<Receipt className="w-5 h-5 text-secondary" />}
         />
         <MetricCard
-          label="Needs Checking"
-          value={`${metrics?.needsCheckingCount || 0} Bills`}
+          label={isHindi ? 'जांच बाकी (Review)' : 'Needs Checking'}
+          value={`${metrics?.needsCheckingCount || 0} ${isHindi ? 'बिल' : 'Bills'}`}
           badge={
             <Badge variant="needs_checking" size="xs" icon={true}>
-              Attention
+              {isHindi ? 'ध्यान दें' : 'Attention'}
             </Badge>
           }
-          subtitle="Low OCR confidence or discrepancies"
+          subtitle={isHindi ? 'कम OCR स्कोर या जोड़ में अंतर' : 'Low OCR confidence or discrepancies'}
           onClick={() => navigate('/receipts?status=needs_review')}
         />
         <MetricCard
-          label="Verified in Ledger"
-          value={`${metrics?.confirmedReceiptsCount || 0} Bills`}
+          label={isHindi ? 'बही-खाता में दर्ज' : 'Verified in Ledger'}
+          value={`${metrics?.confirmedReceiptsCount || 0} ${isHindi ? 'बिल' : 'Bills'}`}
           badge={
             <Badge variant="verified" size="xs" icon={true}>
-              Cleared
+              {isHindi ? 'सत्यापित' : 'Cleared'}
             </Badge>
           }
-          subtitle="Committed to Bahi Khata"
+          subtitle={isHindi ? 'बही-खाते में पोस्ट किए गए' : 'Committed to Bahi Khata'}
           onClick={() => navigate('/receipts?status=verified')}
         />
       </div>
@@ -310,17 +327,17 @@ export const DashboardPage: React.FC = () => {
         <div className="flex items-center justify-between">
           <div>
             <h3 className="font-headline-sm text-lg font-bold text-on-surface">
-              Where Did Your Money Go?
+              {isHindi ? 'खर्च कहां हुआ? (श्रेणीवार)' : 'Where Did Your Money Go?'}
             </h3>
             <p className="text-label-xs text-on-surface-variant">
-              Actual category distribution from verified invoice items
+              {isHindi ? 'सत्यापित इनवॉइस से वास्तविक श्रेणी विभाजन' : 'Actual category distribution from verified invoice items'}
             </p>
           </div>
           <button
             onClick={() => navigate('/analysis')}
             className="text-label-xs text-primary hover:underline font-semibold flex items-center gap-1"
           >
-            Full Spending Analysis <ArrowRight className="w-3.5 h-3.5" />
+            {isHindi ? 'पूरा खर्च विश्लेषण देखें' : 'Full Spending Analysis'} <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
 
@@ -358,28 +375,73 @@ export const DashboardPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
         {/* Left (8 Columns): Recent Purchase Receipts Table */}
         <div className="lg:col-span-8 space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <h2 className="font-headline-sm text-xl font-bold text-on-surface">
-                Recent Purchase Receipts
+                {isHindi ? 'हाल के खरीद बिल (Recent Bills)' : 'Recent Purchase Receipts'}
               </h2>
               <p className="text-label-xs text-on-surface-variant">
-                Digitized supplier invoices and physical vouchers
+                {isHindi ? 'मंडी सप्लायरों और डिस्ट्रीब्यूटरों के बिल' : 'Digitized supplier invoices and physical vouchers'}
               </p>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navigate('/receipts')}
-              rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
-            >
-              View All Receipts
-            </Button>
+            <div className="flex items-center gap-2 flex-wrap">
+              <input
+                type="search"
+                value={recentSearch}
+                onChange={(e) => setRecentSearch(e.target.value)}
+                placeholder={isHindi ? 'सप्लायर या बिल नंबर से खोजें...' : 'Filter by vendor or bill #...'}
+                className="h-8 px-3 rounded-lg bg-surface-container-lowest border border-outline/70 text-xs text-on-surface outline-none focus:border-primary w-44"
+              />
+              <Dropdown
+                trigger={
+                  <button className="h-8 px-2.5 bg-surface-container-low hover:bg-surface-container rounded-lg border border-outline/70 text-on-surface font-label-md text-label-xs flex items-center gap-1.5 transition-colors">
+                    <Filter className="w-3.5 h-3.5 text-primary" />
+                    <span>
+                      {recentStatusFilter === 'all'
+                        ? isHindi ? 'सभी स्थिति' : 'All Status'
+                        : recentStatusFilter === 'needs_review'
+                          ? isHindi ? 'जांच बाकी' : 'Needs Checking'
+                          : isHindi ? 'सत्यापित' : 'Verified'}
+                    </span>
+                    <span className="text-on-surface-variant text-[10px]">▼</span>
+                  </button>
+                }
+                items={[
+                  { id: 'all', label: isHindi ? 'सभी स्थिति' : 'All Status', onClick: () => setRecentStatusFilter('all') },
+                  {
+                    id: 'needs_review',
+                    label: isHindi ? 'जांच बाकी' : 'Needs Checking',
+                    onClick: () => setRecentStatusFilter('needs_review'),
+                  },
+                  { id: 'verified', label: isHindi ? 'केवल सत्यापित' : 'Verified Only', onClick: () => setRecentStatusFilter('verified') },
+                ]}
+              />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => navigate('/receipts')}
+                rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
+              >
+                {isHindi ? 'सभी देखें' : 'View All'}
+              </Button>
+            </div>
           </div>
 
           <DataTable<ReceiptType>
             columns={columns}
-            data={receipts}
+            data={receipts
+              .filter((r) => {
+                if (recentStatusFilter !== 'all' && r.status !== recentStatusFilter) return false;
+                if (recentSearch.trim()) {
+                  const q = recentSearch.toLowerCase();
+                  return (
+                    r.supplierName.toLowerCase().includes(q) ||
+                    r.invoiceNo.toLowerCase().includes(q)
+                  );
+                }
+                return true;
+              })
+              .slice(0, 6)}
             keyExtractor={(item) => item.id}
             isLoading={isLoading}
             onRowClick={(item) =>
@@ -402,16 +464,18 @@ export const DashboardPage: React.FC = () => {
                   <Clock className="w-4 h-4" />
                 </div>
                 <h3 className="font-headline-sm text-body-lg font-bold text-on-surface">
-                  Daily Night Tally
+                  {isHindi ? 'दुकान शाम का हिसाब (Daily Night Tally)' : 'Daily Night Tally'}
                 </h3>
               </div>
               <Badge variant="category" size="xs">
-                Evening Recon
+                {isHindi ? 'शाम की जांच' : 'Evening Recon'}
               </Badge>
             </div>
 
             <p className="text-body-sm text-xs text-on-surface-variant leading-relaxed mb-4">
-              Tally today's physical chits before shuttering shop to ensure cash in rokad drawer matches supplier outflows.
+              {isHindi
+                ? 'दुकान का शटर गिराने से पहले कच्चे-पक्के पर्चों का मिलान करें ताकि गल्ले (कैश) और उधारी का हिसाब बिल्कुल सही रहे।'
+                : "Tally today's physical chits before shuttering shop to ensure cash in rokad drawer matches supplier outflows."}
             </p>
 
             <div className="space-y-2.5 text-body-sm">
@@ -425,7 +489,7 @@ export const DashboardPage: React.FC = () => {
                   className="w-4 h-4 text-primary rounded border-outline cursor-pointer"
                 />
                 <span className="text-xs font-semibold text-on-surface">
-                  All wholesale mandi slips scanned
+                  {isHindi ? 'आज के सभी थोक मंडी पर्चे स्कैन हो गए' : 'All wholesale mandi slips scanned'}
                 </span>
               </label>
 
@@ -439,7 +503,7 @@ export const DashboardPage: React.FC = () => {
                   className="w-4 h-4 text-primary rounded border-outline cursor-pointer"
                 />
                 <span className="text-xs font-semibold text-on-surface">
-                  Cash outflow matched with counter rokad
+                  {isHindi ? 'गल्ला (कैश) और काउंटर बिक्री का हिसाब मिल गया' : 'Cash outflow matched with counter rokad'}
                 </span>
               </label>
 
@@ -453,7 +517,7 @@ export const DashboardPage: React.FC = () => {
                   className="w-4 h-4 text-primary rounded border-outline cursor-pointer"
                 />
                 <span className="text-xs font-semibold text-on-surface">
-                  Supplier credit recorded in bahi khata
+                  {isHindi ? 'सप्लायर और ग्राहक का उधार खाता अपडेट कर लिया' : 'Supplier credit recorded in bahi khata'}
                 </span>
               </label>
             </div>
@@ -464,13 +528,15 @@ export const DashboardPage: React.FC = () => {
               onClick={() =>
                 showToast({
                   type: 'success',
-                  title: 'Day Tally Closed',
-                  message: 'Today\'s purchase slips successfully reconciled.',
+                  title: isHindi ? 'आज का हिसाब बंद' : 'Day Tally Closed',
+                  message: isHindi
+                    ? 'आज के सभी खरीद पर्चों का सफल मिलान हो चुका है।'
+                    : "Today's purchase slips successfully reconciled.",
                 })
               }
               className="mt-4 w-full justify-center font-bold"
             >
-              Close Today's Ledger
+              {isHindi ? "आज का हिसाब दर्ज करें" : "Close Today's Ledger"}
             </Button>
           </div>
 
@@ -479,14 +545,14 @@ export const DashboardPage: React.FC = () => {
             <div className="flex items-center justify-between mb-3">
               <div>
                 <h3 className="font-headline-sm text-body-lg font-bold text-on-surface">
-                  Top Vendors by Spend
+                  {isHindi ? 'सबसे बड़े सप्लायर (खर्च अनुसार)' : 'Top Vendors by Spend'}
                 </h3>
                 <p className="text-[0.6875rem] text-on-surface-variant">
-                  Ranked by confirmed order volume
+                  {isHindi ? 'ऑर्डर वॉल्यूम के आधार पर रैंकिंग' : 'Ranked by confirmed order volume'}
                 </p>
               </div>
               <span className="text-label-xs font-semibold text-primary">
-                {metrics?.topSuppliers.length || 0} Vendors
+                {metrics?.topSuppliers.length || 0} {isHindi ? 'पार्टियां' : 'Vendors'}
               </span>
             </div>
 

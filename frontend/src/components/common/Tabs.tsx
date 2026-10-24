@@ -29,7 +29,7 @@ export const Tabs: React.FC<TabsProps> = ({
       <div
         role="tablist"
         className={cn(
-          'inline-flex items-center p-1 bg-surface-container rounded-xl border border-outline/60',
+          'inline-flex items-center p-1 bg-surface-container rounded-xl border border-outline/60 max-w-full overflow-x-auto',
           className
         )}
       >
@@ -43,7 +43,7 @@ export const Tabs: React.FC<TabsProps> = ({
               disabled={tab.disabled}
               onClick={() => onChange(tab.id)}
               className={cn(
-                'flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-label-md font-semibold transition-all duration-150 select-none',
+                'flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-label-md font-semibold transition-all duration-150 select-none whitespace-nowrap flex-shrink-0',
                 isActive
                   ? 'bg-surface-container-lowest text-on-surface shadow-card'
                   : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/60',
@@ -57,7 +57,7 @@ export const Tabs: React.FC<TabsProps> = ({
                   className={cn(
                     'px-1.5 py-0.2 rounded-full text-label-xs font-bold tabular-nums',
                     isActive
-                      ? 'bg-primary-container text-on-primary'
+                      ? 'bg-[#1B5E3A] text-white'
                       : 'bg-surface-container-highest text-on-surface-variant'
                   )}
                 >

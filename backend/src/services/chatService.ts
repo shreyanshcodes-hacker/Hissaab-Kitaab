@@ -93,7 +93,7 @@ export class ChatService {
       'udhar', 'credit', 'paid', 'unpaid', 'payment', 'cash', 'upi', 'cheque',
       'ledger', 'bahi', 'khata', 'gst', 'gstin', 'tax', 'slab', 'hsn',
       'review', 'check', 'checking', 'verify', 'verified', 'pending', 'flagged', 'draft', 'confirm',
-      'help', 'how', 'upload', 'feature', 'features', 'camera', 'scan', 'shopledger', 'setting', 'profile',
+      'help', 'how', 'upload', 'feature', 'features', 'camera', 'scan', 'shopledger', 'hissaab', 'kitaab', 'setting', 'profile',
       'shop', 'store', 'kirana', 'branch', 'godown', 'analytics', 'dashboard', 'trend', 'summary', 'report',
       'buy', 'bought', 'purchase', 'purchased', 'order', 'ordered', 'compare', 'comparison',
       'month', 'week', 'today', 'yesterday', 'year', 'date', 'recent', 'last', 'top',
@@ -132,7 +132,7 @@ export class ChatService {
     if (!this.isScopeAllowed(rawClean, validHistory.length > 0)) {
       return {
         message:
-          'I am ShopLedger’s shopkeeper bookkeeping assistant. I can only answer questions regarding your store’s purchase receipts, wholesale prices, suppliers, bahi khata ledger, or how to use ShopLedger features. Please ask a question related to your store.',
+          'I am Hissaab Kitaab’s shopkeeper bookkeeping assistant. I can only answer questions regarding your store’s purchase receipts, wholesale prices, suppliers, bahi khata ledger, or how to use Hissaab Kitaab features. Please ask a question related to your store.',
         citations: [],
         structuredCard: null,
         timestamp: new Date().toISOString(),
@@ -184,10 +184,10 @@ export class ChatService {
     // Pattern 1: App Feature / How-To Questions
     if (lower.includes('how to') || lower.includes('camera') || lower.includes('scan') || lower.includes('upload') || lower.includes('use')) {
       replyText =
-        'To add and verify receipts in ShopLedger:\n\n1. Tap **+ Upload Bill** in the top navigation or on your dashboard.\n2. Snap a photo using your phone camera or drag a PDF/JPG invoice.\n3. ShopLedger automatically extracts line items, quantities, and GST rates.\n4. If handwriting is ambiguous, jump into the **Review Workspace** (`/receipts/:id/review`) to adjust values and commit directly to your Bahi Khata ledger.';
+        'To add and verify receipts in Hissaab Kitaab:\n\n1. Tap **Upload Bill** in the top navigation or on your dashboard.\n2. Snap a photo using your phone camera or drag a PDF/JPG invoice.\n3. Hissaab Kitaab automatically extracts line items, quantities, and GST rates.\n4. If handwriting is ambiguous, jump into the **Review Workspace** (`/receipts/:id/review`) to adjust values and commit directly to your Bahi Khata ledger.';
       structuredCard = {
         type: 'feature_guide',
-        title: 'How ShopLedger Works',
+        title: 'How Hissaab Kitaab Works',
         data: {
           steps: [
             '1. Snap or Upload voucher',
@@ -431,15 +431,15 @@ export class ChatService {
         }));
 
         const aiResponse = await this.aiClient.models.generateContent({
-          model: env.GEMINI_MODEL || 'gemini-2.5-flash',
+          model: env.GEMINI_MODEL || 'gemini-3.8-flash',
           contents: [
             {
               role: 'user',
               parts: [
                 {
                   text:
-                    `SYSTEM: You are ShopLedger AI, a concise, grounded bookkeeping assistant for an Indian retail/Kirana store.\n` +
-                    `STRICT RULES: Answer ONLY using the verified store JSON context below or explain how ShopLedger features work. Never invent totals or transactions. Format currency in ₹.\n` +
+                    `SYSTEM: You are Hissaab Kitaab AI, a concise, grounded bookkeeping assistant for an Indian retail/Kirana store.\n` +
+                    `STRICT RULES: Answer ONLY using the verified store JSON context below or explain how Hissaab Kitaab features work. Never invent totals or transactions. Format currency in ₹.\n` +
                     `VERIFIED STORE CONTEXT: ${JSON.stringify(boundedContext)}`,
                 },
               ],

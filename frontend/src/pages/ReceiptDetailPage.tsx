@@ -7,28 +7,68 @@ import {
   TrendingUp,
   Download,
   ExternalLink,
+  RefreshCw,
+  Pencil,
+  Check,
+  X,
+  Trash2,
 } from 'lucide-react';
 import { Button } from '../components/common/Button';
 import { Badge } from '../components/common/Badge';
 import { Card } from '../components/common/Card';
+import { ConfirmationDialog } from '../components/common/ConfirmationDialog';
 import { receiptService } from '../api/receiptService';
 import type { Receipt as ReceiptType } from '../types';
+import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { useLanguage } from '../context/LanguageContext';
+import { exportReceiptSlipPdf, downloadOriginalVoucherImage } from '../utils/exportSlip';
 
 export const ReceiptDetailPage: React.FC = () => {
   const { receiptId = 'REC-2024-1089' } = useParams<{ receiptId: string }>();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { showToast } = useToast();
+  const { isHindi } = useLanguage();
 
   const [receipt, setReceipt] = useState<ReceiptType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isExporting, setIsExporting] = useState(false);
+  const [isReScanning, setIsReScanning] = useState(false);
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [editedName, setEditedName] = useState('');
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [editedInvoiceNo, setEditedInvoiceNo] = useState('');
+  const [isSavingName, setIsSavingName] = useState(false);
 
   useEffect(() => {
     async function load() {
       setIsLoading(true);
       try {
         const data = await receiptService.getReceiptById(receiptId);
-        if (data) setReceipt(data);
+        if (data) {
+          setReceipt(data);
+          // Auto-heal any previously saved receipt that has a real image but 0 extracted total
+          const hasImage = Boolean(data.sourceVoucherUrl && data.sourceVoucherUrl.startsWith('data:image/'));
+          const needsAiHeal =
+            hasImage &&
+            (data.grandTotal === 0 ||
+              data.supplierName.toLowerCase().startsWith('counter receipt') ||
+              (data.items.length === 1 && data.items[0].name === 'Item' && data.items[0].lineTotal === 0));
+
+          if (needsAiHeal) {
+            setIsReScanning(true);
+            try {
+              const healed = await receiptService.reExtractExistingReceipt(data);
+              setReceipt(healed);
+            } catch {
+              // Keep existing receipt data if re-extraction fails
+            } finally {
+              setIsReScanning(false);
+            }
+          }
+        }
       } catch (err: any) {
         showToast({
           type: 'error',
@@ -42,6 +82,76 @@ export const ReceiptDetailPage: React.FC = () => {
     load();
   }, [receiptId, showToast]);
 
+  const handleExportSlip = async () => {
+    if (!receipt || isExporting) return;
+    setIsExporting(true);
+    try {
+      await exportReceiptSlipPdf(
+        receipt,
+        user?.shopName || 'My Store',
+        user?.displayName || 'Store Owner'
+      );
+      showToast({
+        type: 'success',
+        title: 'Voucher Slip Downloaded',
+        message: `Saved Hissaab_Kitaab_Slip_${receipt.invoiceNo}.pdf to your device.`,
+      });
+    } catch (err: any) {
+      showToast({
+        type: 'error',
+        title: 'Export Failed',
+        message: err?.message || 'Unable to generate PDF slip.',
+      });
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleReScanWithAi = async () => {
+    if (!receipt || isReScanning) return;
+    setIsReScanning(true);
+    try {
+      const updated = await receiptService.reExtractExistingReceipt(receipt);
+      setReceipt(updated);
+      showToast({
+        type: 'success',
+        title: 'Receipt Re-Scanned by Gemini AI',
+        message: `Extracted ${updated.items.length} item(s) from ${updated.supplierName} (₹${updated.grandTotal.toLocaleString('en-IN')}).`,
+      });
+    } catch (err: any) {
+      showToast({
+        type: 'error',
+        title: 'Re-Scan Failed',
+        message: err?.message || 'Could not re-extract image.',
+      });
+    } finally {
+      setIsReScanning(false);
+    }
+  };
+
+  const handleDeleteReceipt = async () => {
+    if (!receipt) return;
+    setIsDeleting(true);
+    try {
+      await receiptService.deleteReceipt(receipt.id);
+      showToast({
+        type: 'success',
+        title: isHindi ? 'बिल हटाया गया' : 'Receipt Deleted',
+        message: isHindi
+          ? `वाउचर "${receipt.invoiceNo}" बही-खाते से हटा दिया गया है।`
+          : `Receipt "${receipt.invoiceNo}" has been removed from your ledger.`,
+      });
+      navigate('/receipts');
+    } catch (err: any) {
+      showToast({
+        type: 'error',
+        title: isHindi ? 'हटाने में त्रुटि' : 'Failed to delete receipt',
+        message: err?.message || (isHindi ? 'कृपया पुनः प्रयास करें।' : 'Please try again.'),
+      });
+      setIsDeleting(false);
+    }
+  };
+
   if (isLoading || !receipt) {
     return (
       <div className="min-h-[50vh] flex items-center justify-center">
@@ -53,53 +163,145 @@ export const ReceiptDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6 pb-16">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-outline">
-        <div className="flex items-center gap-3">
+    <div className="space-y-6 pb-16 min-w-0 max-w-full">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-outline min-w-0">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 min-w-0">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => navigate('/receipts')}
             leftIcon={<ArrowLeft className="w-4 h-4" />}
+            className="self-start sm:self-auto"
           >
             Back to Receipts
           </Button>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="font-headline-lg text-2xl font-bold text-on-surface">
-                {receipt.supplierName} (#{receipt.invoiceNo})
-              </h1>
-              <Badge variant={receipt.status === 'verified' ? 'verified' : 'needs_checking'} icon={true}>
-                {receipt.status === 'verified' ? 'Verified in Ledger' : 'Needs Checking'}
-              </Badge>
-            </div>
+          <div className="min-w-0 flex-1">
+            {isEditingName ? (
+              <div className="flex flex-wrap items-center gap-2">
+                <input
+                  type="text"
+                  value={editedName}
+                  onChange={(e) => setEditedName(e.target.value)}
+                  placeholder="Supplier / Receipt Name"
+                  className="px-3 py-1.5 rounded-xl border border-primary bg-surface-container-lowest text-on-surface font-bold text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-primary min-w-[200px]"
+                  autoFocus
+                />
+                <input
+                  type="text"
+                  value={editedInvoiceNo}
+                  onChange={(e) => setEditedInvoiceNo(e.target.value)}
+                  placeholder="Invoice #"
+                  className="px-2.5 py-1.5 rounded-xl border border-outline bg-surface-container-lowest text-on-surface font-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary w-36"
+                />
+                <Button
+                  variant="primary"
+                  size="sm"
+                  isLoading={isSavingName}
+                  onClick={async () => {
+                    if (!editedName.trim()) return;
+                    setIsSavingName(true);
+                    try {
+                      const updated = await receiptService.updateReceiptName(
+                        receipt.id,
+                        editedName.trim(),
+                        editedInvoiceNo.trim()
+                      );
+                      setReceipt(
+                        updated || {
+                          ...receipt,
+                          supplierName: editedName.trim(),
+                          invoiceNo: editedInvoiceNo.trim() || receipt.invoiceNo,
+                        }
+                      );
+                      setIsEditingName(false);
+                      showToast({
+                        type: 'success',
+                        title: 'Receipt Name Saved',
+                        message: `Updated receipt name to "${editedName.trim()}".`,
+                      });
+                    } finally {
+                      setIsSavingName(false);
+                    }
+                  }}
+                  leftIcon={<Check className="w-4 h-4" />}
+                >
+                  Save
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsEditingName(false)}
+                  leftIcon={<X className="w-4 h-4" />}
+                >
+                  Cancel
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 flex-wrap">
+                <h1 className="font-headline-lg text-lg sm:text-2xl font-bold text-on-surface break-words">
+                  {receipt.supplierName} (#{receipt.invoiceNo})
+                </h1>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditedName(receipt.supplierName);
+                    setEditedInvoiceNo(receipt.invoiceNo);
+                    setIsEditingName(true);
+                  }}
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-label-xs font-bold bg-surface-container hover:bg-surface-container-high text-primary border border-outline/60 transition-colors"
+                  title="Edit Supplier / Receipt Name"
+                >
+                  <Pencil className="w-3.5 h-3.5" />
+                  <span>Edit Name</span>
+                </button>
+                <Badge variant={receipt.status === 'verified' ? 'verified' : 'needs_checking'} icon={true}>
+                  {receipt.status === 'verified' ? 'Verified in Ledger' : 'Needs Checking'}
+                </Badge>
+              </div>
+            )}
             <p className="text-label-xs text-on-surface-variant mt-0.5">
-              Bill Date: {receipt.billDate} • Mandi: {receipt.mandiMarket || 'Khari Baoli'}
+              Bill Date: {receipt.billDate} • Store: {user?.shopName || 'My Store'}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          {receipt.sourceVoucherUrl && receipt.sourceVoucherUrl.startsWith('data:image/') && (
+            <Button
+              variant="ghost"
+              size="sm"
+              isLoading={isReScanning}
+              onClick={handleReScanWithAi}
+              leftIcon={<RefreshCw className="w-4 h-4" />}
+            >
+              {isReScanning ? (isHindi ? 'AI स्कैन हो रहा है…' : 'Scanning AI…') : (isHindi ? 'AI री-स्कैन' : 'Re-Scan AI')}
+            </Button>
+          )}
           <Button
             variant={receipt.status === 'needs_review' ? 'amber' : 'outline'}
             size="sm"
             onClick={() => navigate(`/receipts/${receipt.id}/review`)}
           >
-            {receipt.status === 'needs_review' ? 'Verify Lines' : 'Review & Edit'}
+            {receipt.status === 'needs_review'
+              ? isHindi ? 'सामान जांचें' : 'Verify Lines'
+              : isHindi ? 'जांचें और बदलें' : 'Review & Edit'}
           </Button>
           <Button
             variant="secondary"
             size="sm"
-            onClick={() =>
-              showToast({
-                type: 'success',
-                title: 'Exporting Voucher',
-                message: `Downloading PDF export for #${receipt.invoiceNo}`,
-              })
-            }
+            isLoading={isExporting}
+            onClick={handleExportSlip}
             leftIcon={<Download className="w-4 h-4" />}
           >
-            Export Slip
+            {isExporting ? (isHindi ? 'एक्सपोर्ट हो रहा है…' : 'Exporting…') : (isHindi ? 'पर्ची डाउनलोड' : 'Export Slip')}
+          </Button>
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={() => setIsDeleteDialogOpen(true)}
+            leftIcon={<Trash2 className="w-4 h-4" />}
+          >
+            {isHindi ? 'बिल हटाएं' : 'Delete'}
           </Button>
         </div>
       </div>
@@ -111,34 +313,64 @@ export const ReceiptDetailPage: React.FC = () => {
           <Card className="p-4 space-y-3">
             <h3 className="font-headline-sm text-base font-bold text-on-surface flex items-center justify-between">
               <span>Original Voucher Scan</span>
-              <span className="text-label-xs text-on-surface-variant font-mono">GW-8941</span>
+              <span className="text-label-xs text-on-surface-variant font-mono">{receipt.invoiceNo}</span>
             </h3>
 
-            <div className="aspect-3/4 w-full bg-[#1B1E19] rounded-xl border border-outline flex items-center justify-center p-3 text-center">
-              <div className="w-full h-full bg-[#FAF9F4] text-[#1B1C19] rounded p-4 text-[0.625rem] font-mono overflow-hidden shadow">
-                <p className="font-bold text-xs uppercase tracking-wider">GUPTA WHOLESALE MART</p>
-                <p className="text-on-surface-variant">Khari Baoli • Old Delhi</p>
-                <div className="my-2 border-b border-dashed border-black/30" />
-                <p>Tax Invoice: GW-8941</p>
-                <p>Date: {receipt.billDate}</p>
-                <div className="mt-3 text-left space-y-1">
-                  {receipt.items.slice(0, 4).map((it) => (
-                    <div key={it.id} className="flex justify-between">
-                      <span className="truncate max-w-[120px]">{it.name}</span>
-                      <span>₹{it.lineTotal.toFixed(0)}</span>
-                    </div>
-                  ))}
+            <div className="aspect-3/4 w-full bg-[#1B1E19] rounded-xl border border-outline flex items-center justify-center p-3 text-center overflow-hidden">
+              {receipt.sourceVoucherUrl && receipt.sourceVoucherUrl !== 'manual-entry' ? (
+                <img
+                  src={receipt.sourceVoucherUrl}
+                  alt={receipt.supplierName}
+                  className="w-full h-full object-contain rounded"
+                />
+              ) : (
+                <div className="w-full h-full bg-[#FAF9F4] text-[#1B1C19] rounded p-4 text-[0.625rem] font-mono overflow-hidden shadow">
+                  <p className="font-bold text-xs uppercase tracking-wider">{receipt.supplierName}</p>
+                  <p className="text-on-surface-variant">M/s: {user?.shopName || 'My Store'}</p>
+                  <div className="my-2 border-b border-dashed border-black/30" />
+                  <p>Tax Invoice: {receipt.invoiceNo}</p>
+                  <p>Date: {receipt.billDate}</p>
+                  <div className="mt-3 text-left space-y-1">
+                    {receipt.items.slice(0, 6).map((it) => (
+                      <div key={it.id} className="flex justify-between">
+                        <span className="truncate max-w-[120px]">{it.name}</span>
+                        <span>₹{it.lineTotal.toFixed(0)}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-4 pt-2 border-t border-dashed border-black/30 font-bold flex justify-between">
+                    <span>Grand Total:</span>
+                    <span>₹{receipt.grandTotal.toFixed(0)}</span>
+                  </div>
                 </div>
-                <div className="mt-4 pt-2 border-t border-dashed border-black/30 font-bold flex justify-between">
-                  <span>Grand Total:</span>
-                  <span>₹{receipt.grandTotal.toFixed(0)}</span>
-                </div>
-              </div>
+              )}
             </div>
 
-            <p className="text-[0.6875rem] text-on-surface-variant text-center">
-              Scanned voucher archived in Cloud Storage (read-only)
-            </p>
+            <div className="flex flex-col items-center gap-2">
+              <p className="text-[0.6875rem] text-on-surface-variant text-center">
+                {receipt.sourceVoucherUrl && receipt.sourceVoucherUrl !== 'manual-entry'
+                  ? 'Original uploaded bill image preserved in tenant storage'
+                  : 'Digital voucher summary generated from recorded entry'}
+              </p>
+              {receipt.sourceVoucherUrl && receipt.sourceVoucherUrl !== 'manual-entry' && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full justify-center text-xs"
+                  leftIcon={<Download className="w-3.5 h-3.5" />}
+                  onClick={() => {
+                    downloadOriginalVoucherImage(receipt);
+                    showToast({
+                      type: 'success',
+                      title: 'Original Image Downloaded',
+                      message: `Saved Voucher_Scan_${receipt.invoiceNo}.jpg`,
+                    });
+                  }}
+                >
+                  Download Original Scan (.jpg)
+                </Button>
+              )}
+            </div>
           </Card>
 
           {/* Supplier Price Intelligence Card */}
@@ -147,16 +379,27 @@ export const ReceiptDetailPage: React.FC = () => {
               <TrendingUp className="w-4 h-4 text-tertiary" />
               <span>Supplier Rate Intelligence</span>
             </div>
-            <p className="text-body-sm text-xs text-on-surface-variant leading-relaxed">
-              Fortune Mustard Oil on this invoice was billed at <strong>₹148.00/L</strong>. This is
-              ₹6.00 higher than what Shree Balaji billed you on 16 Oct (₹142.00/L).
-            </p>
-            <button
-              onClick={() => navigate('/items/item-fortune-mustard-1l')}
-              className="text-label-xs text-primary font-bold hover:underline flex items-center gap-1"
-            >
-              Inspect Fortune Oil Price History <ExternalLink className="w-3 h-3" />
-            </button>
+            {receipt.items.length > 0 ? (
+              <>
+                <p className="text-body-sm text-xs text-on-surface-variant leading-relaxed">
+                  <strong>{receipt.items[0].name}</strong> on this invoice was billed at{' '}
+                  <strong>
+                    ₹{receipt.items[0].unitRate.toFixed(2)}/{receipt.items[0].unit}
+                  </strong>{' '}
+                  from <strong>{receipt.supplierName}</strong>.
+                </p>
+                <button
+                  onClick={() => navigate('/items')}
+                  className="text-label-xs text-primary font-bold hover:underline flex items-center gap-1"
+                >
+                  Inspect Item Price Catalog <ExternalLink className="w-3 h-3" />
+                </button>
+              </>
+            ) : (
+              <p className="text-body-sm text-xs text-on-surface-variant leading-relaxed">
+                Verify line items on this bill to track unit rate history across suppliers.
+              </p>
+            )}
           </Card>
         </div>
 
@@ -281,11 +524,15 @@ export const ReceiptDetailPage: React.FC = () => {
               <ul className="text-label-xs text-on-surface-variant space-y-2">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-verified flex-shrink-0" />
-                  <span>OCR extracted via Gemini 2.5 Vision on 24 Oct, 08:45 PM</span>
+                  <span>Processed via Gemini 3.8 Flash Vision ({receipt.billDate})</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-verified flex-shrink-0" />
-                  <span>Verified by Ramesh Sharma (Owner) on 24 Oct, 09:10 PM</span>
+                  <span>
+                    {receipt.status === 'verified'
+                      ? `Verified by ${user?.displayName || 'Store Owner'} (${user?.role || 'Owner'})`
+                      : `Pending review by ${user?.displayName || 'Store Owner'}`}
+                  </span>
                 </li>
                 <li className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-primary flex-shrink-0" />
@@ -296,6 +543,45 @@ export const ReceiptDetailPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmationDialog
+        isOpen={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onConfirm={handleDeleteReceipt}
+        title={isHindi ? 'क्या आप यह बिल हटाना चाहते हैं?' : 'Delete This Receipt?'}
+        message={
+          receipt ? (
+            <div className="space-y-2 text-left">
+              <p>
+                {isHindi
+                  ? 'क्या आप वाकई इस बिल को बही-खाते से हटाना चाहते हैं?'
+                  : 'Are you sure you want to delete this purchase receipt from your store records?'}
+              </p>
+              <div className="p-3 rounded-lg bg-surface-container-low border border-outline text-xs space-y-1">
+                <div>
+                  <strong>{isHindi ? 'सप्लायर:' : 'Supplier:'}</strong> {receipt.supplierName}
+                </div>
+                <div>
+                  <strong>{isHindi ? 'बिल नंबर:' : 'Bill / Invoice No:'}</strong> {receipt.invoiceNo}
+                </div>
+                <div>
+                  <strong>{isHindi ? 'रकम:' : 'Amount:'}</strong> ₹{receipt.grandTotal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                </div>
+              </div>
+              <p className="text-xs text-error font-medium">
+                {isHindi
+                  ? 'यह कार्रवाई बही-खाते और खर्च विश्लेषण के कुल योग को अपडेट कर देगी।'
+                  : 'This will update your store procurement balance and spending totals.'}
+              </p>
+            </div>
+          ) : ''
+        }
+        confirmText={isHindi ? 'हाँ, बिल हटाएं' : 'Delete Receipt'}
+        cancelText={isHindi ? 'रद्द करें' : 'Cancel'}
+        variant="danger"
+        isLoading={isDeleting}
+      />
     </div>
   );
 };

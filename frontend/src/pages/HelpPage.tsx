@@ -11,7 +11,7 @@ export const HelpPage: React.FC = () => {
   const faqs = [
     {
       q: 'How does Gemini AI read thermal roll receipts that have faded?',
-      a: 'ShopLedger automatically enhances thermal image contrast and runs character layout detection calibrated on Indian thermal slips (Epson, TVS, Citizen retail rolls). If an ink line is too faint, the system never guesses—it highlights the line in amber as "Needs checking" for your 1-second verification.',
+      a: 'Hissaab Kitaab automatically enhances thermal image contrast and runs character layout detection calibrated on Indian thermal slips (Epson, TVS, Citizen retail rolls). If an ink line is too faint, the system never guesses—it highlights the line in amber as "Needs checking" for your 1-second verification.',
     },
     {
       q: 'Can I upload handwritten wholesale Mandi commission slips?',
@@ -27,7 +27,7 @@ export const HelpPage: React.FC = () => {
     },
     {
       q: 'How do I track supplier rate hikes?',
-      a: 'Whenever a supplier bills you at a higher unit rate than your previous invoice, ShopLedger automatically triggers a Price Hike Alert on your dashboard and inside the Ask ShopLedger assistant.',
+      a: 'Whenever a supplier bills you at a higher unit rate than your previous invoice, Hissaab Kitaab automatically triggers a Price Hike Alert on your dashboard and inside the Ask Hissaab Kitaab AI assistant.',
     },
   ];
 
@@ -37,7 +37,7 @@ export const HelpPage: React.FC = () => {
         title="Help & Shopkeeper Guidance"
         subtitle="Answers to common questions about receipt scanning, mandi slips, tax reconciliation, and night tallying."
         breadcrumbs={[
-          { label: 'ShopLedger', onClick: () => navigate('/dashboard') },
+          { label: 'Hissaab Kitaab', onClick: () => navigate('/dashboard') },
           { label: 'Help & FAQs' },
         ]}
       />
@@ -62,7 +62,7 @@ export const HelpPage: React.FC = () => {
             Have a question about your specific shop bills?
           </h4>
           <p className="text-body-sm text-on-surface-variant text-xs mt-0.5">
-            You can ask ShopLedger AI directly about your purchase records in natural language.
+            You can ask Hissaab Kitaab AI directly about your purchase records in natural language.
           </p>
         </div>
         <Button
@@ -71,7 +71,7 @@ export const HelpPage: React.FC = () => {
           rightIcon={<ArrowRight className="w-4 h-4" />}
           className="font-bold flex-shrink-0"
         >
-          Open Ask ShopLedger AI
+          Open Ask Hissaab Kitaab AI
         </Button>
       </div>
     </div>

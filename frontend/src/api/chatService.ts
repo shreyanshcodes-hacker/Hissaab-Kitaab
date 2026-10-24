@@ -79,7 +79,7 @@ export function isScopeAllowedClient(message: string, hasHistory = false): boole
     'udhar', 'credit', 'paid', 'unpaid', 'payment', 'cash', 'upi', 'cheque',
     'ledger', 'bahi', 'khata', 'gst', 'gstin', 'tax', 'slab', 'hsn',
     'review', 'check', 'checking', 'verify', 'verified', 'pending', 'flagged', 'draft', 'confirm',
-    'help', 'how', 'upload', 'feature', 'features', 'camera', 'scan', 'shopledger', 'setting', 'profile',
+    'help', 'how', 'upload', 'feature', 'features', 'camera', 'scan', 'shopledger', 'hissaab', 'kitaab', 'setting', 'profile',
     'shop', 'store', 'kirana', 'branch', 'godown', 'analytics', 'dashboard', 'trend', 'summary', 'report',
     'buy', 'bought', 'purchase', 'purchased', 'order', 'ordered', 'compare', 'comparison',
     'month', 'week', 'today', 'yesterday', 'year', 'date', 'recent', 'last', 'top',
@@ -111,7 +111,7 @@ async function buildGroundedFallbackReply(
 
   if (!isScopeAllowedClient(clean, hasHistory)) {
     return {
-      text: 'I am ShopLedger’s shopkeeper bookkeeping assistant. I can only answer questions regarding your store’s purchase receipts, wholesale prices, suppliers, bahi khata ledger, or how to use ShopLedger features. Please ask a question related to your store.',
+      text: 'I am Hissaab Kitaab’s shopkeeper bookkeeping assistant. I can only answer questions regarding your store’s purchase receipts, wholesale prices, suppliers, bahi khata ledger, or how to use Hissaab Kitaab features. Please ask a question related to your store.',
       citedReceiptIds: [],
     };
   }
@@ -119,7 +119,7 @@ async function buildGroundedFallbackReply(
   if (lower.includes('how to') || lower.includes('camera') || lower.includes('scan') || lower.includes('upload')) {
     return {
       text:
-        'To add and verify receipts in ShopLedger:\n\n1. Tap **+ Upload Receipt** in the sidebar or on your dashboard.\n2. Snap a photo using your phone camera or drag a PDF/JPG invoice.\n3. ShopLedger automatically extracts line items, quantities, and GST rates.\n4. Jump into the **Review Workspace** (`/receipts/:id/review`) to verify flagged items and commit to your Bahi Khata.',
+        'To add and verify receipts in Hissaab Kitaab:\n\n1. Tap **+ Upload Receipt** in the sidebar or on your dashboard.\n2. Snap a photo using your phone camera or drag a PDF/JPG invoice.\n3. Hissaab Kitaab automatically extracts line items, quantities, and GST rates.\n4. Jump into the **Review Workspace** (`/receipts/:id/review`) to verify flagged items and commit to your Bahi Khata.',
       citedReceiptIds: [],
     };
   }
@@ -183,6 +183,79 @@ async function buildGroundedFallbackReply(
   }
 
   const totalSpend = confirmed.reduce((acc, r) => acc + r.grandTotal, 0);
+
+  // Try calling Gemini 3.8 Flash directly with the grounded store context
+  const geminiKey = (import.meta.env.VITE_GEMINI_API_KEY || '').trim();
+  const geminiModel = import.meta.env.VITE_GEMINI_MODEL || 'gemini-3.8-flash';
+
+  if (geminiKey) {
+    try {
+      const storeContext = {
+        confirmedReceiptsCount: confirmed.length,
+        totalConfirmedSpendRupees: totalSpend,
+        needsReviewCount: needsReview.length,
+        confirmedBills: confirmed.slice(0, 10).map((r) => ({
+          id: r.id,
+          invoiceNo: r.invoiceNo,
+          supplier: r.supplierName,
+          date: r.billDate,
+          totalRupees: r.grandTotal,
+          items: (r.items || []).slice(0, 8).map((it) => ({
+            name: it.name,
+            qty: it.quantity,
+            unit: it.unit,
+            rate: it.unitRate,
+            total: it.lineTotal,
+          })),
+        })),
+        pendingReviewBills: needsReview.slice(0, 5).map((r) => ({
+          id: r.id,
+          invoiceNo: r.invoiceNo,
+          supplier: r.supplierName,
+          date: r.billDate,
+          totalRupees: r.grandTotal,
+        })),
+      };
+
+      const aiRes = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${geminiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [
+              {
+                role: 'user',
+                parts: [
+                  {
+                    text:
+                      `SYSTEM: You are Hissaab Kitaab AI, a concise, grounded bookkeeping assistant for an Indian retail/Kirana merchant.\n` +
+                      `STRICT RULES: Answer ONLY using the verified store JSON context below or explain how Hissaab Kitaab features work. Never invent totals or transactions. Format currency in ₹.\n` +
+                      `STORE CONTEXT: ${JSON.stringify(storeContext)}\n\n` +
+                      `MERCHANT QUESTION: ${clean}`,
+                  },
+                ],
+              },
+            ],
+          }),
+        }
+      );
+
+      if (aiRes.ok) {
+        const aiJson = await aiRes.json();
+        const aiText = aiJson?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (aiText && aiText.trim().length > 0) {
+          return {
+            text: aiText.trim(),
+            citedReceiptIds: confirmed.slice(0, 3).map((r) => r.id),
+          };
+        }
+      }
+    } catch {
+      // Fall back to deterministic summary below
+    }
+  }
+
   if (confirmed.length === 0) {
     return {
       text:

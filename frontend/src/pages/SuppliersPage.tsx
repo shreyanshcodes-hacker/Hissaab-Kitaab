@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Store, Phone, MapPin, ArrowRight, PlusCircle } from 'lucide-react';
+import { Store, Phone, MapPin, ArrowRight, PlusCircle, Filter, ArrowUpDown } from 'lucide-react';
 import { PageHeader } from '../components/common/PageHeader';
 import { Button } from '../components/common/Button';
 import { Badge } from '../components/common/Badge';
 import { FilterToolbar } from '../components/common/FilterToolbar';
+import { Dropdown } from '../components/common/Dropdown';
 import { supplierService } from '../api/supplierService';
 import type { Supplier } from '../types';
 import { useToast } from '../context/ToastContext';
+import { useLanguage } from '../context/LanguageContext';
 
 export const SuppliersPage: React.FC = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { isHindi } = useLanguage();
 
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [searchValue, setSearchValue] = useState('');
+  const [selectedMarket, setSelectedMarket] = useState('');
+  const [sortBy, setSortBy] = useState<'spend_desc' | 'spend_asc' | 'name_asc'>('spend_desc');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -36,21 +41,44 @@ export const SuppliersPage: React.FC = () => {
     load();
   }, [showToast]);
 
-  const filtered = suppliers.filter(
-    (s) =>
-      s.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-      s.mandiMarket?.toLowerCase().includes(searchValue.toLowerCase()) ||
-      s.aliases.some((a) => a.toLowerCase().includes(searchValue.toLowerCase()))
+  const marketsList = Array.from(
+    new Set(suppliers.map((s) => s.mandiMarket).filter((m): m is string => Boolean(m && m.trim())))
   );
+
+  const filtered = suppliers
+    .filter((s) => {
+      const matchesSearch =
+        s.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+        s.mandiMarket?.toLowerCase().includes(searchValue.toLowerCase()) ||
+        s.aliases.some((a) => a.toLowerCase().includes(searchValue.toLowerCase()));
+      const matchesMarket = !selectedMarket || s.mandiMarket === selectedMarket;
+      return matchesSearch && matchesMarket;
+    })
+    .sort((a, b) => {
+      if (sortBy === 'spend_desc') {
+        return b.metrics.totalSpendCurrentMonth - a.metrics.totalSpendCurrentMonth;
+      }
+      if (sortBy === 'spend_asc') {
+        return a.metrics.totalSpendCurrentMonth - b.metrics.totalSpendCurrentMonth;
+      }
+      return a.name.localeCompare(b.name);
+    });
+
+  const activeFilterCount =
+    (searchValue ? 1 : 0) + (selectedMarket ? 1 : 0) + (sortBy !== 'spend_desc' ? 1 : 0);
 
   return (
     <div className="space-y-6 pb-16">
       <PageHeader
-        title="Supplier Directory (Wholesale & Mandi CRM)"
-        subtitle="Manage wholesale vendors, mandi commission agents, contacts, and historical rate trends."
+        title={isHindi ? 'दुकान सप्लायर डायरेक्टरी (Wholesale & Mandi)' : 'Supplier Directory (Wholesale & Mandi CRM)'}
+        subtitle={
+          isHindi
+            ? 'थोक विक्रेताओं, मंडी आढ़तियों, संपर्कों और ऐतिहासिक खरीद दरों का प्रबंधन करें।'
+            : 'Manage wholesale vendors, mandi commission agents, contacts, and historical rate trends.'
+        }
         breadcrumbs={[
-          { label: 'ShopLedger', onClick: () => navigate('/dashboard') },
-          { label: 'Suppliers' },
+          { label: 'Hissaab Kitaab', onClick: () => navigate('/dashboard') },
+          { label: isHindi ? 'सप्लायर' : 'Suppliers' },
         ]}
         actions={
           <Button
@@ -58,14 +86,16 @@ export const SuppliersPage: React.FC = () => {
             onClick={() =>
               showToast({
                 type: 'info',
-                title: 'Add Supplier',
-                message: 'New vendors are also automatically detected from uploaded receipts.',
+                title: isHindi ? 'सप्लायर जोड़ें' : 'Add Supplier',
+                message: isHindi
+                  ? 'नए सप्लायर अपलोड किए गए बिलों से भी अपने-आप जुड़ जाते हैं।'
+                  : 'New vendors are also automatically detected from uploaded receipts.',
               })
             }
             leftIcon={<PlusCircle className="w-5 h-5" />}
             className="shadow-card font-bold"
           >
-            + Add New Supplier
+            {isHindi ? '+ नया सप्लायर जोड़ें' : '+ Add New Supplier'}
           </Button>
         }
       />
@@ -73,9 +103,67 @@ export const SuppliersPage: React.FC = () => {
       <FilterToolbar
         searchValue={searchValue}
         onSearchChange={setSearchValue}
-        searchPlaceholder="Search suppliers by name, market, or alias..."
-        activeFilterCount={searchValue ? 1 : 0}
-        onClearFilters={() => setSearchValue('')}
+        searchPlaceholder={isHindi ? 'सप्लायर नाम, मंडी या उपनाम से खोजें...' : 'Search suppliers by name, market, or alias...'}
+        activeFilterCount={activeFilterCount}
+        onClearFilters={() => {
+          setSearchValue('');
+          setSelectedMarket('');
+          setSortBy('spend_desc');
+        }}
+        filters={
+          <div className="flex items-center gap-2 flex-wrap">
+            <Dropdown
+              trigger={
+                <button className="h-9 px-3 bg-surface-container-low hover:bg-surface-container rounded-lg border border-outline/70 text-on-surface font-label-md text-label-xs flex items-center gap-1.5 transition-colors">
+                  <Filter className="w-3.5 h-3.5 text-primary" />
+                  <span>{selectedMarket || (isHindi ? 'सभी मंडी / बाज़ार' : 'All Mandi / Markets')}</span>
+                  <span className="text-on-surface-variant text-[10px]">▼</span>
+                </button>
+              }
+              items={[
+                { id: 'all-markets', label: isHindi ? 'सभी मंडी / बाज़ार' : 'All Mandi / Markets', onClick: () => setSelectedMarket('') },
+                ...marketsList.map((m) => ({
+                  id: m,
+                  label: m,
+                  onClick: () => setSelectedMarket(m),
+                })),
+              ]}
+            />
+
+            <Dropdown
+              trigger={
+                <button className="h-9 px-3 bg-surface-container-low hover:bg-surface-container rounded-lg border border-outline/70 text-on-surface font-label-md text-label-xs flex items-center gap-1.5 transition-colors">
+                  <ArrowUpDown className="w-3.5 h-3.5 text-secondary" />
+                  <span>
+                    {sortBy === 'spend_desc'
+                      ? 'Sort: Highest Spend'
+                      : sortBy === 'spend_asc'
+                        ? 'Sort: Lowest Spend'
+                        : 'Sort: Name (A-Z)'}
+                  </span>
+                  <span className="text-on-surface-variant text-[10px]">▼</span>
+                </button>
+              }
+              items={[
+                {
+                  id: 'spend_desc',
+                  label: 'Highest Monthly Spend First',
+                  onClick: () => setSortBy('spend_desc'),
+                },
+                {
+                  id: 'spend_asc',
+                  label: 'Lowest Monthly Spend First',
+                  onClick: () => setSortBy('spend_asc'),
+                },
+                {
+                  id: 'name_asc',
+                  label: 'Supplier Name (A - Z)',
+                  onClick: () => setSortBy('name_asc'),
+                },
+              ]}
+            />
+          </div>
+        }
       />
 
       {isLoading ? (

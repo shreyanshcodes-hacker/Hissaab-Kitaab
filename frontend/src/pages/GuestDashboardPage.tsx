@@ -216,7 +216,7 @@ export const GuestDashboardPage: React.FC = () => {
           >
             <div>
               <span className="text-label-xs font-bold text-amber-600 uppercase tracking-wider">
-                4. Ask ShopLedger
+                4. Ask Hissaab Kitaab
               </span>
               <h3 className="font-headline-sm text-body-lg font-bold text-on-surface mt-1">
                 Natural Language AI
@@ -296,7 +296,7 @@ export const GuestDashboardPage: React.FC = () => {
         isOpen={showGateModal}
         onClose={() => setShowGateModal(false)}
         title="Ready to digitize your real shop bills?"
-        subtitle="Create your free ShopLedger account to save real vouchers"
+        subtitle="Create your free Hissaab Kitaab account to save real vouchers"
         size="md"
       >
         <div className="space-y-4 py-2">

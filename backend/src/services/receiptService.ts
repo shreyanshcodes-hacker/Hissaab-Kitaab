@@ -1,6 +1,7 @@
 import { db } from '../config/firebase-admin.js';
 import { NotFoundError, BadRequestError } from '../utils/errors.js';
 import { calculateLineTotalMinor } from '../utils/money.js';
+import { logger } from '../utils/logger.js';
 import type {
   Receipt,
   ReceiptLineItem,
@@ -560,6 +561,31 @@ export class ReceiptService {
       receiptId,
       status: 'processing',
     };
+  }
+
+  /**
+   * Soft-deletes a receipt and marks it removed from bahi khata ledger aggregations.
+   */
+  async deleteReceipt(businessId: string, receiptId: string): Promise<void> {
+    const receiptRef = db
+      .collection('businesses')
+      .doc(businessId)
+      .collection('receipts')
+      .doc(receiptId);
+
+    const doc = await receiptRef.get();
+    if (!doc.exists) {
+      throw new NotFoundError(`Receipt ${receiptId} not found`);
+    }
+
+    const now = new Date().toISOString();
+    await receiptRef.update({
+      isDeleted: true,
+      deletedAt: now,
+      updatedAt: now,
+    });
+
+    logger.info(`Receipt ${receiptId} soft-deleted for business ${businessId}`);
   }
 }
 

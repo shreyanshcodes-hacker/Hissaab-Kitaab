@@ -594,7 +594,7 @@ export class AnalyticsService {
       };
 
       const aiRes = await this.aiClient.models.generateContent({
-        model: env.GEMINI_MODEL || 'gemini-2.5-flash',
+        model: env.GEMINI_MODEL || 'gemini-3.8-flash',
         contents: [
           {
             role: 'user',
@@ -613,7 +613,7 @@ export class AnalyticsService {
 
       return {
         summaryText: aiRes.text?.trim() || fallbackNarrative,
-        generatedBy: env.GEMINI_MODEL || 'gemini-2.5-flash',
+        generatedBy: env.GEMINI_MODEL || 'gemini-3.8-flash',
         timestamp: new Date().toISOString(),
       };
     } catch (err: any) {

@@ -30,17 +30,17 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variants = {
       primary:
-        'bg-primary-container text-on-primary hover:bg-primary shadow-card hover:shadow-elevated active:bg-primary-hover',
+        'bg-[#1B5E3A] text-white hover:bg-[#14492D] shadow-card hover:shadow-elevated active:bg-[#0F3822]',
       secondary:
         'bg-surface-container border border-outline text-on-surface hover:bg-surface-container-high hover:border-outline-variant shadow-sm',
       destructive:
-        'bg-error text-on-error hover:bg-red-700 shadow-sm active:bg-red-800',
+        'bg-[#DC2626] text-white hover:bg-[#B91C1C] shadow-sm active:bg-[#991B1B]',
       outline:
-        'border border-outline bg-transparent text-on-surface hover:bg-surface-container-low hover:border-outline-variant',
+        'border border-outline bg-surface-container-lowest text-on-surface hover:bg-surface-container-low hover:border-outline-variant',
       ghost:
         'bg-transparent text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low',
       amber:
-        'bg-tertiary-fixed text-tertiary-on-fixed border border-tertiary-fixed-dim hover:bg-amber-100 shadow-sm',
+        'bg-[#FEF3C7] text-[#92400E] border border-[#FCD34D] hover:bg-[#FDE68A] shadow-sm',
     };
 
     const sizes = {
@@ -60,10 +60,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {isLoading ? (
           <Loader2 className="w-4 h-4 animate-spin text-current" />
         ) : (
-          leftIcon && <span className="flex-shrink-0">{leftIcon}</span>
+          leftIcon && <span className="flex-shrink-0 text-current">{leftIcon}</span>
         )}
-        {children && <span>{children}</span>}
-        {!isLoading && rightIcon && <span className="flex-shrink-0">{rightIcon}</span>}
+        {children && <span className="text-current">{children}</span>}
+        {!isLoading && rightIcon && <span className="flex-shrink-0 text-current">{rightIcon}</span>}
       </button>
     );
   }

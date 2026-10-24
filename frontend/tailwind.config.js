@@ -25,7 +25,7 @@ export default {
         primary: {
           DEFAULT: '#04442f',
           container: '#245c45',
-          'on-container': '#99d2b5',
+          'on-container': '#ffffff',
           hover: '#1b4735',
           fixed: '#b5efd1',
           'fixed-dim': '#99d3b6',
@@ -34,31 +34,40 @@ export default {
           dark: '#388465',
         },
         'on-primary': '#ffffff',
+        'on-primary-container': '#ffffff',
+        'on-primary-fixed': '#002114',
+        'on-primary-fixed-variant': '#16503a',
         'inverse-primary': '#99d3b6',
 
         // Secondary (Muted & Badges)
         secondary: {
           DEFAULT: '#57615b',
           container: '#dbe5dd',
-          'on-container': '#5d6760',
+          'on-container': '#151d19',
           fixed: '#dbe5dd',
           'fixed-dim': '#bfc9c1',
           'on-fixed': '#151d19',
           'on-fixed-variant': '#404943',
         },
         'on-secondary': '#ffffff',
+        'on-secondary-container': '#151d19',
+        'on-secondary-fixed': '#151d19',
+        'on-secondary-fixed-variant': '#404943',
 
         // Tertiary / Warning / Low Confidence ("Needs Checking")
         tertiary: {
           DEFAULT: '#d97706',
           container: '#7f4300',
-          'on-container': '#ffb77d',
+          'on-container': '#ffffff',
           fixed: '#fef3c7',
           'fixed-dim': '#fcd34d',
           'on-fixed': '#92400e',
           'on-fixed-variant': '#b45309',
         },
         'on-tertiary': '#ffffff',
+        'on-tertiary-container': '#ffffff',
+        'on-tertiary-fixed': '#92400e',
+        'on-tertiary-fixed-variant': '#b45309',
 
         // Error & Discrepancy
         error: {
@@ -67,6 +76,7 @@ export default {
           'on-container': '#991b1b',
         },
         'on-error': '#ffffff',
+        'on-error-container': '#991b1b',
 
         // Verified / Success
         verified: {
@@ -75,6 +85,8 @@ export default {
           'on-container': '#166534',
           border: '#86efac',
         },
+        'on-verified': '#ffffff',
+        'on-verified-container': '#166534',
 
         // Canvas
         background: 'var(--color-background)',

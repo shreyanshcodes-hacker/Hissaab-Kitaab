@@ -9,7 +9,7 @@ import {
   Sparkles,
   HelpCircle,
   Settings,
-  PlusCircle,
+  Upload,
   Search,
   Bell,
   Sun,
@@ -20,9 +20,17 @@ import {
   LogOut,
   User,
   ShieldCheck,
+  CheckCheck,
+  Trash2,
+  AlertTriangle,
+  Info,
+  CheckCircle2,
+  Languages,
 } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth, getInitials } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
+import { useToast } from '../../context/ToastContext';
 import { Dropdown } from '../common/Dropdown';
 import { Button } from '../common/Button';
 import { cn } from '../../utils/cn';
@@ -40,10 +48,26 @@ export const AppShell: React.FC<AppShellProps> = ({
 }) => {
   const { theme, toggleTheme } = useTheme();
   const { user, logout, updateUserProfile } = useAuth();
+  const {
+    language,
+    isHindi,
+    setLanguage,
+    t,
+    notifications,
+    unreadCount,
+    markAsRead,
+    markAllAsRead,
+    clearNotifications,
+    triggerTestNotification,
+  } = useLanguage();
+  const { showToast } = useToast();
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
   const [currentBranch, setCurrentBranch] = useState(user?.activeBranch || 'Main Branch');
   const [globalSearch, setGlobalSearch] = useState('');
   const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const notifPanelRef = useRef<HTMLDivElement | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -57,6 +81,18 @@ export const AppShell: React.FC<AppShellProps> = ({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (notifPanelRef.current && !notifPanelRef.current.contains(event.target as Node)) {
+        setNotifOpen(false);
+      }
+    };
+    if (notifOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [notifOpen]);
 
   const handleGlobalSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,39 +109,42 @@ export const AppShell: React.FC<AppShellProps> = ({
   const resolvedShopName = user?.shopName || `${resolvedOwnerName}'s Shop`;
   const resolvedBranch = user?.activeBranch || currentBranch || 'Main Branch';
   const ownerInitials = getInitials(resolvedOwnerName, 'SO');
-  const shopInitials = getInitials(resolvedShopName, 'SL');
+  const shopInitials = getInitials(resolvedShopName, 'HK');
 
   const navItems = [
     {
       to: '/dashboard',
-      label: 'Dashboard',
+      label: t('nav.dashboard', 'Dashboard'),
       icon: <LayoutDashboard className="w-5 h-5" />,
     },
     {
       to: '/receipts',
-      label: 'Receipts',
+      label: t('nav.receipts', 'Receipts'),
       icon: <Receipt className="w-5 h-5" />,
-      badge: needsCheckingCount > 0 ? `${needsCheckingCount} needs check` : undefined,
+      badge:
+        needsCheckingCount > 0
+          ? `${needsCheckingCount} ${t('nav.needsCheck', 'needs check')}`
+          : undefined,
       badgeVariant: 'amber' as const,
     },
     {
       to: '/analysis',
-      label: 'Spending Analysis',
+      label: t('nav.analysis', 'Spending Analysis'),
       icon: <TrendingUp className="w-5 h-5" />,
     },
     {
       to: '/suppliers',
-      label: 'Suppliers',
+      label: t('nav.suppliers', 'Suppliers'),
       icon: <Store className="w-5 h-5" />,
     },
     {
       to: '/catalog',
-      label: 'Item Catalog',
+      label: t('nav.catalog', 'Item Catalog'),
       icon: <Package className="w-5 h-5" />,
     },
     {
       to: '/ask-shopledger',
-      label: 'Ask ShopLedger AI',
+      label: t('nav.askAi', 'Ask Hissaab Kitaab AI'),
       icon: <Sparkles className="w-5 h-5 text-amber-500" />,
       highlight: true,
     },
@@ -114,12 +153,12 @@ export const AppShell: React.FC<AppShellProps> = ({
   const bottomNavItems = [
     {
       to: '/help',
-      label: 'Help & FAQs',
+      label: t('nav.help', 'Help & FAQs'),
       icon: <HelpCircle className="w-5 h-5" />,
     },
     {
       to: '/settings',
-      label: 'Settings',
+      label: t('nav.settings', 'Settings'),
       icon: <Settings className="w-5 h-5" />,
     },
   ];
@@ -148,20 +187,20 @@ export const AppShell: React.FC<AppShellProps> = ({
   const userMenuItems = [
     {
       id: 'profile',
-      label: `${resolvedOwnerName} (${user?.isGuest ? 'Guest Demo' : 'Owner'})`,
+      label: `${resolvedOwnerName} (${user?.isGuest ? (isHindi ? 'अतिथि डेमो' : 'Guest Demo') : (isHindi ? 'दुकानदार' : 'Owner')})`,
       description: user?.email || resolvedShopName,
       icon: <User className="w-4 h-4" />,
       onClick: () => navigate('/profile'),
     },
     {
       id: 'privacy',
-      label: 'Store Settings & GST Slabs',
+      label: isHindi ? 'दुकान सेटिंग्स और भाषा' : 'Store Settings & Language',
       icon: <ShieldCheck className="w-4 h-4" />,
       onClick: () => navigate('/settings'),
     },
     {
       id: 'logout',
-      label: 'Log out from store',
+      label: isHindi ? 'दुकान से लॉग आउट करें' : 'Log out from store',
       destructive: true,
       icon: <LogOut className="w-4 h-4" />,
       onClick: async () => {
@@ -172,7 +211,7 @@ export const AppShell: React.FC<AppShellProps> = ({
   ];
 
   return (
-    <div className="min-h-screen bg-surface flex flex-col antialiased">
+    <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden bg-surface flex flex-col antialiased">
       {/* ===================== SIDEBAR (Desktop) ===================== */}
       <aside
         className={cn(
@@ -184,16 +223,21 @@ export const AppShell: React.FC<AppShellProps> = ({
         <div className="flex flex-col h-full overflow-y-auto">
           {/* Logo / Brand Header */}
           <div className="p-space-lg flex items-center justify-between border-b border-outline/50">
-            <div className="flex items-center gap-space-sm">
-              <div className="w-9 h-9 rounded-xl bg-primary-container text-on-primary flex items-center justify-center font-bold text-lg shadow-sm">
-                ₹
-              </div>
+            <div
+              onClick={() => navigate('/dashboard')}
+              className="flex items-center gap-space-sm cursor-pointer group"
+            >
+              <img
+                src="/logo.png"
+                alt="Hissaab Kitaab Logo"
+                className="w-10 h-10 rounded-xl object-cover shadow-sm border border-primary/30 flex-shrink-0"
+              />
               <div className="flex flex-col">
-                <span className="font-headline-sm text-headline-sm text-on-surface tracking-tight font-bold leading-none">
-                  ShopLedger
+                <span className="font-headline-sm text-headline-sm text-on-surface tracking-tight font-bold leading-none group-hover:text-primary transition-colors">
+                  Hissaab Kitaab
                 </span>
                 <span className="font-label-xs text-label-xs text-on-surface-variant mt-1 leading-none">
-                  Smart Kirana Bahi Khata
+                  {t('app.tagline', 'Smart Kirana Bahi Khata')}
                 </span>
               </div>
             </div>
@@ -218,10 +262,10 @@ export const AppShell: React.FC<AppShellProps> = ({
                 else navigate('/receipts/new');
                 setMobileMenuOpen(false);
               }}
-              leftIcon={<PlusCircle className="w-5 h-5" />}
+              leftIcon={<Upload className="w-5 h-5" />}
               className="w-full justify-center shadow-card font-bold"
             >
-              + Upload Receipt
+              {t('nav.uploadReceipt', 'Upload Receipt')}
             </Button>
           </div>
 
@@ -241,12 +285,12 @@ export const AppShell: React.FC<AppShellProps> = ({
                       : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
                   )}
                 >
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 min-w-0">
                     <span className="flex-shrink-0">{item.icon}</span>
-                    <span>{item.label}</span>
+                    <span className="truncate">{item.label}</span>
                   </div>
                   {item.badge && (
-                    <span className="px-2 py-0.5 rounded-full text-[0.6875rem] font-bold bg-tertiary-fixed text-tertiary-on-fixed border border-tertiary-fixed-dim">
+                    <span className="px-2 py-0.5 rounded-full text-[0.6875rem] font-bold bg-tertiary-fixed text-[#261900] border border-tertiary-fixed-dim flex-shrink-0 ml-1">
                       {item.badge}
                     </span>
                   )}
@@ -284,7 +328,7 @@ export const AppShell: React.FC<AppShellProps> = ({
               trigger={
                 <div className="w-full flex items-center justify-between p-2 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors cursor-pointer border border-outline/50">
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="w-8 h-8 rounded-lg bg-primary-fixed text-primary font-bold flex items-center justify-center flex-shrink-0 text-label-xs">
+                    <div className="w-8 h-8 rounded-lg bg-primary-fixed text-[#002111] font-bold flex items-center justify-center flex-shrink-0 text-label-xs">
                       {shopInitials}
                     </div>
                     <div className="flex flex-col text-left min-w-0">
@@ -346,38 +390,220 @@ export const AppShell: React.FC<AppShellProps> = ({
               type="text"
               value={globalSearch}
               onChange={(e) => setGlobalSearch(e.target.value)}
-              placeholder="Search receipts, items, bahi khata... (Ctrl + K)"
+              placeholder={t(
+                'header.searchPlaceholder',
+                'Search receipts, items, bahi khata... (Ctrl + K)'
+              )}
               className="w-full h-9 pl-9 pr-4 rounded-full bg-surface-container text-body-sm text-on-surface placeholder:text-on-surface-variant/70 border border-transparent focus:border-outline focus:bg-surface-container-lowest outline-none transition-all"
             />
           </div>
         </form>
 
-        {/* Right Controls: Theme Toggle, Notifications, User Menu */}
-        <div className="flex items-center gap-2">
+        {/* Right Controls: Language Pill, Theme Toggle, Notifications, User Menu */}
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* Quick Language Switcher Pill */}
+          <button
+            onClick={() => {
+              const nextLang = language === 'en' ? 'hi' : 'en';
+              setLanguage(nextLang);
+              showToast({
+                type: 'info',
+                title: nextLang === 'hi' ? 'भाषा बदली गई: हिन्दी' : 'Language set to English',
+                message:
+                  nextLang === 'hi'
+                    ? 'Hissaab Kitaab अब हिन्दी में प्रदर्शित हो रहा है।'
+                    : 'Hissaab Kitaab is now displayed in English.',
+              });
+            }}
+            title="Switch Language (English / हिन्दी)"
+            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-label-xs font-bold bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline/60 transition-colors"
+          >
+            <Languages className="w-3.5 h-3.5 text-primary" />
+            <span>{language === 'hi' ? 'हिन्दी' : 'EN'}</span>
+          </button>
+
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
             className="p-2 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"
             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
           >
-            {theme === 'dark' ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5" />}
+            {theme === 'dark' ? (
+              <Sun className="w-5 h-5 text-amber-400" />
+            ) : (
+              <Moon className="w-5 h-5" />
+            )}
           </button>
 
-          {/* Notifications Bell */}
-          <button
-            className="relative p-2 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"
-            aria-label="Notifications"
-          >
-            <Bell className="w-5 h-5" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error ring-2 ring-surface" />
-          </button>
+          {/* Notifications Bell & Interactive Popover */}
+          <div className="relative" ref={notifPanelRef}>
+            <button
+              onClick={() => setNotifOpen((prev) => !prev)}
+              className={cn(
+                'relative p-2 rounded-full transition-colors',
+                notifOpen
+                  ? 'bg-primary/15 text-primary'
+                  : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
+              )}
+              aria-label="Notifications"
+            >
+              <Bell className="w-5 h-5" />
+              {unreadCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-error text-on-error text-[0.65rem] font-bold flex items-center justify-center ring-2 ring-surface">
+                  {unreadCount}
+                </span>
+              )}
+            </button>
+
+            {notifOpen && (
+              <div className="fixed sm:absolute right-2 sm:right-0 top-16 sm:top-12 w-[calc(100vw-1rem)] sm:w-96 max-w-md bg-surface-container-lowest border border-outline rounded-2xl shadow-elevated z-50 overflow-hidden animate-fade-in">
+                {/* Header */}
+                <div className="px-4 py-3 bg-surface-container-low border-b border-outline/60 flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <Bell className="w-4 h-4 text-primary" />
+                    <span className="font-bold text-body-md text-on-surface">
+                      {t('header.notifications', 'Notifications')}
+                    </span>
+                    {unreadCount > 0 && (
+                      <span className="px-2 py-0.5 rounded-full text-[0.6875rem] font-bold bg-primary/15 text-primary">
+                        {unreadCount} new
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-1">
+                    {unreadCount > 0 && (
+                      <button
+                        onClick={() => {
+                          markAllAsRead();
+                          showToast({
+                            type: 'success',
+                            title:
+                              language === 'hi'
+                                ? 'सभी सूचनाएं पढ़ी गईं'
+                                : 'All notifications marked as read',
+                          });
+                        }}
+                        className="text-label-xs font-semibold text-primary hover:underline px-1.5 py-1 rounded flex items-center gap-1"
+                        title="Mark all as read"
+                      >
+                        <CheckCheck className="w-3.5 h-3.5" />
+                        <span>{t('header.markAllRead', 'Mark all read')}</span>
+                      </button>
+                    )}
+                    {notifications.length > 0 && (
+                      <button
+                        onClick={() => {
+                          clearNotifications();
+                          showToast({
+                            type: 'info',
+                            title:
+                              language === 'hi' ? 'सूचनाएं साफ़ की गईं' : 'Notifications cleared',
+                          });
+                        }}
+                        className="p-1 text-on-surface-variant hover:text-error rounded"
+                        title={t('header.clearAll', 'Clear all')}
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Notification List */}
+                <div className="max-h-80 overflow-y-auto divide-y divide-outline/40">
+                  {notifications.length === 0 ? (
+                    <div className="p-6 text-center text-on-surface-variant text-body-sm">
+                      <CheckCircle2 className="w-8 h-8 text-emerald-500 mx-auto mb-2 opacity-80" />
+                      <p>{t('header.noNotifications', 'All caught up! No pending store alerts.')}</p>
+                    </div>
+                  ) : (
+                    notifications.map((item) => (
+                      <div
+                        key={item.id}
+                        onClick={() => {
+                          markAsRead(item.id);
+                          setNotifOpen(false);
+                          if (item.link) navigate(item.link);
+                        }}
+                        className={cn(
+                          'p-3.5 flex items-start gap-3 cursor-pointer transition-colors hover:bg-surface-container',
+                          !item.read ? 'bg-primary/[0.06]' : 'bg-transparent'
+                        )}
+                      >
+                        <div className="mt-0.5 flex-shrink-0">
+                          {item.type === 'warning' ? (
+                            <AlertTriangle className="w-4 h-4 text-amber-500" />
+                          ) : item.type === 'success' ? (
+                            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                          ) : (
+                            <Info className="w-4 h-4 text-primary" />
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-2">
+                            <p
+                              className={cn(
+                                'text-body-sm truncate',
+                                !item.read
+                                  ? 'font-bold text-on-surface'
+                                  : 'font-medium text-on-surface-variant'
+                              )}
+                            >
+                              {language === 'hi' ? item.titleHi : item.title}
+                            </p>
+                            {!item.read && (
+                              <span className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                            )}
+                          </div>
+                          <p className="text-label-xs text-on-surface-variant mt-0.5 line-clamp-2">
+                            {language === 'hi' ? item.messageHi : item.message}
+                          </p>
+                          <span className="text-[0.6875rem] text-on-surface-variant/80 mt-1 block">
+                            {language === 'hi' ? item.timeHi : item.time}
+                          </span>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                {/* Footer Actions */}
+                <div className="p-2.5 bg-surface-container-low border-t border-outline/60 flex items-center justify-between gap-2">
+                  <button
+                    onClick={async () => {
+                      await triggerTestNotification();
+                      showToast({
+                        type: 'success',
+                        title:
+                          language === 'hi'
+                            ? 'टेस्ट नोटिफिकेशन भेजा गया!'
+                            : 'Live notification sent!',
+                      });
+                    }}
+                    className="text-label-xs font-bold text-primary hover:underline px-2 py-1"
+                  >
+                    + {t('header.testNotif', 'Send Test Alert')}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setNotifOpen(false);
+                      navigate('/settings');
+                    }}
+                    className="text-label-xs font-semibold text-on-surface-variant hover:text-on-surface px-2 py-1"
+                  >
+                    {t('nav.settings', 'Settings')} →
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* User Profile Dropdown */}
           <Dropdown
             trigger={
               <div
                 title={`${resolvedOwnerName} (${resolvedShopName})`}
-                className="w-9 h-9 rounded-full bg-primary text-on-primary font-bold flex items-center justify-center text-label-xs cursor-pointer ring-2 ring-outline/60 hover:ring-primary transition-all"
+                className="w-9 h-9 rounded-full bg-[#1B5E3A] text-white font-bold flex items-center justify-center text-label-xs cursor-pointer ring-2 ring-outline/60 hover:ring-primary transition-all"
               >
                 {ownerInitials}
               </div>
@@ -389,8 +615,8 @@ export const AppShell: React.FC<AppShellProps> = ({
       </header>
 
       {/* ===================== MAIN CONTENT WRAPPER ===================== */}
-      <main className="flex-1 pt-16 lg:pl-72 flex flex-col">
-        <div className="flex-1 max-w-[1360px] w-full mx-auto p-4 sm:p-6 lg:p-8">
+      <main className="flex-1 pt-16 pb-20 lg:pb-0 lg:pl-72 flex flex-col min-w-0 max-w-full overflow-x-hidden">
+        <div className="flex-1 max-w-[1360px] w-full min-w-0 mx-auto p-3.5 sm:p-6 lg:p-8">
           {children}
         </div>
       </main>
@@ -402,12 +628,12 @@ export const AppShell: React.FC<AppShellProps> = ({
           className={({ isActive }) =>
             cn(
               'flex flex-col items-center gap-1 p-1 text-label-xs font-semibold',
-              isActive ? 'text-primary' : 'text-on-surface-variant'
+              isActive ? 'text-primary dark:text-emerald-400' : 'text-on-surface-variant'
             )
           }
         >
           <LayoutDashboard className="w-5 h-5" />
-          <span>Home</span>
+          <span>{t('nav.home', 'Home')}</span>
         </NavLink>
 
         <NavLink
@@ -415,12 +641,12 @@ export const AppShell: React.FC<AppShellProps> = ({
           className={({ isActive }) =>
             cn(
               'flex flex-col items-center gap-1 p-1 text-label-xs font-semibold relative',
-              isActive ? 'text-primary' : 'text-on-surface-variant'
+              isActive ? 'text-primary dark:text-emerald-400' : 'text-on-surface-variant'
             )
           }
         >
           <Receipt className="w-5 h-5" />
-          <span>Receipts</span>
+          <span>{language === 'hi' ? 'बिल' : 'Receipts'}</span>
           {needsCheckingCount > 0 && (
             <span className="absolute top-0 right-2 w-2 h-2 rounded-full bg-tertiary" />
           )}
@@ -432,10 +658,10 @@ export const AppShell: React.FC<AppShellProps> = ({
             if (onUploadReceiptClick) onUploadReceiptClick();
             else navigate('/receipts/new');
           }}
-          className="-mt-5 w-12 h-12 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-elevated border-2 border-surface active:scale-95 transition-transform"
+          className="-mt-5 w-12 h-12 rounded-full bg-[#1B5E3A] text-white flex items-center justify-center shadow-elevated border-2 border-surface active:scale-95 transition-transform"
           aria-label="Upload Receipt"
         >
-          <PlusCircle className="w-7 h-7" />
+          <Upload className="w-6 h-6 text-white" />
         </button>
 
         <NavLink
@@ -443,12 +669,12 @@ export const AppShell: React.FC<AppShellProps> = ({
           className={({ isActive }) =>
             cn(
               'flex flex-col items-center gap-1 p-1 text-label-xs font-semibold',
-              isActive ? 'text-primary' : 'text-on-surface-variant'
+              isActive ? 'text-primary dark:text-emerald-400' : 'text-on-surface-variant'
             )
           }
         >
           <TrendingUp className="w-5 h-5" />
-          <span>Analysis</span>
+          <span>{t('nav.analysisShort', 'Analysis')}</span>
         </NavLink>
 
         <NavLink
@@ -456,12 +682,12 @@ export const AppShell: React.FC<AppShellProps> = ({
           className={({ isActive }) =>
             cn(
               'flex flex-col items-center gap-1 p-1 text-label-xs font-semibold',
-              isActive ? 'text-primary' : 'text-on-surface-variant'
+              isActive ? 'text-primary dark:text-emerald-400' : 'text-on-surface-variant'
             )
           }
         >
           <Sparkles className="w-5 h-5 text-amber-500" />
-          <span>Ask AI</span>
+          <span>{t('nav.askShort', 'Ask AI')}</span>
         </NavLink>
       </nav>
     </div>

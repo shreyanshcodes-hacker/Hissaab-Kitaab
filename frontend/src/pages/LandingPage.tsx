@@ -33,12 +33,14 @@ export const LandingPage: React.FC = () => {
       <header className="sticky top-0 z-40 w-full bg-surface/90 backdrop-blur-md border-b border-outline">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-primary-container text-on-primary flex items-center justify-center font-bold text-lg shadow-sm">
-              ₹
-            </div>
+            <img
+              src="/logo.png"
+              alt="Hissaab Kitaab Logo"
+              className="w-10 h-10 rounded-xl object-cover shadow-sm border border-primary/30"
+            />
             <div className="flex flex-col">
               <span className="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight leading-none">
-                ShopLedger
+                Hissaab Kitaab
               </span>
               <span className="font-label-xs text-[0.6875rem] text-on-surface-variant leading-none mt-1">
                 Bahi Khata & AI Bookkeeper
@@ -200,7 +202,7 @@ export const LandingPage: React.FC = () => {
                 <Sparkles className="w-6 h-6" />
               </div>
               <h3 className="font-headline-sm text-lg font-bold text-on-surface mb-2">
-                Ask ShopLedger in plain words
+                Ask Hissaab Kitaab in plain words
               </h3>
               <p className="text-body-sm text-on-surface-variant leading-relaxed">
                 Ask "Who gave me the best rate for mustard oil this month?" and get clear, cited
@@ -219,7 +221,7 @@ export const LandingPage: React.FC = () => {
               The daily difference for your store
             </h2>
             <p className="text-body-sm text-on-surface-variant mt-2">
-              Why kiranas are replacing paper clipboards with ShopLedger
+              Why kiranas are replacing paper clipboards with Hissaab Kitaab
             </p>
           </div>
 
@@ -228,7 +230,7 @@ export const LandingPage: React.FC = () => {
             <div className="p-6 sm:p-8 rounded-2xl border border-error/30 bg-error-container/20 flex flex-col">
               <div className="flex items-center gap-2 text-error font-bold text-headline-sm mb-4">
                 <XCircle className="w-6 h-6" />
-                <span>Before ShopLedger</span>
+                <span>Before Hissaab Kitaab</span>
               </div>
               <ul className="space-y-4 text-body-sm text-on-surface-variant">
                 <li className="flex items-start gap-3">
@@ -254,7 +256,7 @@ export const LandingPage: React.FC = () => {
             <div className="p-6 sm:p-8 rounded-2xl border border-verified-border bg-verified-container/20 flex flex-col shadow-card">
               <div className="flex items-center gap-2 text-verified font-bold text-headline-sm mb-4">
                 <CheckCircle2 className="w-6 h-6" />
-                <span>After ShopLedger</span>
+                <span>After Hissaab Kitaab</span>
               </div>
               <ul className="space-y-4 text-body-sm text-on-surface">
                 <li className="flex items-start gap-3">
@@ -289,7 +291,7 @@ export const LandingPage: React.FC = () => {
             Zero-Risk Kirana Assurance
           </h2>
           <p className="mt-3 text-body-sm sm:text-base text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
-            AI is your helper, not your accountant. ShopLedger never writes anything to your bahi
+            AI is your helper, not your accountant. Hissaab Kitaab never writes anything to your bahi
             khata automatically. You always inspect, edit, and confirm extracted values with a clear
             split-screen comparison.
           </p>
@@ -319,10 +321,8 @@ export const LandingPage: React.FC = () => {
       <footer className="mt-auto py-10 bg-surface-container-low border-t border-outline text-label-xs text-on-surface-variant">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-md bg-primary-container text-on-primary flex items-center justify-center font-bold text-xs">
-              ₹
-            </div>
-            <span className="font-bold text-on-surface">ShopLedger</span>
+            <img src="/logo.png" alt="Hissaab Kitaab" className="w-6 h-6 rounded-md object-cover" />
+            <span className="font-bold text-on-surface">Hissaab Kitaab</span>
             <span>• Smart Bahi Khata for Indian Retailers</span>
           </div>
           <div className="flex items-center gap-6">

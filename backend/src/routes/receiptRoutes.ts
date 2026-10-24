@@ -8,6 +8,7 @@ import {
   retryReceipt,
   extractReceipt,
   uploadReceipt,
+  deleteReceipt,
 } from '../controllers/receiptController.js';
 import { validateRequest } from '../middleware/validate.js';
 import { requireRole } from '../middleware/tenant.js';
@@ -57,6 +58,7 @@ router.patch(
 // POST /api/receipts/:receiptId/extract
 router.post(
   '/:receiptId/extract',
+  requireRole(['owner', 'manager', 'accountant']),
   aiOperationsLimiter,
   validateRequest({ params: ReceiptIdParamSchema }),
   extractReceipt
@@ -73,9 +75,18 @@ router.post(
 // POST /api/receipts/:receiptId/retry
 router.post(
   '/:receiptId/retry',
+  requireRole(['owner', 'manager', 'accountant']),
   aiOperationsLimiter,
   validateRequest({ params: ReceiptIdParamSchema }),
   retryReceipt
+);
+
+// DELETE /api/receipts/:receiptId
+router.delete(
+  '/:receiptId',
+  requireRole(['owner', 'manager', 'accountant']),
+  validateRequest({ params: ReceiptIdParamSchema }),
+  deleteReceipt
 );
 
 export default router;

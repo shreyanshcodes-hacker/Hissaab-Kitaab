@@ -61,7 +61,7 @@ export const AuthPage: React.FC = () => {
         showToast({
           type: 'success',
           title: 'Shop Account Provisioned',
-          message: `Welcome to ShopLedger, ${ownerName || shopName}! Verification email dispatched.`,
+          message: `Welcome to Hissaab Kitaab, ${ownerName || shopName}! Verification email dispatched.`,
         });
       } else {
         await loginWithEmail(email, password);
@@ -142,11 +142,13 @@ export const AuthPage: React.FC = () => {
           onClick={() => navigate('/')}
           className="flex items-center gap-2.5 cursor-pointer select-none"
         >
-          <div className="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-bold text-base shadow-sm">
-            ₹
-          </div>
+          <img
+            src="/logo.png"
+            alt="Hissaab Kitaab Logo"
+            className="w-9 h-9 rounded-lg object-cover shadow-sm border border-primary/30"
+          />
           <span className="font-headline-sm text-lg text-on-surface font-bold tracking-tight">
-            ShopLedger
+            Hissaab Kitaab
           </span>
         </div>
 

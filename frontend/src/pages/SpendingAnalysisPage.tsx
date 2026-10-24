@@ -13,6 +13,7 @@ import {
   PieChart,
   Tag,
   Clock,
+  Filter,
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -32,11 +33,15 @@ import {
   type AnalyticsTrends,
   type PriceTrackerItem,
 } from '../api/analyticsService';
+import { receiptService } from '../api/receiptService';
+import { exportReceiptsToCsv } from '../utils/exportSlip';
 import { useToast } from '../context/ToastContext';
+import { useLanguage } from '../context/LanguageContext';
 
 export const SpendingAnalysisPage: React.FC = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { isHindi } = useLanguage();
 
   const [selectedPeriod, setSelectedPeriod] = useState<
     'this_month' | 'last_month' | 'last_30_days' | 'last_90_days' | 'all_time'
@@ -49,6 +54,8 @@ export const SpendingAnalysisPage: React.FC = () => {
   const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
   const [trendsData, setTrendsData] = useState<AnalyticsTrends | null>(null);
   const [priceItems, setPriceItems] = useState<PriceTrackerItem[]>([]);
+  const [priceSearch, setPriceSearch] = useState('');
+  const [priceCategoryFilter, setPriceCategoryFilter] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [aiExecutiveSummary, setAiExecutiveSummary] = useState<string | null>(null);
   const [isGeneratingAiSummary, setIsGeneratingAiSummary] = useState(false);
@@ -116,16 +123,18 @@ export const SpendingAnalysisPage: React.FC = () => {
         <div className="space-y-1">
           <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-on-surface-variant text-label-xs">
             <button onClick={() => navigate('/dashboard')} className="hover:text-primary transition-colors">
-              Dashboard
+              {isHindi ? 'डैशबोर्ड' : 'Dashboard'}
             </button>
             <span>/</span>
-            <span className="text-primary font-semibold">Spending Analysis</span>
+            <span className="text-primary font-semibold">{isHindi ? 'खर्च विश्लेषण' : 'Spending Analysis'}</span>
           </nav>
           <h1 className="font-headline-lg text-2xl sm:text-3xl font-bold text-on-surface tracking-tight">
-            Understand your shop's purchases.
+            {isHindi ? 'दुकान खरीद और खर्च विश्लेषण' : "Understand your shop's purchases."}
           </h1>
           <p className="font-body-sm text-xs sm:text-sm text-on-surface-variant">
-            See where your money goes, which wholesale items you buy most, and which mandi suppliers you depend on.
+            {isHindi
+              ? 'देखें आपका पैसा कहां खर्च हुआ, कौन सा सामान सबसे ज्यादा खरीदा गया और किन मंडी सप्लायरों पर आपकी निर्भरता है।'
+              : 'See where your money goes, which wholesale items you buy most, and which mandi suppliers you depend on.'}
           </p>
         </div>
 
@@ -133,7 +142,9 @@ export const SpendingAnalysisPage: React.FC = () => {
         <div className="flex flex-wrap items-center gap-2 self-start md:self-auto">
           <div className="hidden xl:flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-fixed text-label-xs font-bold shadow-sm">
             <ShieldCheck className="w-4 h-4 text-primary" />
-            <span>{summary?.confirmedReceiptsCount || 0} Confirmed Bills (Drafts isolated)</span>
+            <span>
+              {summary?.confirmedReceiptsCount || 0} {isHindi ? 'सत्यापित बिल (ड्राफ्ट अलग)' : 'Confirmed Bills (Drafts isolated)'}
+            </span>
           </div>
 
           <Button
@@ -143,38 +154,52 @@ export const SpendingAnalysisPage: React.FC = () => {
             disabled={isGeneratingAiSummary}
             leftIcon={<RefreshCw className={`w-4 h-4 ${isGeneratingAiSummary ? 'animate-spin' : ''}`} />}
           >
-            {isGeneratingAiSummary ? 'Generating Gemini Summary…' : 'AI Executive Summary'}
+            {isGeneratingAiSummary ? (isHindi ? 'AI सारांश तैयार हो रहा है…' : 'Generating Gemini Summary…') : (isHindi ? 'AI सारांश' : 'AI Executive Summary')}
           </Button>
 
           <Button
             variant="outline"
             size="sm"
-            onClick={() =>
+            onClick={() => {
               showToast({
                 type: 'success',
-                title: 'Preparing Print Summary',
-                message: 'Formatting ledger report for print…',
-              })
-            }
+                title: isHindi ? 'प्रिंट तैयार हो रहा है' : 'Preparing Print Summary',
+                message: isHindi ? 'बही-खाता समरी प्रिंट करने के लिए डायलॉग खुल रहा है…' : 'Opening print dialog for your ledger report…',
+              });
+              setTimeout(() => window.print(), 250);
+            }}
             leftIcon={<Printer className="w-4 h-4" />}
           >
-            Print Summary
+            {isHindi ? 'समरी प्रिंट करें' : 'Print Summary'}
           </Button>
 
           <Button
             variant="primary"
             size="sm"
-            onClick={() =>
-              showToast({
-                type: 'success',
-                title: 'CA Report Exported',
-                message: 'Downloaded CSV procurement tally for your accountant.',
-              })
-            }
+            onClick={async () => {
+              try {
+                const allReceipts = await receiptService.getReceipts();
+                exportReceiptsToCsv(
+                  allReceipts,
+                  `Hissaab_Kitaab_CA_Report_${new Date().toISOString().slice(0, 10)}.csv`
+                );
+                showToast({
+                  type: 'success',
+                  title: isHindi ? 'CA रिपोर्ट डाउनलोड हुई' : 'CA Report Downloaded',
+                  message: `${isHindi ? 'अकाउंटेंट के लिए' : 'Exported'} ${allReceipts.length} ${isHindi ? 'वाउचर CSV में सुरक्षित किए गए।' : 'voucher(s) to CSV for your accountant.'}`,
+                });
+              } catch (err: any) {
+                showToast({
+                  type: 'error',
+                  title: isHindi ? 'डाउनलोड विफल' : 'Export Failed',
+                  message: err?.message || (isHindi ? 'CSV रिपोर्ट डाउनलोड नहीं हो सकी।' : 'Unable to export CSV report.'),
+                });
+              }
+            }}
             leftIcon={<Download className="w-4 h-4" />}
             className="font-bold shadow-card"
           >
-            Download CA Report
+            {isHindi ? 'CA रिपोर्ट डाउनलोड' : 'Download CA Report'}
           </Button>
         </div>
       </div>
@@ -628,7 +653,7 @@ export const SpendingAnalysisPage: React.FC = () => {
 
       {/* ===================== MANDI & WHOLESALE PRICE TRACKER ===================== */}
       <div className="p-5 rounded-2xl bg-surface-container-lowest border border-outline shadow-card space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h3 className="font-headline-sm text-lg font-bold text-on-surface">
               Wholesale Price Tracker (Mandi & Brand Rates)
@@ -637,12 +662,40 @@ export const SpendingAnalysisPage: React.FC = () => {
               Tracks actual unit rates billed on physical invoices to spot supplier inflation.
             </p>
           </div>
-          <button
-            onClick={() => navigate('/catalog')}
-            className="text-label-xs text-primary font-bold hover:underline"
-          >
-            View All Catalog Items →
-          </button>
+          <div className="flex items-center gap-2 flex-wrap">
+            <input
+              type="search"
+              value={priceSearch}
+              onChange={(e) => setPriceSearch(e.target.value)}
+              placeholder="Filter items or vendor..."
+              className="h-8 px-3 rounded-lg bg-surface-container-low border border-outline/70 text-xs text-on-surface outline-none focus:border-primary w-44"
+            />
+            <Dropdown
+              trigger={
+                <button className="h-8 px-2.5 bg-surface-container-low hover:bg-surface-container rounded-lg border border-outline/70 text-on-surface font-label-md text-label-xs flex items-center gap-1.5 transition-colors">
+                  <Filter className="w-3.5 h-3.5 text-primary" />
+                  <span>{priceCategoryFilter || 'All Categories'}</span>
+                  <span className="text-on-surface-variant text-[10px]">▼</span>
+                </button>
+              }
+              items={[
+                { id: 'all-pcat', label: 'All Categories', onClick: () => setPriceCategoryFilter('') },
+                ...Array.from(new Set(priceItems.map((p) => p.category).filter(Boolean))).map(
+                  (cat) => ({
+                    id: cat,
+                    label: cat,
+                    onClick: () => setPriceCategoryFilter(cat),
+                  })
+                ),
+              ]}
+            />
+            <button
+              onClick={() => navigate('/catalog')}
+              className="text-label-xs text-primary font-bold hover:underline ml-1"
+            >
+              View All Catalog →
+            </button>
+          </div>
         </div>
 
         <div className="overflow-x-auto">
@@ -658,7 +711,16 @@ export const SpendingAnalysisPage: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-outline/60">
-              {priceItems.map((item) => (
+              {priceItems
+                .filter((item) => {
+                  const matchesCat = !priceCategoryFilter || item.category === priceCategoryFilter;
+                  const matchesSearch =
+                    !priceSearch.trim() ||
+                    item.name.toLowerCase().includes(priceSearch.toLowerCase()) ||
+                    item.primarySupplier.toLowerCase().includes(priceSearch.toLowerCase());
+                  return matchesCat && matchesSearch;
+                })
+                .map((item) => (
                 <tr key={item.name} className="hover:bg-surface-container-low/60">
                   <td className="p-3 font-semibold text-on-surface">{item.name}</td>
                   <td className="p-3">

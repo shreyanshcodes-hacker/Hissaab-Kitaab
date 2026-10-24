@@ -5,10 +5,13 @@ import {
   Edit,
   Save,
   CheckCircle2,
+  Upload,
+  Filter,
 } from 'lucide-react';
 import { Button } from '../components/common/Button';
 import { Card } from '../components/common/Card';
 import { Badge } from '../components/common/Badge';
+import { Dropdown } from '../components/common/Dropdown';
 import { DataTable, type Column } from '../components/common/DataTable';
 import { supplierService } from '../api/supplierService';
 import { receiptService } from '../api/receiptService';
@@ -22,6 +25,8 @@ export const SupplierDetailPage: React.FC = () => {
 
   const [supplier, setSupplier] = useState<Supplier | null>(null);
   const [receipts, setReceipts] = useState<ReceiptType[]>([]);
+  const [receiptSearch, setReceiptSearch] = useState('');
+  const [receiptStatusFilter, setReceiptStatusFilter] = useState<'all' | 'verified' | 'needs_review'>('all');
   const [notes, setNotes] = useState('');
   const [isEditingNotes, setIsEditingNotes] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -169,9 +174,10 @@ export const SupplierDetailPage: React.FC = () => {
         <Button
           variant="primary"
           onClick={() => navigate('/receipts/new')}
+          leftIcon={<Upload className="w-4 h-4" />}
           className="shadow-card font-bold"
         >
-          + Add Bill from this Vendor
+          Upload Bill from Vendor
         </Button>
       </div>
 
@@ -268,13 +274,51 @@ export const SupplierDetailPage: React.FC = () => {
 
         {/* Right (8 Columns): Supplier's Invoices Table */}
         <div className="lg:col-span-8 space-y-4">
-          <h3 className="font-headline-sm text-lg font-bold text-on-surface">
-            Purchase Receipts from {supplier.name}
-          </h3>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <h3 className="font-headline-sm text-lg font-bold text-on-surface">
+              Purchase Receipts from {supplier.name}
+            </h3>
+            <div className="flex items-center gap-2 flex-wrap">
+              <input
+                type="search"
+                value={receiptSearch}
+                onChange={(e) => setReceiptSearch(e.target.value)}
+                placeholder="Search invoice # or date..."
+                className="h-8 px-3 rounded-lg bg-surface-container-lowest border border-outline/70 text-xs text-on-surface outline-none focus:border-primary w-44"
+              />
+              <Dropdown
+                trigger={
+                  <button className="h-8 px-2.5 bg-surface-container-low hover:bg-surface-container rounded-lg border border-outline/70 text-on-surface font-label-md text-label-xs flex items-center gap-1.5 transition-colors">
+                    <Filter className="w-3.5 h-3.5 text-primary" />
+                    <span>
+                      {receiptStatusFilter === 'all'
+                        ? 'All Status'
+                        : receiptStatusFilter === 'verified'
+                          ? 'Verified'
+                          : 'Needs Review'}
+                    </span>
+                    <span className="text-on-surface-variant text-[10px]">▼</span>
+                  </button>
+                }
+                items={[
+                  { id: 'all', label: 'All Status', onClick: () => setReceiptStatusFilter('all') },
+                  { id: 'verified', label: 'Verified Only', onClick: () => setReceiptStatusFilter('verified') },
+                  { id: 'needs_review', label: 'Needs Review', onClick: () => setReceiptStatusFilter('needs_review') },
+                ]}
+              />
+            </div>
+          </div>
 
           <DataTable<ReceiptType>
             columns={receiptColumns}
-            data={receipts}
+            data={receipts.filter((r) => {
+              if (receiptStatusFilter !== 'all' && r.status !== receiptStatusFilter) return false;
+              if (receiptSearch.trim()) {
+                const q = receiptSearch.toLowerCase();
+                return r.invoiceNo.toLowerCase().includes(q) || r.billDate.toLowerCase().includes(q);
+              }
+              return true;
+            })}
             keyExtractor={(item) => item.id}
             onRowClick={(item) => navigate(`/receipts/${item.id}`)}
           />

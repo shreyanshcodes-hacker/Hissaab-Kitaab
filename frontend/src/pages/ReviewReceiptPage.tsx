@@ -22,21 +22,26 @@ import { Button } from '../components/common/Button';
 import { ConfirmationDialog } from '../components/common/ConfirmationDialog';
 import { receiptService } from '../api/receiptService';
 import type { Receipt, ReceiptItem } from '../types';
+import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { useLanguage } from '../context/LanguageContext';
 import { cn } from '../utils/cn';
 import { calculateLineTotalMinor } from '../utils/money';
 
 export const ReviewReceiptPage: React.FC = () => {
   const { receiptId = 'REC-2024-1089' } = useParams<{ receiptId: string }>();
   const navigate = useNavigate();
+  const { user, isGuest } = useAuth();
   const { showToast } = useToast();
+  const { isHindi } = useLanguage();
 
   const [receipt, setReceipt] = useState<Receipt | null>(null);
   const [items, setItems] = useState<ReceiptItem[]>([]);
+  const [voucherDisplayMode, setVoucherDisplayMode] = useState<'photo' | 'slip'>('photo');
   const [headerInfo, setHeaderInfo] = useState({
-    supplierName: 'Gupta Wholesale Mart',
-    date: '2024-10-24',
-    invoiceNo: 'GW-8821',
+    supplierName: '',
+    date: new Date().toISOString().slice(0, 10),
+    invoiceNo: receiptId,
     paymentMode: 'upi',
     expenseCategory: 'Wholesale Inventory (Stock for Resale)',
   });
@@ -87,17 +92,16 @@ export const ReviewReceiptPage: React.FC = () => {
       if (initialData) {
         setReceipt(initialData);
         setHeaderInfo({
-          supplierName: initialData.supplierName || 'Gupta Wholesale Mart',
-          date: initialData.billDate || '2024-10-24',
-          invoiceNo: initialData.invoiceNo || 'GW-8821',
-          paymentMode: 'upi',
+          supplierName: initialData.supplierName || 'Scanned Vendor',
+          date: initialData.billDate || new Date().toISOString().slice(0, 10),
+          invoiceNo: initialData.invoiceNo || receiptId,
+          paymentMode: initialData.paymentMode || 'upi',
           expenseCategory: 'Wholesale Inventory (Stock for Resale)',
         });
 
-        // If items are populated, use them; otherwise use default Stitch mockup items
         if (initialData.items && initialData.items.length > 0) {
           setItems(initialData.items);
-        } else {
+        } else if (isGuest && receiptId === 'REC-2024-1089') {
           setItems([
             {
               id: 'item-1',
@@ -123,43 +127,22 @@ export const ReviewReceiptPage: React.FC = () => {
               confidenceScore: 0.98,
               needsReview: false,
             },
+          ]);
+        } else {
+          // Real uploaded image with 0 auto-detected items: provide 1 clean blank row for manual entry
+          setItems([
             {
-              id: 'item-3',
-              name: 'Fortune Sunlite Refined Oil 1L',
-              category: 'Cooking Oils',
-              quantity: 30,
-              unit: 'pouch',
-              unitRate: 142.0,
-              lineTotal: 4260.0,
-              taxRate: 5,
-              confidenceScore: 0.72,
-              needsReview: true, // Flagged for review
-              reviewReason: 'Digit ambiguous: ₹142 or ₹147?',
-            },
-            {
-              id: 'item-4',
-              name: 'Madhur Pure & Hygienic Sugar 5kg',
-              category: 'Sugar & Jaggery',
-              quantity: 12,
-              unit: 'bag',
-              unitRate: 215.0,
-              lineTotal: 2580.0,
-              taxRate: 5,
-              confidenceScore: 0.96,
-              needsReview: false,
-            },
-            {
-              id: 'item-5',
-              name: 'MDH Deggi Mirch 100g',
-              category: 'Spices & Masala',
-              quantity: 15,
-              unit: 'packet',
-              unitRate: 40.66,
-              lineTotal: 610.0,
-              taxRate: 5,
-              confidenceScore: 0.81,
-              needsReview: true, // Flagged for arithmetic discrepancy
-              reviewReason: '15 × 40.66 = 609.90 (₹0.10 diff)',
+              id: `item_${Date.now()}`,
+              name: '',
+              category: 'General Grocery',
+              quantity: 1,
+              unit: 'piece',
+              unitRate: 0,
+              lineTotal: 0,
+              taxRate: 0,
+              confidenceScore: 1.0,
+              needsReview: true,
+              reviewReason: 'Enter item name & rate',
             },
           ]);
         }
@@ -167,7 +150,7 @@ export const ReviewReceiptPage: React.FC = () => {
     }
 
     loadData();
-  }, [receiptId]);
+  }, [receiptId, isGuest]);
 
   // Auto-save draft to localStorage whenever items or header change
   useEffect(() => {
@@ -189,7 +172,7 @@ export const ReviewReceiptPage: React.FC = () => {
   // Derived financial totals
   const subtotal = items.reduce((acc, curr) => acc + (curr.lineTotal || 0), 0);
   const gstTotal = items.reduce((acc, curr) => {
-    const rate = curr.taxRate || 5;
+    const rate = curr.taxRate ?? 0;
     return acc + Math.round((curr.lineTotal * rate) / 100 * 100) / 100;
   }, 0);
   const grandTotal = subtotal + gstTotal;
@@ -312,14 +295,21 @@ export const ReviewReceiptPage: React.FC = () => {
   // Save draft explicitly
   const handleSaveDraft = async () => {
     try {
+      if (headerInfo.supplierName.trim()) {
+        await receiptService.updateReceiptName(
+          receiptId,
+          headerInfo.supplierName.trim(),
+          headerInfo.invoiceNo.trim()
+        );
+      }
       localStorage.setItem(
         `shopledger_draft_${receiptId}`,
         JSON.stringify({ receipt, items, headerInfo, updatedAt: new Date().toISOString() })
       );
       showToast({
         type: 'success',
-        title: 'Draft Saved Locally',
-        message: 'Your progress is stored. You can safely return later.',
+        title: 'Draft & Receipt Name Saved',
+        message: `Saved "${headerInfo.supplierName.trim()}" and your review progress.`,
       });
     } catch (err: any) {
       showToast({
@@ -355,9 +345,9 @@ export const ReviewReceiptPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 py-5 space-y-5 pb-24">
+    <div className="max-w-[1536px] w-full min-w-0 mx-auto py-3 sm:py-5 space-y-5 pb-24">
       {/* Top Header & Breadcrumb Bar (Stitch Accurate) */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 min-w-0">
         <div className="space-y-1">
           <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-on-surface-variant text-label-xs">
             <button onClick={() => navigate('/receipts')} className="hover:text-primary transition-colors">
@@ -388,7 +378,7 @@ export const ReviewReceiptPage: React.FC = () => {
             leftIcon={<X className="w-4 h-4" />}
             className="text-on-surface hover:bg-surface-container"
           >
-            Discard
+            {isHindi ? 'रद्द करें' : 'Discard'}
           </Button>
           <Button
             variant="secondary"
@@ -397,7 +387,7 @@ export const ReviewReceiptPage: React.FC = () => {
             leftIcon={<Save className="w-4 h-4" />}
             className="shadow-sm"
           >
-            Save Draft
+            {isHindi ? 'ड्राफ्ट सेव करें' : 'Save Draft'}
           </Button>
           <Button
             variant="primary"
@@ -406,7 +396,7 @@ export const ReviewReceiptPage: React.FC = () => {
             leftIcon={<CheckCircle2 className="w-4 h-4" />}
             className="font-bold shadow-card px-5"
           >
-            Confirm & Save (₹{grandTotal.toFixed(0)})
+            {isHindi ? `पुष्टि करें और सेव करें (₹${grandTotal.toFixed(0)})` : `Confirm & Save (₹${grandTotal.toFixed(0)})`}
           </Button>
         </div>
       </div>
@@ -498,13 +488,13 @@ export const ReviewReceiptPage: React.FC = () => {
         >
           <div className="bg-surface-container-lowest rounded-2xl border border-outline shadow-card overflow-hidden flex flex-col">
             {/* Inspector Toolbar */}
-            <div className="p-3 px-4 bg-surface-container-low flex items-center justify-between border-b border-outline/30">
+            <div className="p-3 px-4 bg-surface-container-low flex flex-wrap items-center justify-between gap-2 border-b border-outline/30">
               <div className="flex items-center gap-2 text-on-surface text-xs font-bold">
                 <Store className="w-4 h-4 text-primary" />
                 <span>Source Voucher Scan</span>
               </div>
 
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 flex-wrap">
                 <button
                   onClick={handleZoomOut}
                   className="p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors"
@@ -537,156 +527,169 @@ export const ReviewReceiptPage: React.FC = () => {
                 >
                   <Maximize2 className="w-4 h-4" />
                 </button>
+                {receipt?.sourceVoucherUrl && receipt.sourceVoucherUrl !== 'manual-entry' && (
+                  <button
+                    type="button"
+                    onClick={() => setVoucherDisplayMode((m) => (m === 'photo' ? 'slip' : 'photo'))}
+                    className="ml-1 px-2.5 py-1 rounded-lg bg-[#1B5E3A] text-white text-xs font-bold hover:bg-[#14492D] transition-colors"
+                  >
+                    {voucherDisplayMode === 'photo' ? 'Digital Slip' : 'Original Photo'}
+                  </button>
+                )}
               </div>
             </div>
 
             {/* Interactive Receipt Canvas Viewport */}
-            <div className="relative bg-surface-container-highest/40 p-4 h-[600px] overflow-auto flex items-center justify-center select-none">
-              {/* Simulated Authentic Paper Slip (Stitch Accurate) */}
-              <div
-                style={{
-                  transform: `scale(${zoomLevel / 100}) rotate(${rotation}deg)`,
-                  transformOrigin: 'center center',
-                  fontFamily: "'Courier New', Courier, monospace",
-                }}
-                className="relative w-[340px] sm:w-[360px] bg-[#fbf9f1] text-[#2b2923] p-5 sm:p-6 shadow-md transition-transform duration-200 rounded-[2px]"
-              >
-                {/* Subtle Paper Texture Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-900/[0.02] to-amber-900/[0.05] pointer-events-none"></div>
-
-                {/* Wholesale Header */}
-                <div className="text-center pb-2.5 leading-tight">
-                  <div className="text-[0.6rem] tracking-widest text-[#736e65] font-sans">
-                    || SHREE GANESHAY NAMAHA ||
-                  </div>
-                  <div className="font-bold text-[1.05rem] tracking-tight uppercase mt-0.5 font-sans text-[#181714]">
-                    GUPTA WHOLESALE MART
-                  </div>
-                  <div className="text-[0.68rem] text-[#524e47] mt-0.5">
-                    Grain, Edible Oils & Spices Merchants
-                  </div>
-                  <div className="text-[0.65rem] text-[#69645b]">412 Khari Baoli, Delhi-110006</div>
-                  <div className="text-[0.68rem] text-[#3d3a33] font-sans font-bold mt-1">
-                    GSTIN: 07AACPG4819M1Z3
-                  </div>
+            <div className="relative bg-surface-container-highest/40 p-3 sm:p-4 h-[420px] sm:h-[600px] overflow-auto flex items-center justify-center select-none">
+              {receipt?.sourceVoucherUrl &&
+              receipt.sourceVoucherUrl !== 'manual-entry' &&
+              voucherDisplayMode === 'photo' ? (
+                <div
+                  style={{
+                    transform: `scale(${zoomLevel / 100}) rotate(${rotation}deg)`,
+                    transformOrigin: 'center center',
+                  }}
+                  className="relative max-w-full max-h-full flex items-center justify-center transition-transform duration-200"
+                >
+                  <img
+                    src={receipt.sourceVoucherUrl}
+                    alt={headerInfo.supplierName || 'Uploaded Receipt'}
+                    className="max-w-full max-h-[380px] sm:max-h-[550px] object-contain rounded-lg shadow-md border border-outline/30"
+                  />
                 </div>
+              ) : (
+                /* Digital Paper Slip Representation Bound to Actual Receipt Data */
+                <div
+                  style={{
+                    transform: `scale(${zoomLevel / 100}) rotate(${rotation}deg)`,
+                    transformOrigin: 'center center',
+                    fontFamily: "'Courier New', Courier, monospace",
+                  }}
+                  className="relative w-full max-w-[340px] sm:max-w-[360px] bg-[#fbf9f1] text-[#2b2923] p-4 sm:p-6 shadow-md transition-transform duration-200 rounded-[2px]"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-900/[0.02] to-amber-900/[0.05] pointer-events-none"></div>
 
-                <div className="my-2 border-b border-dashed border-[#b8b2a3]"></div>
+                  {/* Vendor Header */}
+                  <div className="text-center pb-2.5 leading-tight">
+                    <div className="text-[0.6rem] tracking-widest text-[#736e65] font-sans uppercase">
+                      Tax Invoice / Purchase Voucher
+                    </div>
+                    <div className="font-bold text-[1.05rem] tracking-tight uppercase mt-0.5 font-sans text-[#181714]">
+                      {headerInfo.supplierName || 'WHOLESALE VENDOR'}
+                    </div>
+                    <div className="text-[0.68rem] text-[#524e47] mt-0.5">
+                      {headerInfo.expenseCategory || 'General Purchase'}
+                    </div>
+                  </div>
 
-                {/* Metadata */}
-                <div className="text-[0.7rem] flex justify-between items-center py-0.5">
-                  <span>
-                    Bill No: <strong className="font-sans text-[#151d19]">{headerInfo.invoiceNo}</strong>
-                  </span>
-                  <span>
-                    Date: <strong className="font-sans text-[#151d19]">{headerInfo.date}</strong>
-                  </span>
-                </div>
-                <div className="text-[0.68rem] text-[#5a564e] pb-1">
-                  M/s: <strong className="font-sans text-[#151d19]">Sharma Kirana Store, Main Bazar</strong>
-                </div>
+                  <div className="my-2 border-b border-dashed border-[#b8b2a3]"></div>
 
-                <div className="my-1.5 border-b border-[#2b2923]"></div>
+                  {/* Metadata */}
+                  <div className="text-[0.7rem] flex justify-between items-center py-0.5">
+                    <span>
+                      Bill No: <strong className="font-sans text-[#151d19]">{headerInfo.invoiceNo}</strong>
+                    </span>
+                    <span>
+                      Date: <strong className="font-sans text-[#151d19]">{headerInfo.date}</strong>
+                    </span>
+                  </div>
+                  <div className="text-[0.68rem] text-[#5a564e] pb-1">
+                    M/s: <strong className="font-sans text-[#151d19]">{user?.shopName || 'My Store'}</strong>
+                  </div>
 
-                {/* Table Headers on Paper Receipt */}
-                <div className="text-[0.62rem] font-bold flex justify-between py-1 text-[#423f38] uppercase">
-                  <span className="w-5">Sn</span>
-                  <span className="flex-1">Particulars</span>
-                  <span className="w-12 text-right">Qty</span>
-                  <span className="w-12 text-right">Rate</span>
-                  <span className="w-14 text-right">Total</span>
-                </div>
-                <div className="border-b border-dashed border-[#b8b2a3] mb-1"></div>
+                  <div className="my-1.5 border-b border-[#2b2923]"></div>
 
-                {/* Scanned Receipt Line Items with Interactive Bounding Boxes */}
-                <div className="flex flex-col gap-1 text-[0.68rem]">
-                  {items.map((item, idx) => {
-                    const isSelected = activeHighlightIndex === idx;
-                    const isAmber = item.needsReview;
+                  {/* Table Headers on Paper Receipt */}
+                  <div className="text-[0.62rem] font-bold flex justify-between py-1 text-[#423f38] uppercase">
+                    <span className="w-5">Sn</span>
+                    <span className="flex-1">Particulars</span>
+                    <span className="w-12 text-right">Qty</span>
+                    <span className="w-12 text-right">Rate</span>
+                    <span className="w-14 text-right">Total</span>
+                  </div>
+                  <div className="border-b border-dashed border-[#b8b2a3] mb-1"></div>
 
-                    return (
-                      <div
-                        key={item.id}
-                        onClick={() => setActiveHighlightIndex(idx)}
-                        className={cn(
-                          'relative group p-1 -mx-1 rounded cursor-pointer transition-all flex justify-between items-center',
-                          isAmber
-                            ? 'bg-amber-400/25 ring-2 ring-amber-500/80 animate-pulse'
-                            : isSelected
-                            ? 'bg-emerald-500/20 ring-1 ring-primary'
-                            : 'hover:bg-emerald-500/10'
-                        )}
-                      >
-                        {isSelected && (
-                          <div className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-1 h-3 bg-primary rounded-full"></div>
-                        )}
-                        <span className="w-5 text-[#757064]">{idx + 1}</span>
-                        <span className="flex-1 font-semibold truncate pr-1">{item.name}</span>
-                        <span className="w-12 text-right">
-                          {item.quantity} {item.unit?.slice(0, 2)}
-                        </span>
-                        <span
+                  {/* Scanned Receipt Line Items */}
+                  <div className="flex flex-col gap-1 text-[0.68rem]">
+                    {items.map((item, idx) => {
+                      const isSelected = activeHighlightIndex === idx;
+                      const isAmber = item.needsReview;
+
+                      return (
+                        <div
+                          key={item.id}
+                          onClick={() => setActiveHighlightIndex(idx)}
                           className={cn(
-                            'w-12 text-right font-mono',
-                            isAmber && 'text-amber-900 font-bold bg-amber-200/80 px-0.5 rounded'
+                            'relative group p-1 -mx-1 rounded cursor-pointer transition-all flex justify-between items-center',
+                            isAmber
+                              ? 'bg-amber-400/25 ring-2 ring-amber-500/80'
+                              : isSelected
+                                ? 'bg-emerald-500/20 ring-1 ring-primary'
+                                : 'hover:bg-emerald-500/10'
                           )}
                         >
-                          {item.unitRate.toFixed(0)}
-                          {isAmber ? '?' : ''}
-                        </span>
-                        <span className="w-14 text-right font-mono font-bold">
-                          {item.lineTotal.toFixed(0)}
-                        </span>
-
-                        {isAmber && (
-                          <span className="absolute -right-1.5 -top-1.5 flex h-3.5 w-3.5">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-amber-600 text-[8px] text-white items-center justify-center font-bold">
-                              !
-                            </span>
+                          {isSelected && (
+                            <div className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-1 h-3 bg-primary rounded-full"></div>
+                          )}
+                          <span className="w-5 text-[#757064]">{idx + 1}</span>
+                          <span className="flex-1 font-semibold truncate pr-1">{item.name || 'Unnamed Item'}</span>
+                          <span className="w-12 text-right">
+                            {item.quantity} {item.unit?.slice(0, 2)}
                           </span>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
+                          <span
+                            className={cn(
+                              'w-12 text-right font-mono',
+                              isAmber && 'text-amber-900 font-bold bg-amber-200/80 px-0.5 rounded'
+                            )}
+                          >
+                            {item.unitRate.toFixed(0)}
+                            {isAmber ? '?' : ''}
+                          </span>
+                          <span className="w-14 text-right font-mono font-bold">
+                            {item.lineTotal.toFixed(0)}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
 
-                <div className="my-2 border-b border-[#2b2923]"></div>
+                  <div className="my-2 border-b border-[#2b2923]"></div>
 
-                {/* Scanned Paper Totals */}
-                <div className="text-[0.68rem] space-y-0.5">
-                  <div className="flex justify-between">
-                    <span>Subtotal:</span>
-                    <span className="font-mono">₹{subtotal.toFixed(2)}</span>
+                  {/* Scanned Paper Totals */}
+                  <div className="text-[0.68rem] space-y-0.5">
+                    <div className="flex justify-between">
+                      <span>Subtotal:</span>
+                      <span className="font-mono">₹{subtotal.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-[#5f5a50]">
+                      <span>CGST:</span>
+                      <span className="font-mono">₹{(gstTotal / 2).toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-[#5f5a50]">
+                      <span>SGST:</span>
+                      <span className="font-mono">₹{(gstTotal / 2).toFixed(2)}</span>
+                    </div>
+                    <div className="border-t border-double border-[#2b2923] pt-1 mt-1 flex justify-between font-bold text-[0.78rem] font-sans">
+                      <span>NET TOTAL:</span>
+                      <span>₹{grandTotal.toFixed(2)}</span>
+                    </div>
                   </div>
-                  <div className="flex justify-between text-[#5f5a50]">
-                    <span>CGST @ 2.5%:</span>
-                    <span className="font-mono">₹{(gstTotal / 2).toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between text-[#5f5a50]">
-                    <span>SGST @ 2.5%:</span>
-                    <span className="font-mono">₹{(gstTotal / 2).toFixed(2)}</span>
-                  </div>
-                  <div className="border-t border-double border-[#2b2923] pt-1 mt-1 flex justify-between font-bold text-[0.78rem] font-sans">
-                    <span>NET TOTAL:</span>
-                    <span>₹{grandTotal.toFixed(2)}</span>
+
+                  {/* Rubber Stamp Simulation */}
+                  <div className="mt-3 pt-2 border-t border-dashed border-[#b8b2a3] flex justify-between items-end">
+                    <div className="inline-block transform -rotate-6 border-2 border-dashed border-red-700/60 p-1 rounded text-[0.6rem] font-bold text-red-800 font-sans tracking-wide">
+                      {(headerInfo.paymentMode || 'UPI').toUpperCase()}
+                      <br />
+                      <span className="text-[0.5rem]">{(headerInfo.supplierName || 'VENDOR').toUpperCase()}</span>
+                    </div>
+                    <div className="text-[0.58rem] text-right text-[#57534b]">
+                      Auth. Signatory
+                      <br />
+                      <span className="italic text-[0.68rem]">{headerInfo.supplierName || 'Vendor'}</span>
+                    </div>
                   </div>
                 </div>
-
-                {/* Red Ink Rubber Stamp Simulation */}
-                <div className="mt-3 pt-2 border-t border-dashed border-[#b8b2a3] flex justify-between items-end">
-                  <div className="inline-block transform -rotate-6 border-2 border-dashed border-red-700/60 p-1 rounded text-[0.6rem] font-bold text-red-800 font-sans tracking-wide">
-                    PAID CASH / UPI
-                    <br />
-                    <span className="text-[0.5rem]">GUPTA WHOLESALE MART</span>
-                  </div>
-                  <div className="text-[0.58rem] text-right text-[#57534b]">
-                    Auth. Signatory
-                    <br />
-                    <span className="italic text-[0.68rem]">R.K. Gupta</span>
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
 
             {/* Helper Footer Note */}
@@ -1007,7 +1010,7 @@ export const ReviewReceiptPage: React.FC = () => {
                   GST Compliance & Total Summary
                 </span>
                 <p className="text-[0.75rem] text-on-surface-variant">
-                  Derived from Gupta Wholesale Mart registered GST slab (5% for Groceries & Cooking Oils).
+                  Derived from {headerInfo.supplierName || 'Vendor'} item rates and GST slabs.
                 </p>
               </div>
 

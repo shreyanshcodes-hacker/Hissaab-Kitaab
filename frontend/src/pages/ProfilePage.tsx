@@ -90,7 +90,7 @@ export const ProfilePage: React.FC = () => {
         title="Merchant Profile"
         subtitle="Manage your storekeeper identity and authorized branch credentials."
         breadcrumbs={[
-          { label: 'ShopLedger', onClick: () => navigate('/dashboard') },
+          { label: 'Hissaab Kitaab', onClick: () => navigate('/dashboard') },
           { label: 'Profile' },
         ]}
         actions={

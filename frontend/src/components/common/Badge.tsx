@@ -27,19 +27,19 @@ export const Badge: React.FC<BadgeProps> = ({
 }) => {
   const variants = {
     verified:
-      'bg-verified-container text-verified font-semibold border border-verified-border',
+      'bg-[#DCFCE7] text-[#166534] font-semibold border border-[#86EFAC]',
     needs_checking:
-      'bg-tertiary-fixed text-tertiary-on-fixed font-semibold border border-tertiary-fixed-dim',
+      'bg-[#FEF3C7] text-[#92400E] font-semibold border border-[#FCD34D]',
     error:
-      'bg-error-container text-error font-semibold border border-error/20',
+      'bg-[#FEE2E2] text-[#991B1B] font-semibold border border-[#FCA5A5]',
     draft:
-      'bg-secondary-container text-secondary-on-container font-medium border border-secondary-container',
+      'bg-[#DBE5DD] text-[#151D19] font-medium border border-[#BFC9C1]',
     category:
-      'bg-secondary-fixed text-secondary-on-fixed-variant font-medium border border-outline/50',
+      'bg-[#DBE5DD] text-[#151D19] font-medium border border-[#BFC9C1]',
     neutral:
       'bg-surface-container text-on-surface-variant font-medium border border-outline',
     primary:
-      'bg-primary-container text-on-primary font-semibold border border-primary-container',
+      'bg-[#1B5E3A] text-white font-semibold border border-[#1B5E3A]',
   };
 
   const sizes = {
@@ -75,8 +75,8 @@ export const Badge: React.FC<BadgeProps> = ({
       )}
       {...props}
     >
-      {iconElement && <span className="flex-shrink-0">{iconElement}</span>}
-      <span>{children}</span>
+      {iconElement && <span className="flex-shrink-0 text-current">{iconElement}</span>}
+      <span className="text-current">{children}</span>
     </span>
   );
 };

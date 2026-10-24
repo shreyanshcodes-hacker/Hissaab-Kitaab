@@ -22,6 +22,12 @@ export async function uploadReceipt(req: Request, res: Response, next: NextFunct
     // 1. Upload to authenticated business-scoped Cloud Storage path
     const uploadResult = await storageService.uploadReceiptFile(businessId, receiptId, file);
 
+    // If image fits within Firestore field limits (< 700KB), persist inline Data URL so frontend can render the exact scanned photo
+    const inlineImagePreview =
+      file.mimetype.startsWith('image/') && file.size <= 700 * 1024
+        ? `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
+        : uploadResult.storagePath;
+
     const now = new Date().toISOString();
     const initialReceipt: Receipt = {
       id: receiptId,
@@ -37,7 +43,7 @@ export async function uploadReceipt(req: Request, res: Response, next: NextFunct
       roundOffMinor: 0,
       grandTotalMinor: 0,
       reviewStatus: 'processing',
-      imagePath: uploadResult.storagePath,
+      imagePath: inlineImagePreview,
       lineItemCount: 0,
       tags: [],
       isDeleted: false,
@@ -152,6 +158,19 @@ export async function extractReceipt(req: Request, res: Response, next: NextFunc
       status: 200,
       message: 'OCR extraction completed',
       data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteReceipt(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    await receiptService.deleteReceipt(req.businessId!, req.params.receiptId as string);
+    res.json({
+      status: 200,
+      message: 'Receipt deleted successfully',
+      data: { id: req.params.receiptId, deleted: true },
     });
   } catch (error) {
     next(error);

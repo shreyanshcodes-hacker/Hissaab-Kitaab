@@ -147,11 +147,11 @@ export const DashboardPage: React.FC = () => {
         >
           {isHindi
             ? item.status === 'needs_review'
-              ? 'जांचें और सत्यापित करें'
-              : 'बिल देखें'
+              ? 'जांचें'
+              : 'देखें'
             : item.status === 'needs_review'
-            ? 'Review & Verify'
-            : 'View Scan'}
+            ? 'Review'
+            : 'View'}
         </Button>
       ),
     },
@@ -242,7 +242,7 @@ export const DashboardPage: React.FC = () => {
             leftIcon={<Upload className="w-5 h-5" />}
             className="shadow-card font-bold"
           >
-            {isHindi ? 'बिल अपलोड करें' : 'Upload Bill'}
+            {isHindi ? 'अपलोड' : 'Upload'}
           </Button>
         </div>
       </div>
@@ -276,7 +276,7 @@ export const DashboardPage: React.FC = () => {
             rightIcon={<ArrowRight className="w-4 h-4" />}
             className="w-full sm:w-auto font-bold flex-shrink-0"
           >
-            {isHindi ? `लंबित बिल जांचें (${metrics.needsCheckingCount})` : `Review Flagged Bills (${metrics.needsCheckingCount})`}
+            {isHindi ? `जांचें (${metrics.needsCheckingCount})` : `Review (${metrics.needsCheckingCount})`}
           </Button>
         </div>
       )}

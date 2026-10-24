@@ -95,7 +95,7 @@ export const SuppliersPage: React.FC = () => {
             leftIcon={<PlusCircle className="w-5 h-5" />}
             className="shadow-card font-bold"
           >
-            {isHindi ? '+ नया सप्लायर जोड़ें' : '+ Add New Supplier'}
+            {isHindi ? '+ सप्लायर' : '+ Supplier'}
           </Button>
         }
       />

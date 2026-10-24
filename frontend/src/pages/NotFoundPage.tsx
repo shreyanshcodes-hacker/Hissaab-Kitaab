@@ -25,8 +25,10 @@ export const NotFoundPage: React.FC = () => {
           variant="secondary"
           onClick={() => navigate(-1)}
           leftIcon={<ArrowLeft className="w-4 h-4" />}
+          className="px-3"
+          title="Go Back"
         >
-          Go Back
+          ←
         </Button>
         <Button
           variant="primary"

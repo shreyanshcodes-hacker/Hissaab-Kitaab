@@ -26,8 +26,8 @@ export const HelpPage: React.FC = () => {
       a: '100% private. All your purchase bills, negotiated supplier rates, and item catalogs are cryptographically restricted to your authenticated shop account. No other store or wholesale agency can ever view your records.',
     },
     {
-      q: 'How do I track supplier rate hikes?',
-      a: 'Whenever a supplier bills you at a higher unit rate than your previous invoice, Hissaab Kitaab automatically triggers a Price Hike Alert on your dashboard and inside the Ask Hissaab Kitaab AI assistant.',
+      q: 'How do I track supplier purchase rates?',
+      a: 'Hissaab Kitaab automatically tracks the unit rates billed on your verified invoices and organizes them in your Item Catalog and Spending Analysis, so you can always see the exact rates you paid.',
     },
   ];
 

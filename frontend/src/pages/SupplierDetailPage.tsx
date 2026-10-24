@@ -154,9 +154,11 @@ export const SupplierDetailPage: React.FC = () => {
             variant="ghost"
             size="sm"
             onClick={() => navigate('/suppliers')}
-            leftIcon={<ArrowLeft className="w-4 h-4" />}
+            leftIcon={<ArrowLeft className="w-5 h-5" />}
+            className="px-2"
+            title="Back"
           >
-            All Suppliers
+            ←
           </Button>
           <div>
             <div className="flex items-center gap-2">

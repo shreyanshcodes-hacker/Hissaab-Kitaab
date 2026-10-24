@@ -424,8 +424,7 @@ export const AuthPage: React.FC = () => {
             <h4 className="font-bold text-on-surface mb-1">Can I use ShopLedger without GST?</h4>
             <p className="text-on-surface-variant text-body-sm">
               Yes. If your store has turnover under ₹40 Lakh and is GST-exempt, or you operate under
-              the composition scheme, you can still record all purchase bills and track supplier price
-              hikes.
+              the composition scheme, you can still record all purchase bills and organize supplier ledgers.
             </p>
           </div>
           <div>

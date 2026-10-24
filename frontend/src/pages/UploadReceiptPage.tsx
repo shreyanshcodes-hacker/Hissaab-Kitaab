@@ -7,6 +7,7 @@ import {
   ShieldCheck,
   HelpCircle,
   ArrowRight,
+  ArrowLeft,
   RotateCcw,
   Check,
   AlertCircle,
@@ -1090,8 +1091,15 @@ export const UploadReceiptPage: React.FC = () => {
                 </p>
               </div>
             </div>
-            <Button variant="ghost" size="sm" onClick={() => setViewMode('methods')}>
-              Back to Methods
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setViewMode('methods')}
+              leftIcon={<ArrowLeft className="w-4 h-4" />}
+              className="px-2"
+              title="Back"
+            >
+              ←
             </Button>
           </div>
 

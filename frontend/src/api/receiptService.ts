@@ -6,9 +6,10 @@ import {
   setDoc,
   deleteDoc,
   writeBatch,
+  onSnapshot,
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
-import type { Receipt } from '../types';
+import type { Receipt, PaymentMode, PaymentStatus } from '../types';
 import { DEMO_RECEIPTS } from '../data/demoData';
 import { apiClient, getActiveTenantContext } from './client';
 
@@ -1087,7 +1088,14 @@ export const receiptService = {
   ): Promise<Receipt> {
     const { isGuestMode, businessId } = getActiveTenantContext();
 
+    const selectedPaymentMode: PaymentMode = headerInfo?.paymentMode || 'cash';
+    const selectedPaymentStatus: PaymentStatus =
+      headerInfo?.paymentStatus || (selectedPaymentMode === 'credit_udhar' ? 'unpaid_udhar' : 'paid');
+
     if (!isGuestMode && businessId) {
+      const backendPaymentStatus =
+        selectedPaymentStatus === 'partial' ? 'partially_paid' : selectedPaymentStatus;
+
       try {
         await apiClient.patch(
           `/receipts/${id}`,
@@ -1099,6 +1107,10 @@ export const receiptService = {
               name: headerInfo?.supplierName,
               phone: headerInfo?.supplierPhone,
               gstin: headerInfo?.supplierGstin,
+            },
+            payment: {
+              method: selectedPaymentMode,
+              status: backendPaymentStatus,
             },
             items: updatedItems.map((item) => ({
               id: item.id,
@@ -1185,6 +1197,12 @@ export const receiptService = {
             phone: headerInfo?.supplierPhone || '',
             gstin: headerInfo?.supplierGstin || '',
           },
+          payment: {
+            method: selectedPaymentMode,
+            status: backendPaymentStatus,
+          },
+          paymentMode: selectedPaymentMode,
+          paymentStatus: selectedPaymentStatus,
           reviewStatus: 'verified',
           subtotalMinor,
           taxTotalMinor,
@@ -1263,8 +1281,8 @@ export const receiptService = {
         scannedAt: nowIso,
         supplierId,
         supplierName,
-        paymentMode: 'upi',
-        paymentStatus: 'paid',
+        paymentMode: selectedPaymentMode,
+        paymentStatus: selectedPaymentStatus,
         subtotal: subtotalMinor / 100,
         taxTotal: taxTotalMinor / 100,
         grandTotal: grandTotalMinor / 100,
@@ -1293,6 +1311,8 @@ export const receiptService = {
       supplierName: headerInfo?.supplierName || baseReceipt.supplierName,
       invoiceNo: headerInfo?.invoiceNo || baseReceipt.invoiceNo,
       billDate: headerInfo?.date || baseReceipt.billDate,
+      paymentMode: selectedPaymentMode,
+      paymentStatus: selectedPaymentStatus,
       items: updatedItems.map((i) => ({ ...i, needsReview: false })),
       subtotal,
       taxTotal,
@@ -1423,5 +1443,116 @@ export const receiptService = {
     }
 
     return true;
+  },
+
+  /**
+   * Updates payment method and payment status of a receipt.
+   * Persists immediately to backend API, Firestore, and memory caches.
+   */
+  async updateReceiptPayment(
+    id: string,
+    paymentMode: PaymentMode,
+    paymentStatus?: PaymentStatus
+  ): Promise<Receipt | null> {
+    const { isGuestMode, businessId } = getActiveTenantContext();
+    const nowIso = new Date().toISOString();
+    const resolvedStatus: PaymentStatus =
+      paymentStatus || (paymentMode === 'credit_udhar' ? 'unpaid_udhar' : 'paid');
+
+    const cached = recentScannedReceiptsMap.get(id);
+    if (cached) {
+      cached.paymentMode = paymentMode;
+      cached.paymentStatus = resolvedStatus;
+    }
+
+    if (!isGuestMode && businessId) {
+      const backendPaymentStatus =
+        resolvedStatus === 'partial' ? 'partially_paid' : resolvedStatus;
+
+      try {
+        await apiClient.patch(
+          `/receipts/${id}`,
+          {
+            payment: {
+              method: paymentMode,
+              status: backendPaymentStatus,
+            },
+          },
+          businessId
+        );
+      } catch {
+        // Fallback to direct Firestore update below
+      }
+
+      try {
+        const receiptRef = doc(db, 'businesses', businessId, 'receipts', id);
+        await setDoc(
+          receiptRef,
+          {
+            payment: {
+              method: paymentMode,
+              status: backendPaymentStatus,
+            },
+            paymentMode,
+            paymentStatus: resolvedStatus,
+            updatedAt: nowIso,
+          },
+          { merge: true }
+        );
+      } catch (err) {
+        console.warn('[ReceiptService] Firestore updateReceiptPayment warning:', err);
+      }
+
+      return this.getReceiptById(id);
+    }
+
+    const gIdx = guestDemoReceipts.findIndex((r) => r.id === id);
+    if (gIdx !== -1) {
+      guestDemoReceipts[gIdx] = {
+        ...guestDemoReceipts[gIdx],
+        paymentMode,
+        paymentStatus: resolvedStatus,
+      };
+      return guestDemoReceipts[gIdx];
+    }
+
+    return cached || null;
+  },
+
+  /**
+   * Subscribes to real-time receipt changes from Firestore.
+   * Enables instant UI flag and ledger updates without requiring page refresh.
+   */
+  subscribeToReceipts(
+    callback: (receipts: Receipt[]) => void,
+    onError?: (err: any) => void
+  ): () => void {
+    const { isGuestMode, businessId } = getActiveTenantContext();
+    if (isGuestMode || !businessId) {
+      // In guest demo mode, emit current memory receipts
+      callback([...guestDemoReceipts]);
+      return () => {};
+    }
+
+    const receiptsCol = collection(db, 'businesses', businessId, 'receipts');
+    const unsubscribe = onSnapshot(
+      receiptsCol,
+      (snapshot) => {
+        const list: Receipt[] = [];
+        snapshot.forEach((docSnap) => {
+          const data = { id: docSnap.id, ...docSnap.data() };
+          if ((data as any).isDeleted) return;
+          list.push(mapBackendToFrontendReceipt(data));
+        });
+        list.sort((a, b) => new Date(b.billDate).getTime() - new Date(a.billDate).getTime());
+        callback(list);
+      },
+      (err) => {
+        console.warn('[ReceiptService] Firestore real-time listener warning:', err);
+        if (onError) onError(err);
+      }
+    );
+
+    return unsubscribe;
   },
 };

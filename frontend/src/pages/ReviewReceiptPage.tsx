@@ -13,6 +13,7 @@ import {
   Save,
   X,
   ArrowDown,
+  ArrowLeft,
   Calculator,
   ChevronRight,
   Maximize2,
@@ -359,7 +360,17 @@ export const ReviewReceiptPage: React.FC = () => {
             <span className="text-primary font-semibold">{headerInfo.supplierName}</span>
           </nav>
 
-          <div className="flex items-baseline gap-2.5 flex-wrap">
+          <div className="flex items-center gap-2 flex-wrap">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate('/receipts')}
+              leftIcon={<ArrowLeft className="w-5 h-5" />}
+              className="px-2"
+              title="Back"
+            >
+              ←
+            </Button>
             <h1 className="font-headline-lg text-xl sm:text-2xl font-bold text-on-surface tracking-tight">
               Review Purchase Bill #{receipt?.invoiceNo || headerInfo.invoiceNo}
             </h1>
@@ -378,7 +389,7 @@ export const ReviewReceiptPage: React.FC = () => {
             leftIcon={<X className="w-4 h-4" />}
             className="text-on-surface hover:bg-surface-container"
           >
-            {isHindi ? 'रद्द करें' : 'Discard'}
+            {isHindi ? 'रद्द' : 'Discard'}
           </Button>
           <Button
             variant="secondary"
@@ -387,16 +398,16 @@ export const ReviewReceiptPage: React.FC = () => {
             leftIcon={<Save className="w-4 h-4" />}
             className="shadow-sm"
           >
-            {isHindi ? 'ड्राफ्ट सेव करें' : 'Save Draft'}
+            {isHindi ? 'ड्राफ्ट' : 'Draft'}
           </Button>
           <Button
             variant="primary"
             size="md"
             onClick={() => setIsConfirmModalOpen(true)}
             leftIcon={<CheckCircle2 className="w-4 h-4" />}
-            className="font-bold shadow-card px-5"
+            className="font-bold shadow-card px-4"
           >
-            {isHindi ? `पुष्टि करें और सेव करें (₹${grandTotal.toFixed(0)})` : `Confirm & Save (₹${grandTotal.toFixed(0)})`}
+            {isHindi ? `सेव करें (₹${grandTotal.toFixed(0)})` : `Save (₹${grandTotal.toFixed(0)})`}
           </Button>
         </div>
       </div>

@@ -199,10 +199,10 @@ export const GuestDashboardPage: React.FC = () => {
                 3. Margin & Price Spikes
               </span>
               <h3 className="font-headline-sm text-body-lg font-bold text-on-surface mt-1">
-                Rate Intelligence
+                Wholesale Price Tracker
               </h3>
               <p className="text-body-sm text-on-surface-variant text-xs mt-1">
-                Detect when suppliers hike wholesale rates on oil, sugar, or pulses.
+                Track billed wholesale rates across oil, sugar, grains, and pulses.
               </p>
             </div>
             <span className="text-label-xs text-primary font-bold mt-4 flex items-center gap-1">

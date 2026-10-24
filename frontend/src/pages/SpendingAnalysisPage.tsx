@@ -154,7 +154,7 @@ export const SpendingAnalysisPage: React.FC = () => {
             disabled={isGeneratingAiSummary}
             leftIcon={<RefreshCw className={`w-4 h-4 ${isGeneratingAiSummary ? 'animate-spin' : ''}`} />}
           >
-            {isGeneratingAiSummary ? (isHindi ? 'AI सारांश तैयार हो रहा है…' : 'Generating Gemini Summary…') : (isHindi ? 'AI सारांश' : 'AI Executive Summary')}
+            {isGeneratingAiSummary ? (isHindi ? 'तैयार हो रहा है…' : 'Generating…') : (isHindi ? 'AI सारांश' : 'AI Summary')}
           </Button>
 
           <Button
@@ -170,7 +170,7 @@ export const SpendingAnalysisPage: React.FC = () => {
             }}
             leftIcon={<Printer className="w-4 h-4" />}
           >
-            {isHindi ? 'समरी प्रिंट करें' : 'Print Summary'}
+            {isHindi ? 'प्रिंट' : 'Print'}
           </Button>
 
           <Button
@@ -199,7 +199,7 @@ export const SpendingAnalysisPage: React.FC = () => {
             leftIcon={<Download className="w-4 h-4" />}
             className="font-bold shadow-card"
           >
-            {isHindi ? 'CA रिपोर्ट डाउनलोड' : 'Download CA Report'}
+            {isHindi ? 'CA रिपोर्ट' : 'CA Report'}
           </Button>
         </div>
       </div>
@@ -294,7 +294,7 @@ export const SpendingAnalysisPage: React.FC = () => {
             leftIcon={<RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />}
             className="text-on-surface-variant"
           >
-            Refresh Data
+            Refresh
           </Button>
         </div>
 
@@ -659,7 +659,7 @@ export const SpendingAnalysisPage: React.FC = () => {
               Wholesale Price Tracker (Mandi & Brand Rates)
             </h3>
             <p className="text-label-xs text-on-surface-variant mt-0.5">
-              Tracks actual unit rates billed on physical invoices to spot supplier inflation.
+              Tracks actual unit rates billed on physical invoices across commodities and suppliers.
             </p>
           </div>
           <div className="flex items-center gap-2 flex-wrap">

@@ -227,7 +227,7 @@ export const TRANSLATIONS: Record<AppLanguage, Record<string, string>> = {
     'analysis.topItemsTitle': 'Top Purchased Items & Wholesale Rates',
     'analysis.categoryBreakdownTitle': 'Spending Breakdown by Category',
     'analysis.monthlySpendTrends': 'Monthly Procurement Spend Trend',
-    'analysis.priceTrackerTitle': 'Commodity Price Tracker & Inflation Warnings',
+    'analysis.priceTrackerTitle': 'Wholesale Commodity Price Tracker',
 
     // Suppliers Page
     'suppliers.title': 'Store Suppliers & Wholesalers',
@@ -276,7 +276,7 @@ export const TRANSLATIONS: Record<AppLanguage, Record<string, string>> = {
     'settings.languageTitle': 'App Language / ऐप की भाषा',
     'settings.languageSubtitle': 'Choose your preferred language for Hissaab Kitaab navigation, screens, and controls.',
     'settings.notificationsTitle': 'Notifications & Store Alerts',
-    'settings.notificationsSubtitle': 'Configure bill scan alerts, price hike warnings, and daily bahi-khata reminders.',
+    'settings.notificationsSubtitle': 'Configure bill scan alerts and daily bahi-khata reminders.',
     'settings.saveAll': 'Save All Changes',
     'settings.resetDefaults': 'Reset Defaults',
 
@@ -514,7 +514,7 @@ export const TRANSLATIONS: Record<AppLanguage, Record<string, string>> = {
     'analysis.topItemsTitle': 'सबसे ज़्यादा खरीदा गया सामान और थोक भाव',
     'analysis.categoryBreakdownTitle': 'श्रेणी अनुसार खर्च का विवरण',
     'analysis.monthlySpendTrends': 'मासिक खरीद खर्च का रुझान',
-    'analysis.priceTrackerTitle': 'थोक भाव ट्रैकर और मूल्य वृद्धि अलर्ट',
+    'analysis.priceTrackerTitle': 'मंडी और थोक भाव ट्रैकर',
 
     // Suppliers Page
     'suppliers.title': 'दुकान के सप्लायर और थोक व्यापारी',
@@ -563,7 +563,7 @@ export const TRANSLATIONS: Record<AppLanguage, Record<string, string>> = {
     'settings.languageTitle': 'ऐप की भाषा / App Language',
     'settings.languageSubtitle': 'Hissaab Kitaab ऐप के लिए अपनी पसंदीदा भाषा चुनें (English या हिन्दी)।',
     'settings.notificationsTitle': 'सूचनाएं और अलर्ट (Notifications)',
-    'settings.notificationsSubtitle': 'बिल जांच अलर्ट, रेट बढ़ने की चेतावनी और रोज़ाना बही-खाता रिमाइंडर सेट करें।',
+    'settings.notificationsSubtitle': 'बिल जांच अलर्ट और रोज़ाना बही-खाता रिमाइंडर सेट करें।',
     'settings.saveAll': 'बदलाव सेव करें',
     'settings.resetDefaults': 'डिफ़ॉल्ट रीसेट करें',
 

@@ -460,7 +460,7 @@ export const analyticsService = {
               lowestRateRupees: lowest,
               highestRateRupees: highest,
               lastPurchaseDate: it.lastPurchaseDate || '—',
-              hasInflation: variance > 0,
+              hasInflation: false,
               rateVariancePercentage: variance,
             };
           });
@@ -487,7 +487,7 @@ export const analyticsService = {
           lowestRateRupees: 142,
           highestRateRupees: 148,
           lastPurchaseDate: '2024-10-23',
-          hasInflation: true,
+          hasInflation: false,
           rateVariancePercentage: 4.2,
         },
         {
@@ -499,7 +499,7 @@ export const analyticsService = {
           lowestRateRupees: 2040,
           highestRateRupees: 2120,
           lastPurchaseDate: '2024-10-23',
-          hasInflation: true,
+          hasInflation: false,
           rateVariancePercentage: 3.9,
         },
         {
@@ -511,7 +511,7 @@ export const analyticsService = {
           lowestRateRupees: 380,
           highestRateRupees: 388,
           lastPurchaseDate: '2024-10-24',
-          hasInflation: true,
+          hasInflation: false,
           rateVariancePercentage: 2.1,
         },
       ],

@@ -76,19 +76,34 @@ export const ReceiptsPage: React.FC = () => {
   };
 
   useEffect(() => {
-    async function loadReceipts() {
-      setIsLoading(true);
-      try {
-        const res = await receiptService.getReceiptsWithPagination({
-          page: currentPage,
-          limit: 10,
-          status: currentStatus !== 'all' ? currentStatus : undefined,
-          search: currentSearch || undefined,
-          category: currentCategory || undefined,
-          supplierId: currentSupplierId || undefined,
-        });
+    let isMounted = true;
+    setIsLoading(true);
 
-        let filteredItems = res.items;
+    const unsubscribe = receiptService.subscribeToReceipts(
+      (allRealtimeReceipts) => {
+        if (!isMounted) return;
+
+        let filteredItems = allRealtimeReceipts;
+        if (currentStatus !== 'all') {
+          filteredItems = filteredItems.filter((r) => r.status === currentStatus);
+        }
+        if (currentSearch.trim()) {
+          const q = currentSearch.toLowerCase();
+          filteredItems = filteredItems.filter(
+            (r) =>
+              r.supplierName.toLowerCase().includes(q) ||
+              r.invoiceNo.toLowerCase().includes(q) ||
+              r.items.some((it) => it.name.toLowerCase().includes(q))
+          );
+        }
+        if (currentCategory) {
+          filteredItems = filteredItems.filter((r) =>
+            r.items.some((it) => it.category === currentCategory)
+          );
+        }
+        if (currentSupplierId) {
+          filteredItems = filteredItems.filter((r) => r.supplierId === currentSupplierId);
+        }
         if (currentPaymentMode) {
           filteredItems = filteredItems.filter(
             (r) => r.paymentMode.toLowerCase() === currentPaymentMode.toLowerCase()
@@ -114,29 +129,52 @@ export const ReceiptsPage: React.FC = () => {
           });
         }
 
-        setReceipts(filteredItems);
-        setPagination(res.pagination);
+        const total = filteredItems.length;
+        const limit = 10;
+        const totalPages = Math.max(1, Math.ceil(total / limit));
+        const pageStart = (currentPage - 1) * limit;
+        const pagedReceipts = filteredItems.slice(pageStart, pageStart + limit);
 
-        // Fetch counts for tabs
-        const allList = await receiptService.getReceipts();
-        setTabCounts({
-          all: allList.length,
-          needs_review: allList.filter((r) => r.status === 'needs_review').length,
-          verified: allList.filter((r) => r.status === 'verified').length,
-          draft: allList.filter((r) => r.status === 'draft').length,
+        setReceipts(pagedReceipts);
+        setPagination({
+          page: currentPage,
+          limit,
+          total,
+          totalPages,
         });
-      } catch (err: any) {
+
+        setTabCounts({
+          all: allRealtimeReceipts.length,
+          needs_review: allRealtimeReceipts.filter((r) => r.status === 'needs_review').length,
+          verified: allRealtimeReceipts.filter((r) => r.status === 'verified').length,
+          draft: allRealtimeReceipts.filter((r) => r.status === 'draft').length,
+        });
+        setIsLoading(false);
+      },
+      (err: any) => {
+        if (!isMounted) return;
         showToast({
           type: 'error',
           title: 'Failed to load receipts',
-          message: err.message || 'Could not connect to receipts database',
+          message: err?.message || 'Could not connect to receipts database',
         });
-      } finally {
         setIsLoading(false);
       }
-    }
-    loadReceipts();
-  }, [currentStatus, currentSearch, currentCategory, currentPaymentMode, currentDateRange, currentSupplierId, currentPage]);
+    );
+
+    return () => {
+      isMounted = false;
+      unsubscribe();
+    };
+  }, [
+    currentStatus,
+    currentSearch,
+    currentCategory,
+    currentPaymentMode,
+    currentDateRange,
+    currentSupplierId,
+    currentPage,
+  ]);
 
   const tabs: TabItem[] = [
     { id: 'all', label: isHindi ? 'सभी रसीदें' : 'All Receipts', count: tabCounts.all },
@@ -284,22 +322,52 @@ export const ReceiptsPage: React.FC = () => {
     },
     {
       key: 'status',
-      title: isHindi ? 'सत्यापन स्थिति' : 'Verification Status',
-      align: 'center',
-      render: (item) => (
-        <Badge
-          variant={item.status === 'verified' ? 'verified' : 'needs_checking'}
-          icon={true}
-        >
-          {isHindi
-            ? item.status === 'verified'
-              ? 'सत्यापित'
-              : 'जांच बाकी'
-            : item.status === 'verified'
-            ? 'Verified'
-            : 'Needs checking'}
-        </Badge>
-      ),
+      title: isHindi ? 'स्थिति और रियल-टाइम फ्लैग्स' : 'Status & Real-time Flags',
+      render: (item) => {
+        const flaggedCount =
+          item.ocrConfidence?.flaggedCount ??
+          item.items?.filter((i) => i.needsReview)?.length ??
+          (item.status === 'needs_review' ? 1 : 0);
+        const hasFlags = item.status === 'needs_review' || flaggedCount > 0;
+        const isUdhar =
+          item.paymentMode === 'credit_udhar' || item.paymentStatus === 'unpaid_udhar';
+
+        return (
+          <div className="flex flex-col gap-1 items-start">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <Badge
+                variant={item.status === 'verified' ? 'verified' : 'needs_checking'}
+                icon={true}
+              >
+                {isHindi
+                  ? item.status === 'verified'
+                    ? 'सत्यापित'
+                    : 'जांच बाकी'
+                  : item.status === 'verified'
+                  ? 'Verified'
+                  : 'Needs Review'}
+              </Badge>
+
+              {hasFlags && (
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                  {flaggedCount > 0
+                    ? `${flaggedCount} ${isHindi ? 'फ्लैग' : 'Flags'}`
+                    : isHindi
+                    ? 'फ्लैग'
+                    : 'Flagged'}
+                </span>
+              )}
+            </div>
+
+            {isUdhar && (
+              <span className="inline-flex items-center text-[10px] font-bold text-red-700 dark:text-red-300">
+                • {isHindi ? 'उधार (बाकी)' : 'Udhar (Unpaid)'}
+              </span>
+            )}
+          </div>
+        );
+      },
     },
     {
       key: 'scannedAt',
@@ -330,11 +398,11 @@ export const ReceiptsPage: React.FC = () => {
           >
             {isHindi
               ? item.status === 'needs_review'
-                ? 'जांचें और दर्ज करें'
-                : 'पर्ची देखें'
+                ? 'जांचें'
+                : 'देखें'
               : item.status === 'needs_review'
-              ? 'Review & Verify'
-              : 'View Scan'}
+              ? 'Review'
+              : 'View'}
           </Button>
 
           <button
@@ -472,7 +540,7 @@ export const ReceiptsPage: React.FC = () => {
               leftIcon={<FileText className="w-4 h-4" />}
               className="shadow-sm font-semibold"
             >
-              {isHindi ? '+ हाथ से बिल दर्ज करें' : '+ Manual Entry'}
+              {isHindi ? '+ दर्ज करें' : '+ Manual'}
             </Button>
             <Button
               variant="primary"
@@ -480,7 +548,7 @@ export const ReceiptsPage: React.FC = () => {
               leftIcon={<Upload className="w-5 h-5" />}
               className="shadow-card font-bold"
             >
-              {isHindi ? 'नया बिल अपलोड करें' : 'Upload Bill'}
+              {isHindi ? 'अपलोड' : 'Upload'}
             </Button>
           </div>
         }
@@ -611,7 +679,7 @@ export const ReceiptsPage: React.FC = () => {
               onClick={() => updateParam('page', String(pagination.page - 1))}
               leftIcon={<ChevronLeft className="w-4 h-4" />}
             >
-              Previous
+              {isHindi ? 'पिछला' : 'Prev'}
             </Button>
             <span className="text-label-xs font-semibold px-2">
               Page {pagination.page} of {pagination.totalPages}
@@ -623,7 +691,7 @@ export const ReceiptsPage: React.FC = () => {
               onClick={() => updateParam('page', String(pagination.page + 1))}
               rightIcon={<ChevronRight className="w-4 h-4" />}
             >
-              Next
+              {isHindi ? 'अगला' : 'Next'}
             </Button>
           </div>
         </div>

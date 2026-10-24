@@ -570,7 +570,7 @@ export const DEMO_CHAT_MESSAGES: ChatMessage[] = [
   {
     id: 'msg-2',
     sender: 'assistant',
-    text: 'Namaste Ramesh ji. Based on your 4 verified receipts in October, **Shree Balaji Traders** offered the cheapest rate for **Fortune Kachi Ghani Mustard Oil 1L Pouch** at **₹142.00/pouch** on 16 Oct.\n\nBy comparison, **Gupta Wholesale Mart** billed you **₹148.00/pouch** yesterday (24 Oct) on Bill #GW-8941 — a price hike of ₹6.00 (+4.2%).',
+    text: 'Namaste Ramesh ji. Based on your 4 verified receipts in October, **Shree Balaji Traders** offered the cheapest rate for **Fortune Kachi Ghani Mustard Oil 1L Pouch** at **₹142.00/pouch** on 16 Oct.\n\nBy comparison, **Gupta Wholesale Mart** billed you **₹148.00/pouch** yesterday (24 Oct) on Bill #GW-8941 — a rate difference of ₹6.00 (+4.2%).',
     timestamp: 'Today at 02:15 PM',
     structuredCard: {
       type: 'supplier_comparison',

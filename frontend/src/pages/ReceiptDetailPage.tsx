@@ -4,9 +4,7 @@ import {
   ArrowLeft,
   CheckCircle2,
   ShieldCheck,
-  TrendingUp,
   Download,
-  ExternalLink,
   RefreshCw,
   Pencil,
   Check,
@@ -18,7 +16,7 @@ import { Badge } from '../components/common/Badge';
 import { Card } from '../components/common/Card';
 import { ConfirmationDialog } from '../components/common/ConfirmationDialog';
 import { receiptService } from '../api/receiptService';
-import type { Receipt as ReceiptType } from '../types';
+import type { Receipt as ReceiptType, PaymentMode, PaymentStatus } from '../types';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useLanguage } from '../context/LanguageContext';
@@ -41,6 +39,8 @@ export const ReceiptDetailPage: React.FC = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [editedInvoiceNo, setEditedInvoiceNo] = useState('');
   const [isSavingName, setIsSavingName] = useState(false);
+  const [isUpdatingPayment, setIsUpdatingPayment] = useState(false);
+  const [voucherDisplayMode, setVoucherDisplayMode] = useState<'slip' | 'photo'>('slip');
 
   useEffect(() => {
     async function load() {
@@ -152,6 +152,49 @@ export const ReceiptDetailPage: React.FC = () => {
     }
   };
 
+  const handlePaymentChange = async (
+    newMode: PaymentMode,
+    newStatus?: PaymentStatus
+  ) => {
+    if (!receipt) return;
+    setIsUpdatingPayment(true);
+    try {
+      const updated = await receiptService.updateReceiptPayment(
+        receipt.id,
+        newMode,
+        newStatus
+      );
+      if (updated) {
+        setReceipt(updated);
+      } else {
+        setReceipt((prev) =>
+          prev
+            ? {
+                ...prev,
+                paymentMode: newMode,
+                paymentStatus: newStatus || prev.paymentStatus,
+              }
+            : null
+        );
+      }
+      showToast({
+        type: 'success',
+        title: isHindi ? 'भुगतान माध्यम सेव हो गया' : 'Payment Saved',
+        message: `${newMode.replace('_', ' ').toUpperCase()} • ${(
+          newStatus || receipt.paymentStatus
+        ).toUpperCase()}`,
+      });
+    } catch (err: any) {
+      showToast({
+        type: 'error',
+        title: isHindi ? 'सेव करने में विफल' : 'Failed to save payment',
+        message: err?.message || 'Could not update payment mode',
+      });
+    } finally {
+      setIsUpdatingPayment(false);
+    }
+  };
+
   if (isLoading || !receipt) {
     return (
       <div className="min-h-[50vh] flex items-center justify-center">
@@ -170,10 +213,11 @@ export const ReceiptDetailPage: React.FC = () => {
             variant="ghost"
             size="sm"
             onClick={() => navigate('/receipts')}
-            leftIcon={<ArrowLeft className="w-4 h-4" />}
-            className="self-start sm:self-auto"
+            leftIcon={<ArrowLeft className="w-5 h-5" />}
+            className="self-start sm:self-auto px-2"
+            title={isHindi ? 'वापस' : 'Back'}
           >
-            Back to Receipts
+            ←
           </Button>
           <div className="min-w-0 flex-1">
             {isEditingName ? (
@@ -311,48 +355,170 @@ export const ReceiptDetailPage: React.FC = () => {
         {/* Left Scan View (4 Columns) */}
         <div className="lg:col-span-4 space-y-4">
           <Card className="p-4 space-y-3">
-            <h3 className="font-headline-sm text-base font-bold text-on-surface flex items-center justify-between">
-              <span>Original Voucher Scan</span>
-              <span className="text-label-xs text-on-surface-variant font-mono">{receipt.invoiceNo}</span>
-            </h3>
+            <div className="flex items-center justify-between border-b border-outline/30 pb-2.5">
+              <h3 className="font-headline-sm text-sm font-bold text-on-surface">
+                {voucherDisplayMode === 'slip'
+                  ? isHindi
+                    ? 'डिजिटल पर्ची (Voucher Slip)'
+                    : 'Digital Slip'
+                  : isHindi
+                  ? 'मूल बिल फोटो'
+                  : 'Original Photo'}
+              </h3>
+              {receipt.sourceVoucherUrl && receipt.sourceVoucherUrl !== 'manual-entry' && (
+                <div className="flex items-center bg-surface-container rounded-lg p-0.5 text-xs font-semibold">
+                  <button
+                    type="button"
+                    onClick={() => setVoucherDisplayMode('slip')}
+                    className={`px-2.5 py-1 rounded-md transition-colors ${
+                      voucherDisplayMode === 'slip'
+                        ? 'bg-primary text-on-primary shadow-xs font-bold'
+                        : 'text-on-surface-variant hover:text-on-surface'
+                    }`}
+                  >
+                    Slip
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setVoucherDisplayMode('photo')}
+                    className={`px-2.5 py-1 rounded-md transition-colors ${
+                      voucherDisplayMode === 'photo'
+                        ? 'bg-primary text-on-primary shadow-xs font-bold'
+                        : 'text-on-surface-variant hover:text-on-surface'
+                    }`}
+                  >
+                    Photo
+                  </button>
+                </div>
+              )}
+            </div>
 
-            <div className="aspect-3/4 w-full bg-[#1B1E19] rounded-xl border border-outline flex items-center justify-center p-3 text-center overflow-hidden">
-              {receipt.sourceVoucherUrl && receipt.sourceVoucherUrl !== 'manual-entry' ? (
+            {/* Display Area: Digital Thermal Voucher Slip or Original Photo */}
+            {voucherDisplayMode === 'slip' || !receipt.sourceVoucherUrl || receipt.sourceVoucherUrl === 'manual-entry' ? (
+              <div
+                style={{
+                  fontFamily: "'Courier New', Courier, monospace",
+                }}
+                className="relative w-full bg-[#fbf9f1] text-[#2b2923] p-4 sm:p-5 shadow-sm rounded-lg border border-[#d8d2c4] select-text"
+              >
+                {/* Vintage paper subtle texture tint */}
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-900/[0.015] to-amber-900/[0.04] pointer-events-none rounded-lg" />
+
+                {/* Vendor Header */}
+                <div className="text-center pb-2 leading-tight">
+                  <div className="text-[0.625rem] tracking-widest text-[#736e65] font-sans uppercase font-bold">
+                    Tax Invoice / Purchase Voucher
+                  </div>
+                  <div className="font-bold text-base tracking-tight uppercase mt-1 font-sans text-[#181714]">
+                    {receipt.supplierName || 'WHOLESALE VENDOR'}
+                  </div>
+                  <div className="text-[0.6875rem] text-[#524e47] mt-0.5 font-sans">
+                    Store: <strong>{user?.shopName || 'Hissaab Kitaab Store'}</strong>
+                  </div>
+                </div>
+
+                <div className="my-2 border-b border-dashed border-[#b8b2a3]" />
+
+                {/* Metadata */}
+                <div className="text-[0.6875rem] flex justify-between items-center py-0.5">
+                  <span>
+                    Bill No: <strong className="font-sans text-[#151d19]">{receipt.invoiceNo}</strong>
+                  </span>
+                  <span>
+                    Date: <strong className="font-sans text-[#151d19]">{receipt.billDate}</strong>
+                  </span>
+                </div>
+
+                <div className="my-1.5 border-b border-[#2b2923]" />
+
+                {/* Table Headers on Paper Receipt */}
+                <div className="text-[0.625rem] font-bold flex justify-between py-1 text-[#423f38] uppercase">
+                  <span className="w-5">Sn</span>
+                  <span className="flex-1">Item</span>
+                  <span className="w-12 text-right">Qty</span>
+                  <span className="w-12 text-right">Rate</span>
+                  <span className="w-14 text-right">Total</span>
+                </div>
+                <div className="border-b border-dashed border-[#b8b2a3] mb-1" />
+
+                {/* Line Items */}
+                <div className="flex flex-col gap-1 text-[0.6875rem] max-h-[360px] overflow-y-auto pr-0.5">
+                  {receipt.items.map((item, idx) => (
+                    <div key={item.id || idx} className="flex justify-between items-center py-0.5">
+                      <span className="w-5 text-[#757064]">{idx + 1}</span>
+                      <span className="flex-1 font-semibold truncate pr-1" title={item.name}>
+                        {item.name || 'Unnamed Item'}
+                      </span>
+                      <span className="w-12 text-right">
+                        {item.quantity} {item.unit?.slice(0, 2)}
+                      </span>
+                      <span className="w-12 text-right font-mono">
+                        {item.unitRate.toFixed(0)}
+                      </span>
+                      <span className="w-14 text-right font-mono font-bold">
+                        {item.lineTotal.toFixed(0)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="my-2 border-b border-[#2b2923]" />
+
+                {/* Totals */}
+                <div className="text-[0.6875rem] space-y-0.5">
+                  <div className="flex justify-between">
+                    <span>Subtotal:</span>
+                    <span className="font-mono">₹{receipt.subtotal.toFixed(2)}</span>
+                  </div>
+                  {receipt.taxTotal > 0 && (
+                    <>
+                      <div className="flex justify-between text-[#5f5a50]">
+                        <span>CGST:</span>
+                        <span className="font-mono">₹{(receipt.taxTotal / 2).toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between text-[#5f5a50]">
+                        <span>SGST:</span>
+                        <span className="font-mono">₹{(receipt.taxTotal / 2).toFixed(2)}</span>
+                      </div>
+                    </>
+                  )}
+                  <div className="border-t border-double border-[#2b2923] pt-1.5 mt-1 flex justify-between font-bold text-sm font-sans">
+                    <span>NET TOTAL:</span>
+                    <span className="text-primary font-bold">₹{receipt.grandTotal.toFixed(2)}</span>
+                  </div>
+                </div>
+
+                {/* Rubber Stamp Simulation */}
+                <div className="mt-3 pt-2 border-t border-dashed border-[#b8b2a3] flex justify-between items-end">
+                  <div className="inline-block transform -rotate-3 border-2 border-dashed border-red-700/70 p-1.5 rounded text-[0.625rem] font-bold text-red-800 font-sans tracking-wide">
+                    {receipt.paymentMode.replace('_', ' ').toUpperCase()} • {receipt.paymentStatus.toUpperCase()}
+                    <br />
+                    <span className="text-[0.5rem]">{receipt.supplierName.toUpperCase()}</span>
+                  </div>
+                  <div className="text-[0.625rem] text-right text-[#57534b]">
+                    Authorized Slip
+                    <br />
+                    <span className="italic font-bold">{receipt.supplierName}</span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="aspect-3/4 w-full bg-[#1B1E19] rounded-xl border border-outline flex items-center justify-center p-3 text-center overflow-hidden">
                 <img
                   src={receipt.sourceVoucherUrl}
                   alt={receipt.supplierName}
                   className="w-full h-full object-contain rounded"
                 />
-              ) : (
-                <div className="w-full h-full bg-[#FAF9F4] text-[#1B1C19] rounded p-4 text-[0.625rem] font-mono overflow-hidden shadow">
-                  <p className="font-bold text-xs uppercase tracking-wider">{receipt.supplierName}</p>
-                  <p className="text-on-surface-variant">M/s: {user?.shopName || 'My Store'}</p>
-                  <div className="my-2 border-b border-dashed border-black/30" />
-                  <p>Tax Invoice: {receipt.invoiceNo}</p>
-                  <p>Date: {receipt.billDate}</p>
-                  <div className="mt-3 text-left space-y-1">
-                    {receipt.items.slice(0, 6).map((it) => (
-                      <div key={it.id} className="flex justify-between">
-                        <span className="truncate max-w-[120px]">{it.name}</span>
-                        <span>₹{it.lineTotal.toFixed(0)}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-4 pt-2 border-t border-dashed border-black/30 font-bold flex justify-between">
-                    <span>Grand Total:</span>
-                    <span>₹{receipt.grandTotal.toFixed(0)}</span>
-                  </div>
-                </div>
-              )}
-            </div>
+              </div>
+            )}
 
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex flex-col items-center gap-2 pt-1">
               <p className="text-[0.6875rem] text-on-surface-variant text-center">
-                {receipt.sourceVoucherUrl && receipt.sourceVoucherUrl !== 'manual-entry'
-                  ? 'Original uploaded bill image preserved in tenant storage'
-                  : 'Digital voucher summary generated from recorded entry'}
+                {voucherDisplayMode === 'slip'
+                  ? isHindi ? 'बही-खाता डिजिटल वाउचर पर्ची' : 'Verified digital bahi-khata slip'
+                  : isHindi ? 'मूल स्कैन की गई बिल प्रति' : 'Original scan preserved in tenant storage'}
               </p>
-              {receipt.sourceVoucherUrl && receipt.sourceVoucherUrl !== 'manual-entry' && (
+              {receipt.sourceVoucherUrl && receipt.sourceVoucherUrl !== 'manual-entry' && voucherDisplayMode === 'photo' && (
                 <Button
                   variant="outline"
                   size="sm"
@@ -362,80 +528,71 @@ export const ReceiptDetailPage: React.FC = () => {
                     downloadOriginalVoucherImage(receipt);
                     showToast({
                       type: 'success',
-                      title: 'Original Image Downloaded',
-                      message: `Saved Voucher_Scan_${receipt.invoiceNo}.jpg`,
+                      title: isHindi ? 'फोटो डाउनलोड हुई' : 'Scan Downloaded',
+                      message: `Voucher_Scan_${receipt.invoiceNo}.jpg`,
                     });
                   }}
                 >
-                  Download Original Scan (.jpg)
+                  {isHindi ? 'फोटो डाउनलोड (.jpg)' : 'Download Scan (.jpg)'}
                 </Button>
               )}
             </div>
-          </Card>
-
-          {/* Supplier Price Intelligence Card */}
-          <Card className="p-4 bg-tertiary-fixed/30 border-tertiary-fixed-dim/60 space-y-2">
-            <div className="flex items-center gap-2 text-tertiary-on-fixed font-bold text-xs">
-              <TrendingUp className="w-4 h-4 text-tertiary" />
-              <span>Supplier Rate Intelligence</span>
-            </div>
-            {receipt.items.length > 0 ? (
-              <>
-                <p className="text-body-sm text-xs text-on-surface-variant leading-relaxed">
-                  <strong>{receipt.items[0].name}</strong> on this invoice was billed at{' '}
-                  <strong>
-                    ₹{receipt.items[0].unitRate.toFixed(2)}/{receipt.items[0].unit}
-                  </strong>{' '}
-                  from <strong>{receipt.supplierName}</strong>.
-                </p>
-                <button
-                  onClick={() => navigate('/items')}
-                  className="text-label-xs text-primary font-bold hover:underline flex items-center gap-1"
-                >
-                  Inspect Item Price Catalog <ExternalLink className="w-3 h-3" />
-                </button>
-              </>
-            ) : (
-              <p className="text-body-sm text-xs text-on-surface-variant leading-relaxed">
-                Verify line items on this bill to track unit rate history across suppliers.
-              </p>
-            )}
           </Card>
         </div>
 
         {/* Right Ledger Breakdown (8 Columns) */}
         <div className="lg:col-span-8 space-y-6">
-          {/* Commercial Summary Banner */}
+          {/* Commercial Summary Banner with Editable Payment */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-2xl bg-surface-container-lowest border border-outline shadow-card">
             <div>
-              <span className="text-label-xs text-on-surface-variant uppercase font-semibold">
-                Payment Mode
-              </span>
-              <p className="font-bold text-body-lg text-on-surface capitalize mt-0.5">
-                {receipt.paymentMode.replace('_', ' ')}
-              </p>
+              <label className="text-label-xs text-on-surface-variant uppercase font-semibold block mb-1">
+                {isHindi ? 'भुगतान माध्यम' : 'Payment Mode'}
+              </label>
+              <select
+                value={receipt.paymentMode}
+                disabled={isUpdatingPayment}
+                onChange={(e) =>
+                  handlePaymentChange(e.target.value as PaymentMode, receipt.paymentStatus)
+                }
+                className="bg-surface-container-low text-on-surface font-bold text-xs sm:text-sm rounded-lg px-2.5 py-1.5 border border-outline/70 focus:ring-2 focus:ring-primary outline-none w-full cursor-pointer"
+              >
+                <option value="cash">Cash (Rokad)</option>
+                <option value="upi">UPI / GPay / PhonePe</option>
+                <option value="credit_udhar">Credit (Udhar)</option>
+                <option value="bank_transfer">Bank Transfer / NEFT</option>
+                <option value="cheque">Cheque</option>
+              </select>
             </div>
             <div>
-              <span className="text-label-xs text-on-surface-variant uppercase font-semibold">
-                Payment Status
-              </span>
-              <p className="font-bold text-body-lg text-verified capitalize mt-0.5">
-                {receipt.paymentStatus}
-              </p>
+              <label className="text-label-xs text-on-surface-variant uppercase font-semibold block mb-1">
+                {isHindi ? 'भुगतान स्थिति' : 'Payment Status'}
+              </label>
+              <select
+                value={receipt.paymentStatus}
+                disabled={isUpdatingPayment}
+                onChange={(e) =>
+                  handlePaymentChange(receipt.paymentMode, e.target.value as PaymentStatus)
+                }
+                className="bg-surface-container-low text-on-surface font-bold text-xs sm:text-sm rounded-lg px-2.5 py-1.5 border border-outline/70 focus:ring-2 focus:ring-primary outline-none w-full cursor-pointer"
+              >
+                <option value="paid">Paid (चुक्ता)</option>
+                <option value="unpaid_udhar">Unpaid (उधार)</option>
+                <option value="partial">Partial (आंशिक)</option>
+              </select>
             </div>
             <div>
-              <span className="text-label-xs text-on-surface-variant uppercase font-semibold">
-                Subtotal
+              <span className="text-label-xs text-on-surface-variant uppercase font-semibold block mb-1">
+                {isHindi ? 'उप-कुल' : 'Subtotal'}
               </span>
-              <p className="font-bold text-body-lg text-on-surface tabular-nums mt-0.5">
+              <p className="font-bold text-body-lg text-on-surface tabular-nums mt-1">
                 ₹{receipt.subtotal.toFixed(2)}
               </p>
             </div>
             <div>
-              <span className="text-label-xs text-on-surface-variant uppercase font-semibold">
-                Grand Total
+              <span className="text-label-xs text-on-surface-variant uppercase font-semibold block mb-1">
+                {isHindi ? 'कुल रकम' : 'Grand Total'}
               </span>
-              <p className="font-bold text-body-lg text-primary tabular-nums mt-0.5">
+              <p className="font-bold text-body-lg text-primary tabular-nums mt-1">
                 ₹{receipt.grandTotal.toFixed(2)}
               </p>
             </div>

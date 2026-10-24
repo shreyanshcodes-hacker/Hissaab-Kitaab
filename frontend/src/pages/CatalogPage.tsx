@@ -135,7 +135,7 @@ export const CatalogPage: React.FC = () => {
           onClick={() => navigate(`/items/${item.id}`)}
           rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
         >
-          {isHindi ? 'भाव इतिहास' : 'Rate History'}
+          {isHindi ? 'इतिहास' : 'History'}
         </Button>
       ),
     },

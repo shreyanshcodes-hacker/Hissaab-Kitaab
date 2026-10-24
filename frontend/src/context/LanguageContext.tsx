@@ -19,7 +19,6 @@ export interface NotificationItem {
 export interface NotificationPreferences {
   lowConfidenceAlerts: boolean;
   eveningTallyReminder: boolean;
-  priceHikeAlerts: boolean;
   browserPushEnabled: boolean;
 }
 
@@ -53,18 +52,6 @@ const DEFAULT_NOTIFICATIONS: NotificationItem[] = [
     link: '/receipts?filter=needs_check',
   },
   {
-    id: 'notif-2',
-    title: 'Wholesale Rate Alert: Mustard Oil',
-    titleHi: 'थोक रेट अलर्ट: सरसों तेल',
-    message: 'Mustard Oil 1L rate changed by +₹4/unit on your latest wholesale slip.',
-    messageHi: 'पिछले बिल में सरसों तेल 1L का भाव +₹4 प्रति यूनिट बढ़ा है।',
-    time: '1 hour ago',
-    timeHi: '1 घंटे पहले',
-    type: 'info',
-    read: false,
-    link: '/analysis',
-  },
-  {
     id: 'notif-3',
     title: 'Hissaab Kitaab AI Ready',
     titleHi: 'Hissaab Kitaab AI तैयार है',
@@ -81,7 +68,6 @@ const DEFAULT_NOTIFICATIONS: NotificationItem[] = [
 const DEFAULT_PREFS: NotificationPreferences = {
   lowConfidenceAlerts: true,
   eveningTallyReminder: true,
-  priceHikeAlerts: true,
   browserPushEnabled: false,
 };
 

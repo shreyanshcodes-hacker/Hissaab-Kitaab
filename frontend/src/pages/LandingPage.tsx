@@ -107,7 +107,7 @@ export const LandingPage: React.FC = () => {
 
           <p className="mt-6 text-body-lg sm:text-xl text-on-surface-variant max-w-2xl leading-relaxed">
             Turn crumpled thermal paper, faded mandi slips, and wholesale invoices into a clean,
-            searchable bahi khata. Never miss a supplier price hike again.
+            searchable bahi khata. Keep your store procurement records accurate and reconciled.
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">

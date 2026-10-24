@@ -194,7 +194,7 @@ export const SettingsPage: React.FC = () => {
               <p className="text-body-sm text-on-surface-variant">
                 {t(
                   'settings.notificationsSubtitle',
-                  'Configure bill scan alerts, price hike warnings, and daily bahi-khata reminders.'
+                  'Configure bill scan alerts and daily bahi-khata reminders.'
                 )}
               </p>
             </div>
@@ -238,27 +238,6 @@ export const SettingsPage: React.FC = () => {
                 {language === 'hi'
                   ? 'जब किसी बिल में हाथ से लिखे रेट या जोड़ में अंतर हो तो तुरंत सूचित करें।'
                   : 'Notify when a scanned bill has handwritten totals or unclear GST rows.'}
-              </span>
-            </div>
-          </label>
-
-          <label className="flex items-start gap-3 p-3.5 rounded-xl bg-surface-container-low border border-outline/50 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={notificationPrefs.priceHikeAlerts}
-              onChange={(e) => updateNotificationPrefs({ priceHikeAlerts: e.target.checked })}
-              className="w-4 h-4 mt-1 text-primary rounded border-outline cursor-pointer"
-            />
-            <div>
-              <span className="text-body-sm font-bold text-on-surface block">
-                {language === 'hi'
-                  ? 'थोक भाव बढ़ने की चेतावनी (Price Hike Alerts)'
-                  : 'Wholesale Supplier Price Hike Alerts'}
-              </span>
-              <span className="text-label-xs text-on-surface-variant">
-                {language === 'hi'
-                  ? 'पिछली खरीद की तुलना में सप्लायर का रेट बढ़ने पर अलर्ट दिखाएं।'
-                  : 'Alert when an item unit price increases compared to your previous bill.'}
               </span>
             </div>
           </label>

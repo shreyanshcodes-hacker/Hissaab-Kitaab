@@ -61,9 +61,11 @@ export const ItemDetailPage: React.FC = () => {
             variant="ghost"
             size="sm"
             onClick={() => navigate('/catalog')}
-            leftIcon={<ArrowLeft className="w-4 h-4" />}
+            leftIcon={<ArrowLeft className="w-5 h-5" />}
+            className="px-2"
+            title="Back"
           >
-            Item Catalog
+            ←
           </Button>
           <div>
             <div className="flex items-center gap-2">

@@ -4,6 +4,10 @@
 
 ---
 
+Platform URL:- https://my-ledgeriq.web.app/
+
+---
+
 ## 1. Architecture & Repository Structure
 
 ShopLedger is organized as a `pnpm` monorepo with strict separation between the static React SPA and the privileged Express + TypeScript backend API:
